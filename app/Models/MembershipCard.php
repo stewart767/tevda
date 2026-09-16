@@ -11,6 +11,7 @@ class MembershipCard extends Model
 
     protected $fillable = [
         'member_id',
+        'template_id',
         'card_number',
         'issue_date',
         'expiry_date',
@@ -29,5 +30,10 @@ class MembershipCard extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function template()
+    {
+        return $this->belongsTo(IdCardTemplate::class, 'template_id');
     }
 }

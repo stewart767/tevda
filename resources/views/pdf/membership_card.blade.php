@@ -2,453 +2,676 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Member ID Card — {{ $member->membership_number }}</title>
+    <title>TEVDA Member ID Card — {{ $member->membership_number }}</title>
     <style>
         @page {
             margin: 0;
-            size: 242.64pt 153.07pt; /* CR80 Standard ISO/IEC 7810 ID-1 Dimensions: 85.6mm x 53.98mm */
+            size: 242.64pt 153.07pt; /* CR80 Standard ISO/IEC 7810 ID-1: 85.6mm x 53.98mm */
         }
         * {
             box-sizing: border-box;
             -webkit-print-color-adjust: exact;
-        }
-        body {
-            font-family: 'Helvetica', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: #042f2e;
-            color: #ffffff;
-            font-size: 8px;
         }
-        .page {
+        html, body {
+            width: 242.64pt;
+            height: 153.07pt;
+            margin: 0;
+            padding: 0;
+            font-family: 'DejaVu Sans', 'Helvetica', 'Arial', sans-serif;
+            background: #022c22;
+            color: #ffffff;
+            font-size: 7.5px;
+        }
+
+        .card-page {
             width: 242.64pt;
             height: 153.07pt;
             position: relative;
-            padding: 6px;
+            page-break-after: always;
             overflow: hidden;
-            box-sizing: border-box;
+            background: #022c22;
         }
-        .page-break {
-            page-break-before: always;
+        .card-page.last-page {
+            page-break-after: avoid;
         }
 
-        /* Card container styles */
-        .card-box {
-            width: 100%;
-            height: 100%;
-            border-radius: 7px;
-            padding: 6px 7px 5px 7px;
-            position: relative;
-            background: #0f172a;
-            border: 1px solid #10b981;
+        /* Card Frame Container */
+        .card-inner {
+            position: absolute;
+            top: 4pt;
+            left: 4pt;
+            width: 234.64pt;
+            height: 145.07pt;
+            border-radius: 6pt;
+            overflow: hidden;
+            border: 1.2pt solid #10b981;
+            background: #064e3b;
         }
 
         /* Themes */
-        .theme-emerald .card-box {
-            background: #091a18;
-            border: 1px solid #10b981;
+        .theme-emerald .card-page { background: #022c22; }
+        .theme-emerald .card-inner {
+            background: #042f2e;
+            border: 1.2pt solid #10b981;
         }
-        .theme-midnight .card-box {
-            background: #090d16;
-            border: 1px solid #d97706;
+        .theme-emerald .accent-text { color: #34d399; }
+        .theme-emerald .highlight-pill { background: #065f46; color: #a7f3d0; border: 0.5pt solid #10b981; }
+        .theme-emerald .number-pill { background: #022c22; color: #f59e0b; border: 0.5pt solid #f59e0b; }
+
+        .theme-midnight .card-page { background: #030712; }
+        .theme-midnight .card-inner {
+            background: #0b0f19;
+            border: 1.2pt solid #f59e0b;
         }
-        .theme-cyan .card-box {
-            background: #051923;
-            border: 1px solid #06b6d4;
+        .theme-midnight .accent-text { color: #fbbf24; }
+        .theme-midnight .highlight-pill { background: #451a03; color: #fde68a; border: 0.5pt solid #f59e0b; }
+        .theme-midnight .number-pill { background: #030712; color: #fbbf24; border: 0.5pt solid #d97706; }
+
+        .theme-cyan .card-page { background: #031926; }
+        .theme-cyan .card-inner {
+            background: #052033;
+            border: 1.2pt solid #06b6d4;
         }
-        .theme-clean .card-box {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
+        .theme-cyan .accent-text { color: #38bdf8; }
+        .theme-cyan .highlight-pill { background: #164e63; color: #cffafe; border: 0.5pt solid #06b6d4; }
+        .theme-cyan .number-pill { background: #031926; color: #38bdf8; border: 0.5pt solid #0284c7; }
+
+        .theme-clean .card-page { background: #e2e8f0; }
+        .theme-clean .card-inner {
+            background: #ffffff;
+            border: 1.2pt solid #059669;
             color: #0f172a;
         }
+        .theme-clean .accent-text { color: #047857; }
+        .theme-clean .highlight-pill { background: #d1fae5; color: #065f46; border: 0.5pt solid #059669; }
+        .theme-clean .number-pill { background: #f0fdf4; color: #047857; border: 0.5pt solid #059669; }
 
-        /* Header */
-        .header-table {
+        /* Security Guilloche Watermark Lines */
+        .watermark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            padding-bottom: 3px;
-            margin-bottom: 4px;
-        }
-        .theme-clean .header-table {
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .brand-title {
-            font-size: 10px;
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            line-height: 1;
-        }
-        .theme-clean .brand-title {
-            color: #064e3b;
-        }
-        .brand-sub {
-            font-size: 5px;
-            color: #34d399;
-            text-transform: uppercase;
-            font-weight: bold;
-            line-height: 1.1;
-            letter-spacing: 0.3px;
-        }
-        .theme-midnight .brand-sub {
-            color: #fbbf24;
-        }
-        .theme-cyan .brand-sub {
-            color: #38bdf8;
-        }
-        .theme-clean .brand-sub {
-            color: #059669;
-        }
-        .tier-badge {
-            font-size: 5.5px;
-            background: #065f46;
-            color: #a7f3d0;
-            padding: 1.5px 4px;
-            border-radius: 3px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            display: inline-block;
-            white-space: nowrap;
-        }
-        .theme-midnight .tier-badge {
-            background: #78350f;
-            color: #fde68a;
-        }
-        .theme-cyan .tier-badge {
-            background: #155e75;
-            color: #cffafe;
-        }
-        .theme-clean .tier-badge {
-            background: #e0f2fe;
-            color: #0369a1;
+            height: 100%;
+            opacity: 0.08;
+            pointer-events: none;
         }
 
-        /* Body layout */
-        .content-table {
+        /* Tanzania Flag Mini Banner */
+        .tz-banner {
+            height: 2.5pt;
             width: 100%;
-        }
-        .photo-cell {
-            width: 44px;
-            vertical-align: top;
-        }
-        .photo-frame {
-            width: 42px;
-            height: 52px;
-            border-radius: 4px;
-            border: 1.2px solid #10b981;
             overflow: hidden;
-            background: #1e293b;
-            text-align: center;
+            font-size: 0;
+            line-height: 0;
         }
-        .theme-midnight .photo-frame {
-            border-color: #f59e0b;
+        .tz-green { display: inline-block; width: 33.3%; height: 2.5pt; background: #1eb53a; }
+        .tz-yellow { display: inline-block; width: 33.4%; height: 2.5pt; background: #fcd116; }
+        .tz-blue { display: inline-block; width: 33.3%; height: 2.5pt; background: #00a3dd; }
+
+        /* Header Bar */
+        .card-header-table {
+            width: 100%;
+            padding: 3pt 6pt 2pt 6pt;
+            border-bottom: 0.6pt solid rgba(255,255,255,0.15);
         }
-        .theme-cyan .photo-frame {
-            border-color: #06b6d4;
+        .theme-clean .card-header-table {
+            border-bottom: 0.6pt solid #e2e8f0;
         }
-        .theme-clean .photo-frame {
-            border-color: #059669;
-            background: #e2e8f0;
-        }
-        .photo-img {
-            width: 42px;
-            height: 52px;
-            object-fit: cover;
+        .org-logo {
+            height: 18pt;
+            max-width: 32pt;
             display: block;
         }
-        .photo-placeholder {
-            line-height: 52px;
-            font-size: 6.5px;
+        .org-badge {
+            width: 18pt;
+            height: 18pt;
+            line-height: 18pt;
+            background: #10b981;
+            color: #ffffff;
+            text-align: center;
+            font-weight: 900;
+            font-size: 8pt;
+            border-radius: 3pt;
+        }
+        .org-name-primary {
+            font-size: 9.5pt;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0.6pt;
+            color: #ffffff;
+        }
+        .theme-clean .org-name-primary {
+            color: #064e3b;
+        }
+        .org-name-sub {
+            font-size: 4.1pt;
             font-weight: bold;
-            color: #94a3b8;
+            line-height: 1.15;
+            text-transform: uppercase;
+            letter-spacing: 0.2pt;
+        }
+        .member-tier-badge {
+            display: inline-block;
+            padding: 1.5pt 4.5pt;
+            border-radius: 2.5pt;
+            font-size: 5.5pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.4pt;
+            white-space: nowrap;
         }
 
-        .info-cell {
-            padding-left: 6px;
-            padding-right: 2px;
+        /* Body Section */
+        .card-body-table {
+            width: 100%;
+            padding: 3.5pt 6pt 2pt 6pt;
+        }
+
+        /* Passport Photo Column */
+        .photo-column {
+            width: 48pt;
             vertical-align: top;
         }
-        .info-label {
-            font-size: 4.8px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 0.5px;
-            line-height: 1;
+        .photo-box {
+            width: 46pt;
+            height: 56pt;
+            border-radius: 3pt;
+            border: 1pt solid #10b981;
+            overflow: hidden;
+            background: #0f172a;
+            position: relative;
         }
-        .theme-clean .info-label {
+        .theme-midnight .photo-box { border-color: #f59e0b; }
+        .theme-cyan .photo-box { border-color: #06b6d4; }
+        .theme-clean .photo-box { border-color: #059669; background: #e2e8f0; }
+
+        .photo-image {
+            width: 46pt;
+            height: 56pt;
+            display: block;
+        }
+        .photo-placeholder-box {
+            width: 46pt;
+            height: 56pt;
+            text-align: center;
+            line-height: 56pt;
+            font-size: 6pt;
+            font-weight: bold;
+            color: #94a3b8;
+            background: #1e293b;
+        }
+
+        /* Member Info Column */
+        .info-column {
+            padding-left: 6pt;
+            padding-right: 4pt;
+            vertical-align: top;
+        }
+        .label-micro {
+            font-size: 4.2pt;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 0.3pt;
+            line-height: 1;
+            margin-bottom: 0.5pt;
+        }
+        .theme-clean .label-micro {
             color: #64748b;
         }
-        .info-name {
-            font-size: 8px;
+        .value-name {
+            font-size: 8.5pt;
             font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 2px;
             line-height: 1.1;
+            color: #ffffff;
+            margin-bottom: 2pt;
+            text-transform: uppercase;
+            letter-spacing: 0.2pt;
         }
-        .theme-clean .info-name {
+        .theme-clean .value-name {
             color: #0f172a;
         }
-        .info-number {
-            font-size: 7px;
-            font-weight: bold;
+        .value-number-badge {
+            display: inline-block;
             font-family: 'Courier', monospace;
-            color: #34d399;
-            margin-bottom: 2px;
-            line-height: 1;
+            font-size: 7.2pt;
+            font-weight: bold;
+            letter-spacing: 0.4pt;
+            padding: 1pt 3pt;
+            border-radius: 2pt;
+            margin-bottom: 2.5pt;
         }
-        .theme-midnight .info-number {
-            color: #fbbf24;
-        }
-        .theme-cyan .info-number {
-            color: #38bdf8;
-        }
-        .theme-clean .info-number {
-            color: #059669;
-        }
-        .info-sub {
-            font-size: 5.5px;
+        .value-meta {
+            font-size: 5.5pt;
+            line-height: 1.2;
             color: #cbd5e1;
-            line-height: 1.1;
+            margin-bottom: 1.5pt;
         }
-        .theme-clean .info-sub {
+        .theme-clean .value-meta {
             color: #334155;
         }
 
-        .qr-cell {
-            width: 38px;
+        /* QR Column */
+        .qr-column {
+            width: 42pt;
+            vertical-align: top;
             text-align: right;
-            vertical-align: bottom;
         }
-        .qr-frame {
-            width: 36px;
-            height: 36px;
+        .qr-wrapper {
             background: #ffffff;
-            padding: 1.5px;
-            border-radius: 3px;
+            padding: 2pt;
+            border-radius: 3pt;
             display: inline-block;
+            border: 0.5pt solid #cbd5e1;
         }
-        .qr-img {
-            width: 33px;
-            height: 33px;
+        .qr-image {
+            width: 38pt;
+            height: 38pt;
             display: block;
         }
-
-        /* Footer */
-        .footer-bar {
-            margin-top: 3px;
-            padding-top: 2px;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            font-size: 4.8px;
+        .qr-caption {
+            font-size: 4.2pt;
             font-weight: bold;
-            color: #fbbf24;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
+            color: #94a3b8;
             text-align: center;
+            margin-top: 1.5pt;
+            letter-spacing: 0.3pt;
+            text-transform: uppercase;
         }
-        .theme-clean .footer-bar {
-            border-top: 1px solid #e2e8f0;
+        .theme-clean .qr-caption {
+            color: #64748b;
+        }
+
+        /* Micro Security Strip */
+        .micro-security-strip {
+            position: absolute;
+            bottom: 13pt;
+            left: 0;
+            right: 0;
+            height: 5pt;
+            line-height: 5pt;
+            background: rgba(0,0,0,0.35);
+            font-size: 3.2pt;
+            text-transform: uppercase;
+            letter-spacing: 0.6pt;
+            text-align: center;
+            color: #6ee7b7;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .theme-midnight .micro-security-strip { color: #fde68a; }
+        .theme-cyan .micro-security-strip { color: #7dd3fc; }
+        .theme-clean .micro-security-strip { background: #e2e8f0; color: #047857; }
+
+        /* Card Footer */
+        .card-footer-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 12pt;
+            line-height: 12pt;
+            background: rgba(0,0,0,0.6);
+            border-top: 0.5pt solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 4.8pt;
+            font-weight: bold;
+            color: #f59e0b;
+            letter-spacing: 0.5pt;
+            text-transform: uppercase;
+        }
+        .theme-clean .card-footer-bar {
+            background: #f1f5f9;
+            border-top: 0.5pt solid #cbd5e1;
             color: #047857;
         }
 
-        /* Back side specific */
+        /* ==================== BACK SIDE STYLES ==================== */
         .magnetic-stripe {
-            height: 14px;
+            height: 14pt;
             background: #020617;
-            margin: -6px -7px 5px -7px;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
+            border-bottom: 0.6pt solid rgba(255,255,255,0.12);
             position: relative;
         }
-        .stripe-text {
-            color: #94a3b8;
-            font-size: 4.5px;
-            line-height: 14px;
-            padding-left: 8px;
-            font-family: 'Courier', monospace;
-            letter-spacing: 0.5px;
-        }
-        .terms-box {
-            font-size: 4.5px;
-            line-height: 1.25;
-            color: #94a3b8;
-            margin-bottom: 4px;
-            text-align: justify;
-        }
-        .theme-clean .terms-box {
-            color: #475569;
-        }
-        .back-grid {
+        .stripe-content-table {
             width: 100%;
+            height: 14pt;
+            border-collapse: collapse;
         }
-        .signature-box {
-            border-bottom: 1px solid #64748b;
-            padding-bottom: 2px;
-            margin-bottom: 2px;
+        .stripe-content-table td {
+            padding: 0 6pt;
+        }
+        .stripe-serial {
+            font-family: 'Courier', monospace;
+            font-size: 5.5pt;
+            font-weight: bold;
+            color: #cbd5e1;
+            letter-spacing: 0.4pt;
+        }
+        .stripe-tag {
+            font-size: 4.8pt;
+            font-weight: bold;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 0.4pt;
+            text-align: right;
+        }
+
+        .back-body-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .back-body-cell {
+            padding: 4pt 6pt 2pt 6pt;
+            vertical-align: top;
+        }
+        .terms-paragraph {
+            font-size: 4.5pt;
+            line-height: 1.3;
+            color: #cbd5e1;
+            margin-bottom: 4.5pt;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        .theme-clean .terms-paragraph {
+            color: #334155;
+        }
+
+        .back-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 3.5pt;
+        }
+        .signatory-box {
+            border-bottom: 0.5pt solid #475569;
+            padding-bottom: 1pt;
+            margin-bottom: 1.5pt;
             text-align: center;
         }
-        .sig-name {
-            font-size: 5px;
+        .signature-font {
+            font-family: 'DejaVu Sans', cursive, sans-serif;
+            font-style: italic;
+            font-size: 9pt;
+            font-weight: bold;
+            line-height: 1;
+            color: #34d399;
+        }
+        .theme-midnight .signature-font { color: #fbbf24; }
+        .theme-cyan .signature-font { color: #38bdf8; }
+        .theme-clean .signature-font { color: #047857; }
+
+        .signatory-name {
+            font-size: 5.5pt;
             font-weight: bold;
             color: #ffffff;
+            text-align: center;
+            line-height: 1.1;
         }
-        .theme-clean .sig-name {
-            color: #0f172a;
-        }
-        .sig-title {
-            font-size: 4.2px;
+        .theme-clean .signatory-name { color: #0f172a; }
+
+        .signatory-title {
+            font-size: 4.2pt;
             color: #94a3b8;
+            text-align: center;
+            line-height: 1;
         }
-        .helpline-box {
-            background: rgba(255,255,255,0.06);
-            border-radius: 3px;
-            padding: 3px 4px;
-            font-size: 4.5px;
+        .theme-clean .signatory-title { color: #64748b; }
+
+        .helpline-container {
+            background: rgba(0,0,0,0.35);
+            border-radius: 3pt;
+            padding: 3.5pt 4.5pt;
+            border: 0.5pt solid rgba(255,255,255,0.1);
+            font-size: 4.5pt;
+            line-height: 1.25;
             color: #e2e8f0;
-            line-height: 1.2;
         }
-        .theme-clean .helpline-box {
-            background: #e2e8f0;
+        .theme-clean .helpline-container {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
             color: #1e293b;
         }
-        .property-notice {
-            font-size: 4px;
-            color: #64748b;
+
+        /* Barcode Representation */
+        .barcode-box {
             text-align: center;
-            margin-top: 3px;
+            margin-top: 3pt;
+            margin-bottom: 2pt;
+        }
+        .barcode-bars {
+            height: 8.5pt;
+            letter-spacing: 0.8pt;
+            font-family: 'Courier', monospace;
+            font-size: 6.8pt;
+            font-weight: bold;
+            color: #94a3b8;
+            line-height: 1;
+        }
+        .barcode-number {
+            font-family: 'Courier', monospace;
+            font-size: 4.2pt;
+            color: #cbd5e1;
+            letter-spacing: 0.6pt;
+            line-height: 1;
+            margin-top: 1pt;
+        }
+        .theme-clean .barcode-number { color: #64748b; }
+
+        .back-micro-strip {
+            position: absolute;
+            bottom: 12pt;
+            left: 0;
+            right: 0;
+            height: 5.5pt;
+            line-height: 5.5pt;
+            background: rgba(0,0,0,0.35);
+            font-size: 3.2pt;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.6pt;
+            text-align: center;
+            color: #6ee7b7;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .theme-midnight .back-micro-strip { color: #fde68a; }
+        .theme-cyan .back-micro-strip { color: #7dd3fc; }
+        .theme-clean .back-micro-strip { background: #e2e8f0; color: #047857; }
+
+        .return-notice-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 12pt;
+            line-height: 12pt;
+            background: rgba(0,0,0,0.6);
+            border-top: 0.5pt solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 4.2pt;
+            font-weight: bold;
+            color: #f59e0b;
+            letter-spacing: 0.4pt;
+            text-transform: uppercase;
+        }
+        .theme-clean .return-notice-bar {
+            background: #f1f5f9;
+            border-top: 0.5pt solid #cbd5e1;
+            color: #047857;
         }
     </style>
 </head>
 <body class="theme-{{ $theme ?? 'emerald' }}">
-    
-    <!-- ==================== FRONT SIDE ==================== -->
-    <div class="page">
-        <div class="card-box">
+
+    <!-- ==================== FRONT SIDE (PAGE 1) ==================== -->
+    <div class="card-page {{ empty($showBack) ? 'last-page' : '' }}">
+        <div class="card-inner">
+            <!-- Tanzanian National Flag Stripe -->
+            <div class="tz-banner">
+                <span class="tz-green"></span><span class="tz-yellow"></span><span class="tz-blue"></span>
+            </div>
+
             <!-- Header -->
-            <table class="header-table" cellpadding="0" cellspacing="0">
+            <table class="card-header-table" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td style="vertical-align: middle;">
-                        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                    <td style="vertical-align: middle; width: 70%;">
+                        <table cellpadding="0" cellspacing="0">
                             <tr>
                                 @if(!empty($logoDataUri))
-                                    <td style="vertical-align: middle; padding-right: 4px;">
-                                        <img src="{{ $logoDataUri }}" style="height: 15px; max-width: 32px; object-fit: contain; display: block;" alt="Logo">
+                                    <td style="vertical-align: middle; padding-right: 4pt;">
+                                        <img src="{{ $logoDataUri }}" class="org-logo" alt="Logo">
+                                    </td>
+                                @else
+                                    <td style="vertical-align: middle; padding-right: 4pt;">
+                                        <div class="org-badge">TEV</div>
                                     </td>
                                 @endif
                                 <td style="vertical-align: middle;">
-                                    <div class="brand-title">TEVDA</div>
-                                    <div class="brand-sub">Tanzania EV Drivers Association</div>
+                                    <div class="org-name-primary">TEVDA</div>
+                                    <div class="org-name-sub accent-text">Tanzania Electric Vehicles Drivers Association</div>
                                 </td>
                             </tr>
                         </table>
                     </td>
-                    <td style="text-align: right; vertical-align: middle;">
-                        <span class="tier-badge">{{ $member->category->name }}</span>
+                    <td style="text-align: right; vertical-align: middle; width: 30%;">
+                        <span class="member-tier-badge highlight-pill">
+                            {{ $member->category->name }}
+                        </span>
                     </td>
                 </tr>
             </table>
 
-            <!-- Content -->
-            <table class="content-table" cellpadding="0" cellspacing="0">
+            <!-- Body Details -->
+            <table class="card-body-table" cellpadding="0" cellspacing="0">
                 <tr>
-                    <!-- Photo -->
-                    <td class="photo-cell">
-                        <div class="photo-frame">
+                    <!-- Member Passport Photo -->
+                    <td class="photo-column">
+                        <div class="photo-box">
                             @if(!empty($photoDataUri))
-                                <img src="{{ $photoDataUri }}" class="photo-img" alt="{{ $member->full_name }}">
+                                <img src="{{ $photoDataUri }}" class="photo-image" alt="{{ $member->full_name }}">
                             @else
-                                <div class="photo-placeholder">PHOTO</div>
+                                <div class="photo-placeholder-box">PHOTO</div>
                             @endif
                         </div>
                     </td>
 
-                    <!-- Member Details -->
-                    <td class="info-cell">
-                        <div class="info-label">Member Name</div>
-                        <div class="info-name">{{ $member->full_name }}</div>
+                    <!-- Member Info -->
+                    <td class="info-column">
+                        <div class="label-micro">Member Name / Jina</div>
+                        <div class="value-name">{{ $member->full_name }}</div>
 
-                        <div class="info-label">Membership Number</div>
-                        <div class="info-number">{{ $member->membership_number }}</div>
+                        <div class="label-micro">Member ID / Namba ya Utambulisho</div>
+                        <div>
+                            <span class="value-number-badge number-pill">{{ $member->membership_number }}</span>
+                        </div>
 
-                        <div class="info-label">Region / Territory</div>
-                        <div class="info-sub">
-                            {{ $member->region?->name ?? 'Tanzania' }}
+                        <div class="label-micro">Region & Territory</div>
+                        <div class="value-meta">
+                            <strong>{{ $member->region?->name ?? 'Tanzania' }}</strong>
                             @if($member->district) • {{ $member->district->name }} @endif
                         </div>
 
-                        <div style="margin-top: 2px;">
-                            <span class="info-label" style="display: inline;">Valid Thru: </span>
-                            <span class="info-sub" style="font-weight: bold; color: #fbbf24;">
-                                {{ $member->expiry_date ? $member->expiry_date->format('m/Y') : 'ACTIVE' }}
+                        <div class="label-micro">Validity / Hali</div>
+                        <div class="value-meta">
+                            <span style="color: #f59e0b; font-weight: bold;">
+                                {{ $member->expiry_date ? 'EXP: ' . $member->expiry_date->format('m/Y') : 'ACTIVE' }}
                             </span>
+                            <span class="accent-text" style="font-weight: bold; margin-left: 3pt;">• VERIFIED</span>
                         </div>
                     </td>
 
-                    <!-- QR Code -->
-                    <td class="qr-cell">
-                        <div class="qr-frame">
-                            <img src="{{ $qrCodeUri }}" class="qr-img" alt="QR">
+                    <!-- Verification QR Code -->
+                    <td class="qr-column">
+                        <div class="qr-wrapper">
+                            <img src="{{ $qrCodeUri }}" class="qr-image" alt="QR">
                         </div>
-                        <div style="font-size: 4px; color: #94a3b8; text-align: center; margin-top: 1px;">SCAN TO VERIFY</div>
+                        <div class="qr-caption">Scan to Verify</div>
                     </td>
                 </tr>
             </table>
 
+            <!-- Micro Security Strip -->
+            <div class="micro-security-strip">
+                • TANZANIA ELECTRIC VEHICLES DRIVERS ASSOCIATION • OFFICIAL SECURE SMART ID • TEVDA CERTIFIED •
+            </div>
+
             <!-- Footer Motto -->
-            <div class="footer-bar">
+            <div class="card-footer-bar">
                 SMART DRIVERS SMART MOBILITY • WWW.TEVDA.OR.TZ
             </div>
         </div>
     </div>
 
-    <!-- ==================== BACK SIDE ==================== -->
+    <!-- ==================== BACK SIDE (PAGE 2) ==================== -->
     @if(!empty($showBack))
-    <div class="page page-break">
-        <div class="card-box">
-            <!-- Magnetic Stripe Header -->
+    <div class="card-page last-page">
+        <div class="card-inner">
+            <!-- Magnetic Stripe -->
             <div class="magnetic-stripe">
-                <div class="stripe-text">CARD ID: {{ $member->card?->card_number ?? ('CARD-' . $member->membership_number) }}</div>
+                <table class="stripe-content-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="stripe-serial" style="vertical-align: middle; width: 62%;">
+                            CARD ID: {{ $member->card?->card_number ?? ('CARD-' . $member->membership_number) }}
+                        </td>
+                        <td class="stripe-tag" style="vertical-align: middle; width: 38%; text-align: right;">
+                            OFFICIAL SMART BADGE
+                        </td>
+                    </tr>
+                </table>
             </div>
 
-            <!-- Terms & Conditions -->
-            <div class="terms-box">
-                This official identification card certifies that the cardholder is a registered and certified member of TEVDA. 
-                This card is non-transferable and must be presented upon request during official operations, inspections, or association events.
-            </div>
-
-            <!-- Back Info Grid -->
-            <table class="back-grid" cellpadding="0" cellspacing="0">
+            <!-- Back Body Content -->
+            <table class="back-body-table" cellpadding="0" cellspacing="0">
                 <tr>
-                    <!-- Left: Signatory -->
-                    <td style="width: 48%; vertical-align: top; padding-right: 4px;">
-                        <div class="info-label" style="margin-bottom: 2px;">Authorized Signature</div>
-                        <div class="signature-box">
-                            <div style="font-family: 'Brush Script MT', 'Dancing Script', cursive, sans-serif; font-size: 9px; color: #34d399; line-height: 1;">
-                                Charles Mwansasu
-                            </div>
+                    <td class="back-body-cell">
+                        <!-- Legal & Terms -->
+                        <div class="terms-paragraph">
+                            This smart ID card certifies that the cardholder is a registered and compliant member of the Tanzania Electric Vehicles Drivers Association (TEVDA). Card is non-transferable and must be presented upon request during official operations, inspections, or association activities.
                         </div>
-                        <div class="sig-name">Dr. Charles Mwansasu</div>
-                        <div class="sig-title">Founding Chairperson • TEVDA</div>
-                    </td>
 
-                    <!-- Right: Emergency & Contact -->
-                    <td style="width: 52%; vertical-align: top;">
-                        <div class="helpline-box">
-                            <strong style="color: #34d399; font-size: 4.8px;">HEADQUARTERS & HELPLINE</strong><br>
-                            Dar es Salaam, United Republic of Tanzania<br>
-                            Helpline: +255 700 000 000 / 022 200 0000<br>
-                            Email: info@tevda.or.tz • portal.tevda.or.tz
+                        <!-- 2-Column: Signatory on Left, Helpline on Right -->
+                        <table class="back-details-table" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="width: 48%; vertical-align: top; padding-right: 4pt;">
+                                    <div class="label-micro" style="text-align: center; margin-bottom: 1.5pt;">Authorized Signatory</div>
+                                    <div class="signatory-box">
+                                        <span class="signature-font">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
+                                    </div>
+                                    <div class="signatory-name">{{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</div>
+                                    <div class="signatory-title">{{ \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }} • TEVDA</div>
+                                </td>
+
+                                <td style="width: 52%; vertical-align: top; padding-left: 2pt;">
+                                    <div class="helpline-container">
+                                        <strong class="accent-text" style="font-size: 5pt; display: block; margin-bottom: 1pt;">{{ \App\Models\Setting::get('site_short_name', 'TEVDA') }} HEADQUARTERS</strong>
+                                        {{ \App\Models\Setting::get('contact_address', 'Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania') }}<br>
+                                        <strong>Helpline:</strong> {{ \App\Models\Setting::get('contact_phone', '+255 757 700 401') }}<br>
+                                        <strong>Support:</strong> {{ \App\Models\Setting::get('contact_email', 'info@tevda.or.tz') }} • {{ \App\Models\Setting::get('contact_website', 'www.tevda.or.tz') }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Barcode Representation -->
+                        <div class="barcode-box">
+                            <div class="barcode-bars">||| | |||| | ||| |||| | || ||| |||| | || | ||| |||</div>
+                            <div class="barcode-number">
+                                *{{ $member->membership_number }}*
+                            </div>
                         </div>
                     </td>
                 </tr>
             </table>
 
-            <!-- Return Notice -->
-            <div class="property-notice">
-                Property of TEVDA. If found, please return to any TEVDA Regional Office or Police Station.
+            <!-- Micro Security Strip -->
+            <div class="back-micro-strip">
+                • PROPERTY OF TEVDA • ENCRYPTED SMART ID • ISO/IEC 7810 ID-1 •
+            </div>
+
+            <!-- Return Notice Footer Bar -->
+            <div class="return-notice-bar">
+                IF FOUND PLEASE RETURN TO ANY TEVDA OFFICE OR POLICE STATION
             </div>
         </div>
     </div>

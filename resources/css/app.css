@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../views";
+@source "../js";
+@source "../../app";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views";
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
@@ -37,6 +37,17 @@ body {
     color: #0f172a;
     background-color: #f8fafc;
     overflow-x: hidden;
+}
+
+/* Guard against unconstrained SVGs */
+svg {
+    max-width: 100%;
+    flex-shrink: 0;
+}
+
+svg:not([width]):not([class*="w-"]):not([class*="h-"]):not([class*="size-"]):not([class*="max-w-"]) {
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {

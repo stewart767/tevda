@@ -128,97 +128,130 @@
                         title="Click to flip card">
 
                         <!-- FRONT FACE -->
-                        <div class="absolute inset-0 rounded-2xl p-5 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-950 text-white border border-emerald-500/30 shadow-lg"
+                        <div class="absolute inset-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 text-white border border-emerald-500/40 shadow-2xl"
                             style="backface-visibility: hidden; -webkit-backface-visibility: hidden;">
-                            <div class="flex justify-between items-start">
+                            
+                            <!-- National Flag Stripe -->
+                            <div class="h-1 w-full flex -mt-4 sm:-mt-5 -mx-4 sm:-mx-5 mb-2">
+                                <div class="w-1/3 bg-[#1eb53a]"></div>
+                                <div class="w-1/3 bg-[#fcd116]"></div>
+                                <div class="w-1/3 bg-[#00a3dd]"></div>
+                            </div>
+
+                            <!-- Header -->
+                            <div class="flex items-center justify-between pb-2 border-b border-white/10">
                                 <div class="flex items-center gap-2">
                                     @if(\App\Models\Setting::hasCustomLogo())
-                                        <img src="{{ \App\Models\Setting::getLogoUrl() }}" alt="Logo" class="h-8 max-w-[40px] object-contain">
+                                        <img src="{{ \App\Models\Setting::getLogoUrl() }}" alt="Logo" class="h-7 max-w-[36px] object-contain">
                                     @else
-                                        <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white text-xs">TEV</div>
+                                        <div class="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white text-[10px] shadow-xs">TEV</div>
                                     @endif
                                     <div>
-                                        <span class="text-xs font-black tracking-tight block font-heading">TEVDA</span>
-                                        <span class="text-[7px] uppercase tracking-widest text-emerald-400 block font-semibold">Tanzania EV Drivers Association</span>
+                                        <span class="text-xs font-black tracking-tight block font-heading leading-tight">TEVDA</span>
+                                        <span class="text-[6.5px] uppercase font-bold tracking-wider text-emerald-400 block">Tanzania Electric Vehicles Drivers Association</span>
                                     </div>
                                 </div>
-                                <span class="text-[8px] uppercase font-bold tracking-wider bg-emerald-900/80 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-700">
+                                <span class="text-[8px] uppercase font-bold tracking-wider bg-emerald-900/80 text-emerald-300 px-2.5 py-0.5 rounded-md border border-emerald-600 shadow-xs">
                                     {{ $member->category->name }}
                                 </span>
                             </div>
 
+                            <!-- Body -->
                             <div class="grid grid-cols-12 gap-3 items-center my-auto">
-                                <div class="col-span-4">
+                                <div class="col-span-3">
                                     @if ($member->passport_photo_path)
-                                        <img src="{{ asset('storage/' . $member->passport_photo_path) }}" alt="Photo" class="w-16 h-20 sm:w-18 sm:h-22 object-cover rounded-xl border-2 border-emerald-500/50 shadow-xs">
+                                        <img src="{{ asset('storage/' . $member->passport_photo_path) }}" alt="Photo" class="w-14 h-18 sm:w-16 sm:h-20 object-cover rounded-xl border-2 border-emerald-500/60 shadow-md">
                                     @else
-                                        <div class="w-16 h-20 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 text-xs font-bold">
-                                            PHOTO
+                                        <div class="w-14 h-18 sm:w-16 sm:h-20 rounded-xl bg-slate-800/80 border border-slate-700 flex flex-col items-center justify-center text-slate-400 text-[8px] font-bold">
+                                            <svg class="w-5 h-5 mb-0.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                            <span>PHOTO</span>
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col-span-5 space-y-1 text-[11px]">
+                                <div class="col-span-6 space-y-1">
                                     <div>
-                                        <span class="text-[8px] text-slate-400 block uppercase font-semibold">Member Name</span>
-                                        <strong class="text-white block font-bold text-xs truncate">{{ $member->full_name }}</strong>
+                                        <span class="text-[7.5px] text-slate-400 block uppercase font-semibold leading-none">Member Name / Jina</span>
+                                        <strong class="text-white block font-black text-xs sm:text-sm truncate tracking-tight">{{ $member->full_name }}</strong>
                                     </div>
                                     <div>
-                                        <span class="text-[8px] text-slate-400 block uppercase font-semibold">Member Number</span>
-                                        <span class="text-emerald-400 font-mono font-bold block">{{ $member->membership_number ?? 'PENDING' }}</span>
+                                        <span class="text-[7.5px] text-slate-400 block uppercase font-semibold leading-none">Member ID / Namba</span>
+                                        <span class="text-amber-400 font-mono font-bold text-xs inline-block px-1.5 py-0.5 rounded bg-emerald-950 border border-amber-500/60">{{ $member->membership_number ?? 'PENDING' }}</span>
                                     </div>
                                     <div>
-                                        <span class="text-[8px] text-slate-400 block uppercase font-semibold">Region / Valid</span>
-                                        <span class="text-slate-200 font-semibold text-[10px]">{{ $member->region?->name ?? 'Tanzania' }} • <strong class="text-amber-400">{{ $member->expiry_date ? $member->expiry_date->format('m/Y') : 'ACTIVE' }}</strong></span>
+                                        <span class="text-[7.5px] text-slate-400 block uppercase font-semibold leading-none">Region & Territory</span>
+                                        <span class="text-slate-200 font-semibold text-[10px] block">{{ $member->region?->name ?? 'Tanzania' }} @if($member->district) • {{ $member->district->name }} @endif</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[7.5px] text-slate-400 block uppercase font-semibold leading-none">Validity</span>
+                                        <span class="text-[9.5px] font-bold">
+                                            <span class="text-amber-400">{{ $member->expiry_date ? 'EXP: ' . $member->expiry_date->format('m/Y') : 'ACTIVE' }}</span>
+                                            <span class="text-emerald-400 ml-1">• VERIFIED</span>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-span-3 flex flex-col items-end">
                                     @if (!empty($qrCodeUri))
-                                        <div class="bg-white p-1 rounded-md shadow-xs">
-                                            <img src="{{ $qrCodeUri }}" alt="QR" class="w-10 h-10">
+                                        <div class="bg-white p-1 rounded-xl shadow-md border border-slate-200">
+                                            <img src="{{ $qrCodeUri }}" alt="QR" class="w-11 h-11 sm:w-12 sm:h-12">
                                         </div>
-                                        <span class="text-[6px] text-slate-400 uppercase mt-0.5">VERIFIED</span>
+                                        <span class="text-[6px] text-slate-400 uppercase font-bold tracking-wider mt-1">Scan to Verify</span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[8px]">
-                                <span class="tracking-wider text-emerald-400 font-bold uppercase">SMART DRIVERS SMART MOBILITY</span>
-                                <span class="text-slate-400 uppercase font-semibold">WWW.TEVDA.OR.TZ</span>
+                            <!-- Micro Security Strip -->
+                            <div class="text-[6px] text-center uppercase tracking-widest text-emerald-400/80 font-mono py-0.5 bg-black/30 -mx-4 sm:-mx-5">
+                                • TANZANIA ELECTRIC VEHICLES DRIVERS ASSOCIATION • OFFICIAL SECURE SMART ID • TEVDA CERTIFIED •
+                            </div>
+
+                            <div class="pt-1.5 border-t border-white/10 flex justify-between items-center text-[7.5px]">
+                                <span class="tracking-wider text-amber-400 font-bold uppercase">SMART DRIVERS SMART MOBILITY</span>
+                                <span class="text-slate-400 uppercase font-bold">WWW.TEVDA.OR.TZ</span>
                             </div>
                         </div>
 
                         <!-- BACK FACE -->
-                        <div class="absolute inset-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white border border-emerald-500/30 shadow-lg"
+                        <div class="absolute inset-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white border border-emerald-500/40 shadow-2xl"
                             style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg);">
-                            <div class="h-6 bg-slate-950 -mx-5 -mt-5 px-5 flex items-center justify-between border-b border-white/5">
-                                <span class="font-mono text-[8px] text-slate-400 tracking-wider">CARD-{{ $member->membership_number }}</span>
-                                <span class="text-[7px] text-emerald-400 font-bold uppercase">OFFICIAL TEVDA BADGE</span>
+                            <div class="h-7 bg-slate-950 -mx-5 -mt-5 px-5 flex items-center justify-between border-b border-white/10">
+                                <span class="font-mono text-[8px] text-slate-300 font-bold tracking-wider">CARD-{{ $member->membership_number }}</span>
+                                <span class="text-[7px] text-emerald-400 font-bold uppercase tracking-wider">OFFICIAL SMART BADGE</span>
                             </div>
 
-                            <div class="text-[8px] leading-tight text-slate-400 text-justify my-1">
-                                This official card certifies that the holder is a verified member of TEVDA. Non-transferable and must be presented upon official request.
+                            <div class="text-[7.5px] leading-relaxed text-slate-400 text-left my-1">
+                                This official smart identification card certifies that the cardholder is a registered and compliant member of the Tanzania Electric Vehicles Drivers Association (TEVDA). Card is non-transferable and must be presented upon request during official operations.
                             </div>
 
                             <div class="grid grid-cols-2 gap-3 items-end">
                                 <div class="space-y-0.5">
-                                    <span class="text-[7px] uppercase text-slate-400 block">Authorized Signature</span>
+                                    <span class="text-[6.5px] uppercase text-slate-400 block font-semibold">Authorized Signatory</span>
                                     <div class="border-b border-slate-600 pb-0.5">
-                                        <span class="font-serif italic text-xs text-emerald-400">Charles Mwansasu</span>
+                                        <span class="font-serif italic text-sm text-emerald-400">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
                                     </div>
-                                    <span class="text-[7.5px] font-bold block text-white">Dr. Charles Mwansasu</span>
-                                    <span class="text-[6.5px] text-slate-400 block">Chairperson • TEVDA</span>
+                                    <span class="text-[7.5px] font-bold block text-white">{{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</span>
+                                    <span class="text-[6.5px] text-slate-400 block">{{ \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }} • TEVDA</span>
                                 </div>
 
-                                <div class="p-2 rounded-xl bg-slate-900/90 text-[7.5px] leading-tight space-y-0.5 border border-white/5 text-slate-300">
-                                    <strong class="text-emerald-400 block font-bold text-[8px]">TEVDA HELPLINE</strong>
-                                    <p>Dar es Salaam, Tanzania</p>
-                                    <p class="font-mono">+255 700 000 000</p>
-                                    <p>info@tevda.or.tz</p>
+                                <div class="p-2 rounded-xl bg-slate-900/90 text-[7px] leading-tight space-y-0.5 border border-white/5 text-slate-300">
+                                    <strong class="text-emerald-400 block font-bold text-[7.5px]">{{ \App\Models\Setting::get('site_short_name', 'TEVDA') }} HEADQUARTERS</strong>
+                                    <p>{{ \App\Models\Setting::get('contact_address', 'Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania') }}</p>
+                                    <p class="font-mono font-bold">Helpline: {{ \App\Models\Setting::get('contact_phone', '+255 757 700 401') }}</p>
+                                    <p>Support: {{ \App\Models\Setting::get('contact_email', 'info@tevda.or.tz') }} • {{ \App\Models\Setting::get('contact_website', 'www.tevda.or.tz') }}</p>
                                 </div>
                             </div>
 
-                            <div class="text-[7px] text-center text-slate-500 uppercase tracking-wider pt-1 border-t border-white/5">
-                                Property of TEVDA. If found, return to nearest TEVDA branch.
+                            <!-- Barcode -->
+                            <div class="text-center font-mono text-[8px] text-slate-400 tracking-widest py-0.5">
+                                ||| | |||| | ||| |||| | || ||| |||| | || | |||
+                            </div>
+
+                            <!-- Micro Security Strip -->
+                            <div class="text-[6px] text-center uppercase tracking-widest text-emerald-400/80 font-mono py-0.5 bg-black/30 -mx-4 sm:-mx-5">
+                                • PROPERTY OF TEVDA • ENCRYPTED SMART ID • ISO/IEC 7810 ID-1 •
+                            </div>
+
+                            <div class="text-[6.5px] text-center text-amber-400 font-bold uppercase tracking-wider pt-1 border-t border-white/5">
+                                IF FOUND PLEASE RETURN TO ANY TEVDA OFFICE OR POLICE STATION
                             </div>
                         </div>
 

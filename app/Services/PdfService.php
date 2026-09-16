@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Invoice;
 use App\Models\Receipt;
 use App\Models\Setting;
+use App\Models\IdCardTemplate;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 
@@ -99,6 +100,7 @@ class PdfService
 
     /**
      * Generate PDF for a Member ID Card (CR80 standard dual-sided or single-sided).
+     * Automatically applies custom uploaded templates if available.
      */
     public static function generateMembershipCardPdf(Member $member, array $options = [])
     {
@@ -119,8 +121,40 @@ class PdfService
             }
         }
 
-        $theme = $options['theme'] ?? 'emerald';
+        $theme = $options['theme'] ?? ($member->card?->card_data['theme'] ?? 'emerald');
         $showBack = $options['show_back'] ?? true;
+
+        // Resolve ID Card Template (specified in options, attached to card, or default active template)
+        $template = null;
+        if (!empty($options['template']) && $options['template'] instanceof IdCardTemplate) {
+            $template = $options['template'];
+        } elseif (!empty($options['template_id'])) {
+            $template = IdCardTemplate::find($options['template_id']);
+        } elseif ($member->card && $member->card->template_id) {
+            $template = $member->card->template;
+        } else {
+            $template = IdCardTemplate::where('is_default', true)->where('is_active', true)->first();
+        }
+
+        // If a template with uploaded backgrounds or custom placeholders is resolved, render custom template
+        if ($template && ($template->front_background_image_path || $template->back_background_image_path || !empty($template->placeholders_config))) {
+            $frontBackgroundDataUri = $template->getFrontBackgroundImageDataUri();
+            $backBackgroundDataUri = $template->getBackBackgroundImageDataUri();
+
+            $pdf = Pdf::loadView('pdf.membership_card_custom', [
+                'member' => $member,
+                'template' => $template,
+                'verifyUrl' => $verifyUrl,
+                'qrCodeUri' => $qrCodeUri,
+                'logoDataUri' => $logoDataUri,
+                'photoDataUri' => $photoDataUri,
+                'frontBackgroundDataUri' => $frontBackgroundDataUri,
+                'backBackgroundDataUri' => $backBackgroundDataUri,
+                'showBack' => $showBack,
+            ])->setPaper([0, 0, 242.64, 153.07], 'landscape');
+
+            return $pdf;
+        }
 
         $pdf = Pdf::loadView('pdf.membership_card', [
             'member' => $member,
@@ -130,7 +164,60 @@ class PdfService
             'photoDataUri' => $photoDataUri,
             'theme' => $theme,
             'showBack' => $showBack,
-        ])->setPaper([0, 0, 242.64, 153.07], 'portrait'); // CR80 dimensions in pts: 85.6mm (242.64pt) x 53.98mm (153.07pt)
+        ])->setPaper([0, 0, 242.64, 153.07], 'landscape'); // CR80 dimensions in pts: 85.6mm (242.64pt) x 53.98mm (153.07pt)
+
+        return $pdf;
+    }
+
+    /**
+     * Generate a Sample Preview PDF for an ID Card Template with dummy/sample member data.
+     */
+    public static function generateSampleIdCardTemplatePdf(IdCardTemplate $template)
+    {
+        $sampleNumber = 'TEVDA-SAMPLE-' . date('Y') . '-0019';
+        $verifyUrl = url('/verify/membership/' . $sampleNumber);
+        $qrCodeUri = QrCodeService::dataUri($verifyUrl, 140);
+        $logoDataUri = Setting::getLogoDataUri();
+        $frontBackgroundDataUri = $template->getFrontBackgroundImageDataUri();
+        $backBackgroundDataUri = $template->getBackBackgroundImageDataUri();
+
+        // Sample member object
+        $sampleMember = Member::where('membership_number', 'TEVDA-2026-00019')->first() ?? Member::first();
+        if (!$sampleMember) {
+            $sampleMember = new Member([
+                'full_name' => 'Stewart Amri',
+                'membership_number' => $sampleNumber,
+                'phone' => '+255 700 000 000',
+                'email' => 'sample@tevda.or.tz',
+                'expiry_date' => now()->addYear(),
+            ]);
+            $sampleMember->setRelation('category', new \App\Models\MembershipCategory(['name' => 'Full Member']));
+            $sampleMember->setRelation('region', new \App\Models\Region(['name' => 'Dar es Salaam']));
+        }
+
+        $photoDataUri = null;
+        if ($sampleMember->passport_photo_path) {
+            $photoPath = Storage::disk('public')->path($sampleMember->passport_photo_path);
+            if (!file_exists($photoPath)) {
+                $photoPath = public_path('storage/' . $sampleMember->passport_photo_path);
+            }
+            if (file_exists($photoPath)) {
+                $mime = mime_content_type($photoPath) ?: 'image/jpeg';
+                $photoDataUri = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($photoPath));
+            }
+        }
+
+        $pdf = Pdf::loadView('pdf.membership_card_custom', [
+            'member' => $sampleMember,
+            'template' => $template,
+            'verifyUrl' => $verifyUrl,
+            'qrCodeUri' => $qrCodeUri,
+            'logoDataUri' => $logoDataUri,
+            'photoDataUri' => $photoDataUri,
+            'frontBackgroundDataUri' => $frontBackgroundDataUri,
+            'backBackgroundDataUri' => $backBackgroundDataUri,
+            'showBack' => true,
+        ])->setPaper([0, 0, 242.64, 153.07], 'landscape');
 
         return $pdf;
     }

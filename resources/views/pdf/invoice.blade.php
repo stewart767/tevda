@@ -85,9 +85,9 @@
                 @else
                     <div class="title">TEVDA</div>
                 @endif
-                <div style="font-size: 11px; font-weight: bold; color: #1e293b;">Tanzania Electric Vehicle Drivers Association</div>
-                <div style="font-size: 10px; color: #64748b;">Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania</div>
-                <div style="font-size: 10px; color: #64748b;">Telephone: +255 757 700 401 • info@tevda.or.tz</div>
+                <div style="font-size: 11px; font-weight: bold; color: #1e293b;">{{ \App\Models\Setting::get('site_name', 'Tanzania Electric Vehicle Drivers Association') }}</div>
+                <div style="font-size: 10px; color: #64748b;">{{ \App\Models\Setting::get('contact_address', 'Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania') }}</div>
+                <div style="font-size: 10px; color: #64748b;">Telephone: {{ \App\Models\Setting::get('contact_phone', '+255 757 700 401') }} • {{ \App\Models\Setting::get('contact_email', 'info@tevda.or.tz') }}</div>
             </td>
             <td style="text-align: right;">
                 <div style="font-size: 18px; font-weight: bold; color: #065f46;">OFFICIAL INVOICE</div>
@@ -148,8 +148,8 @@
     </div>
 
     <div class="footer-note">
-        Official Motto: <strong>SMART DRIVERS SMART MOBILITY</strong> • www.tevda.or.tz<br/>
-        Official Address: Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania
+        Official Motto: <strong>{{ \App\Models\Setting::get('site_motto', 'SMART DRIVERS SMART MOBILITY') }}</strong> • {{ \App\Models\Setting::get('contact_website', 'www.tevda.or.tz') }}<br/>
+        Official Address: {{ \App\Models\Setting::get('contact_address', 'Sinza Mori, P.O. Box 40015, Dar es Salaam, Tanzania') }}
     </div>
 </body>
 </html>

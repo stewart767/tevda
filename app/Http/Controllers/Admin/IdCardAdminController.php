@@ -8,6 +8,7 @@ use App\Models\MembershipCard;
 use App\Models\MembershipCategory;
 use App\Models\Region;
 use App\Models\AuditLog;
+use App\Models\IdCardTemplate;
 use App\Models\NotificationCustom;
 use App\Services\PdfService;
 use App\Services\QrCodeService;
@@ -106,8 +107,9 @@ class IdCardAdminController extends Controller
             ->get();
 
         $categories = MembershipCategory::all();
+        $templates = IdCardTemplate::where('is_active', true)->orderBy('is_default', 'desc')->get();
 
-        return view('admin.cards.create', compact('approvedMembers', 'selectedMember', 'categories'));
+        return view('admin.cards.create', compact('approvedMembers', 'selectedMember', 'categories', 'templates'));
     }
 
     /**
@@ -117,6 +119,7 @@ class IdCardAdminController extends Controller
     {
         $validated = $request->validate([
             'member_id' => 'required|exists:members,id',
+            'template_id' => 'nullable|exists:id_card_templates,id',
             'card_number' => 'nullable|string|max:100',
             'issue_date' => 'required|date',
             'expiry_date' => 'nullable|date|after_or_equal:issue_date',
@@ -157,9 +160,16 @@ class IdCardAdminController extends Controller
                 'issued_by' => Auth::user()->name,
             ];
 
+            $templateId = $validated['template_id'] ?? null;
+            if (!$templateId) {
+                $defaultTpl = IdCardTemplate::where('is_default', true)->where('is_active', true)->first();
+                $templateId = $defaultTpl?->id;
+            }
+
             $card = MembershipCard::updateOrCreate(
                 ['member_id' => $member->id],
                 [
+                    'template_id' => $templateId,
                     'card_number' => $cardNumber,
                     'issue_date' => $validated['issue_date'],
                     'expiry_date' => $validated['expiry_date'] ?? now()->addYear(),
@@ -299,6 +309,8 @@ class IdCardAdminController extends Controller
             ->with(['category', 'region'])
             ->get();
 
+        $defaultTemplate = IdCardTemplate::where('is_default', true)->where('is_active', true)->first();
+
         $count = 0;
         foreach ($approvedMembers as $member) {
             if (!$member->membership_number) {
@@ -310,6 +322,7 @@ class IdCardAdminController extends Controller
 
             MembershipCard::create([
                 'member_id' => $member->id,
+                'template_id' => $defaultTemplate?->id,
                 'card_number' => 'CARD-' . $member->membership_number,
                 'issue_date' => now(),
                 'expiry_date' => $member->expiry_date ?: now()->addYear(),
@@ -384,10 +397,12 @@ class IdCardAdminController extends Controller
         $member->save();
 
         $verifyMembershipUrl = url('/verify/membership/' . $member->membership_number);
+        $defaultTemplate = IdCardTemplate::where('is_default', true)->where('is_active', true)->first();
 
         $card = MembershipCard::updateOrCreate(
             ['member_id' => $member->id],
             [
+                'template_id' => $defaultTemplate?->id,
                 'card_number' => 'CARD-' . $member->membership_number,
                 'issue_date' => now(),
                 'expiry_date' => $member->expiry_date,
