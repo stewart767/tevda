@@ -1,0 +1,29 @@
+{
+    "cinzel": {
+        "normal": "C:\\xampp\\htdocs\\tevda\\storage\\fonts\/cinzel_normal_064ef78556c356f615d0b18f2cc2c698",
+        "bold": "cinzel_bold_377a9936e1943847aee7392cda277303"
+    },
+    "greatvibes": {
+        "normal": "greatvibes_normal_6a7b7cf23203227c28f752b06bf86099"
+    },
+    "montserrat": {
+        "normal": "C:\\xampp\\htdocs\\tevda\\storage\\fonts\/montserrat_normal_6a423d91fd5f4d5d8e77bd07cd5cbd31",
+        "bold": "montserrat_bold_c153491ad2611115b8b83c0e15a19879"
+    },
+    "cormorantgaramond": {
+        "normal": "C:\\xampp\\htdocs\\tevda\\storage\\fonts\/cormorantgaramond_normal_a57829477a8d752a1d653b20a7cfa7dc",
+        "bold": "cormorantgaramond_bold_472ec407016196f31edf7db2485fcc0f"
+    },
+    "alexbrush": {
+        "normal": "alexbrush_normal_bda971bbefda5c72ed8336f688b6b713"
+    },
+    "pinyonscript": {
+        "normal": "pinyonscript_normal_f7dac765cc44e5630cb0e95d23dee8d1"
+    },
+    "berkshire swash": {
+        "normal": "berkshire_swash_normal_d59abe92e92fe9005a895f4622077334"
+    },
+    "great vibes": {
+        "normal": "great_vibes_normal_1db2be0d50d969f5b07bd12fe3c8c549"
+    }
+}
