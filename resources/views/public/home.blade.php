@@ -3,127 +3,108 @@
 @section('title', 'Tanzania Electric Vehicle Drivers Association (TEVDA) — SMART DRIVERS SMART MOBILITY')
 
 @section('content')
-<!-- Hero Section -->
-<section class="relative hero-pattern text-white overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                <!-- Slogan Badge -->
-                <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/30 px-4 py-2 rounded-full text-emerald-300 text-xs sm:text-sm font-extrabold tracking-wider uppercase backdrop-blur-md shadow-xs animate-pulse-subtle">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span>SMART DRIVERS SMART MOBILITY</span>
-                </div>
+@php
+    $activeSlides = (isset($sliders) && $sliders->isNotEmpty()) ? $sliders : collect([
+        (object)[
+            'image_url' => asset('images/slider/slide-1.jpg'),
+            'title' => 'Commercial Electric Vehicles in Tanzania',
+            'link_url' => null,
+        ],
+        (object)[
+            'image_url' => asset('images/slider/slide-2.jpg'),
+            'title' => 'EV Diagnostics & Technician Training',
+            'link_url' => null,
+        ],
+        (object)[
+            'image_url' => asset('images/slider/slide-3.jpg'),
+            'title' => 'Clean Electric Commercial Transport Fleet',
+            'link_url' => null,
+        ],
+    ]);
+@endphp
 
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-heading leading-tight">
-                    Empowering Tanzanians Through <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Electric Mobility</span>
-                </h1>
+<!-- Hero Section: Clean Full-Width Panoramic Image Slider (100% Clear Photos) -->
+<section class="relative w-full overflow-hidden h-[380px] sm:h-[500px] lg:h-[580px] bg-slate-950 select-none group"
+    x-data="{
+        activeSlide: 0,
+        slidesCount: {{ $activeSlides->count() }},
+        autoplayTimer: null,
+        startAutoplay() {
+            this.stopAutoplay();
+            if (this.slidesCount > 1) {
+                this.autoplayTimer = setInterval(() => {
+                    this.activeSlide = (this.activeSlide + 1) % this.slidesCount;
+                }, 6000);
+            }
+        },
+        stopAutoplay() {
+            if (this.autoplayTimer) {
+                clearInterval(this.autoplayTimer);
+                this.autoplayTimer = null;
+            }
+        },
+        setSlide(idx) {
+            this.activeSlide = idx;
+            this.startAutoplay();
+        },
+        prev() {
+            this.activeSlide = (this.activeSlide - 1 + this.slidesCount) % this.slidesCount;
+            this.startAutoplay();
+        },
+        next() {
+            this.activeSlide = (this.activeSlide + 1) % this.slidesCount;
+            this.startAutoplay();
+        }
+    }"
+    x-init="startAutoplay()"
+    @mouseenter="stopAutoplay()"
+    @mouseleave="startAutoplay()">
 
-                <p class="text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-normal">
-                    {{ \App\Models\Setting::get('hero_supporting_text', 'TEVDA represents drivers and operators of commercially used electric vehicles. We connect members with training, employment, business opportunities, capital, grants, affordable loans and partnerships that help them participate in Tanzania’s clean-energy economy.') }}
-                </p>
-
-                <!-- Hero CTAs -->
-                <div class="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start pt-2">
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm sm:text-base px-8 py-4 rounded-2xl shadow-xl hover:shadow-emerald-500/30 transition transform hover:-translate-y-0.5">
-                        <span>Join TEVDA Today</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                    <a href="{{ route('opportunities') }}" class="inline-flex items-center justify-center gap-2.5 bg-slate-900/80 hover:bg-slate-800 text-white border border-slate-700/80 font-bold text-sm sm:text-base px-7 py-4 rounded-2xl backdrop-blur-md transition hover:border-emerald-500/50">
-                        <span>Explore Opportunities</span>
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </a>
-                </div>
-
-                <!-- Quick Highlights Metrics -->
-                <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-800/80 text-left">
-                    <div class="bg-slate-900/40 p-3.5 rounded-2xl border border-slate-800/60 backdrop-blur-sm">
-                        <span class="block text-2xl sm:text-3xl font-black text-emerald-400 font-heading">100%</span>
-                        <span class="text-[11px] sm:text-xs text-slate-300 font-medium leading-tight">Clean Commercial Mobility</span>
-                    </div>
-                    <div class="bg-slate-900/40 p-3.5 rounded-2xl border border-slate-800/60 backdrop-blur-sm">
-                        <span class="block text-2xl sm:text-3xl font-black text-cyan-400 font-heading">6+</span>
-                        <span class="text-[11px] sm:text-xs text-slate-300 font-medium leading-tight">Certified Training Tracks</span>
-                    </div>
-                    <div class="bg-slate-900/40 p-3.5 rounded-2xl border border-slate-800/60 backdrop-blur-sm">
-                        <span class="block text-2xl sm:text-3xl font-black text-amber-400 font-heading">Digital</span>
-                        <span class="text-[11px] sm:text-xs text-slate-300 font-medium leading-tight">QR ID & Certificates</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hero Graphic / Quick Verification Card -->
-            <div class="lg:col-span-5">
-                <div class="glass-panel-dark rounded-3xl p-6 sm:p-8 shadow-2xl border border-emerald-500/30 relative overflow-hidden">
-                    <div class="absolute -right-12 -top-12 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
-                        <div class="flex items-center gap-3">
-                            @if(\App\Models\Setting::hasCustomLogo())
-                                <img src="{{ \App\Models\Setting::getLogoUrl() }}" alt="Logo" class="h-9 w-auto max-w-[100px] object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <div class="hidden w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center font-black text-white text-xs">TEV</div>
-                            @else
-                                <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center font-black text-white text-xs">TEV</div>
-                            @endif
-                            <div>
-                                <h2 class="text-sm font-black text-white uppercase tracking-wider font-heading">Instant Verification</h2>
-                                <p class="text-[11px] text-slate-400">Official Association Public Registry</p>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-950 text-emerald-300 border border-emerald-800">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
-                        </span>
-                    </div>
-
-                    <!-- Verification Tabs -->
-                    <div x-data="{ activeTab: 'member' }">
-                        <div class="flex bg-slate-900/90 p-1.5 rounded-2xl mb-5 border border-slate-800">
-                            <button type="button" @click="activeTab = 'member'" :class="activeTab === 'member' ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-400 hover:text-white'" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150">
-                                Verify Member ID
-                            </button>
-                            <button type="button" @click="activeTab = 'certificate'" :class="activeTab === 'certificate' ? 'bg-cyan-600 text-white shadow-md' : 'text-slate-400 hover:text-white'" class="flex-1 py-2 text-xs font-bold rounded-xl transition duration-150">
-                                Verify Certificate
-                            </button>
-                        </div>
-
-                        <!-- Member Form -->
-                        <div x-show="activeTab === 'member'" x-transition>
-                            <form action="{{ route('verify.membership') }}" method="GET" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Enter Membership Number</label>
-                                    <input type="text" name="number" placeholder="e.g. TEVDA-2026-00001" required class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-500 font-mono focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition">
-                                </div>
-                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3.5 px-4 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                                    <span>Verify Driver Status</span>
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- Certificate Form -->
-                        <div x-show="activeTab === 'certificate'" x-transition>
-                            <form action="{{ route('verify.certificate') }}" method="GET" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-300 mb-1.5">Enter Certificate Serial Number</label>
-                                    <input type="text" name="number" placeholder="e.g. TEVDA-CERT-2026-000001" required class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-500 font-mono focus:outline-hidden focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition">
-                                </div>
-                                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black py-3.5 px-4 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/20">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    <span>Verify Certificate Authenticity</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <p class="text-[11px] text-slate-400 mt-4 text-center">
-                        QR codes printed on digital membership cards and certificates scan directly to verified status records.
-                    </p>
-                </div>
-            </div>
-
+    <!-- BACKGROUND SLIDES (100% Crisp, High-Res, Unobstructed Photos) -->
+    @foreach($activeSlides as $index => $slide)
+        <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+             :class="activeSlide === {{ $index }} ? 'opacity-100 z-0' : 'opacity-0 -z-10 pointer-events-none'">
+            @if(!empty($slide->link_url))
+                <a href="{{ $slide->link_url }}" class="block w-full h-full">
+                    <img src="{{ $slide->image_url }}" 
+                         alt="{{ $slide->title ?? 'TEVDA Slide #'.($index + 1) }}" 
+                         class="w-full h-full object-cover object-center">
+                </a>
+            @else
+                <img src="{{ $slide->image_url }}" 
+                     alt="{{ $slide->title ?? 'TEVDA Slide #'.($index + 1) }}" 
+                     class="w-full h-full object-cover object-center">
+            @endif
         </div>
-    </div>
+    @endforeach
+
+    @if($activeSlides->count() > 1)
+        <!-- Floating Navigation Arrows -->
+        <button type="button" 
+                @click="prev()" 
+                class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-slate-950/60 hover:bg-emerald-600 text-white flex items-center justify-center backdrop-blur-md border border-white/20 shadow-2xl transition-all duration-200 hover:scale-110 cursor-pointer"
+                aria-label="Previous Slide">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button type="button" 
+                @click="next()" 
+                class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-slate-950/60 hover:bg-emerald-600 text-white flex items-center justify-center backdrop-blur-md border border-white/20 shadow-2xl transition-all duration-200 hover:scale-110 cursor-pointer"
+                aria-label="Next Slide">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Bottom Indicator Dots -->
+        <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/10 shadow-lg">
+            @foreach($activeSlides as $index => $slide)
+                <button type="button" 
+                        @click="setSlide({{ $index }})" 
+                        class="transition-all duration-300 rounded-full h-2.5 cursor-pointer" 
+                        :class="activeSlide === {{ $index }} ? 'w-8 bg-emerald-400 shadow-md shadow-emerald-400/50' : 'w-2.5 bg-white/50 hover:bg-white'"></button>
+            @endforeach
+        </div>
+    @endif
 </section>
+
 
 <!-- About TEVDA & Chairman's Welcome Message Section -->
 <section class="py-20 lg:py-28 bg-slate-50 relative overflow-hidden border-b border-slate-200/80">

@@ -27,6 +27,10 @@
 
         <!-- Approval / Decision Action Buttons -->
         <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ route('admin.members.edit', $member->id) }}" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-blue-600/20">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Information
+            </a>
+
             @if($member->status !== 'approved')
                 <button type="button" onclick="document.getElementById('approveModal').classList.remove('hidden')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shadow-emerald-600/20">
                     <i class="fa-solid fa-circle-check"></i> Approve Application
@@ -359,8 +363,13 @@
                     @forelse($member->invoices as $inv)
                         <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs flex items-center justify-between">
                             <div>
-                                <div class="font-bold text-slate-800">{{ $inv->description ?? 'Invoice' }}</div>
-                                <div class="text-[11px] text-slate-500 font-mono">{{ $inv->invoice_number }} • {{ number_format($inv->amount) }} {{ $inv->currency }}</div>
+                                <div class="font-bold text-slate-800">{{ $inv->purpose ?? ($inv->description ?? 'Invoice') }}</div>
+                                <div class="text-[11px] text-slate-500 font-mono">
+                                    {{ $inv->invoice_number }} • {{ number_format($inv->amount) }} {{ $inv->currency }}
+                                    @if($inv->control_number)
+                                        <span class="text-emerald-700 font-bold block">Control No: {{ $inv->control_number }}</span>
+                                    @endif
+                                </div>
                             </div>
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ $inv->status === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
                                 {{ strtoupper($inv->status) }}

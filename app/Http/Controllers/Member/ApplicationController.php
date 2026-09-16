@@ -151,37 +151,47 @@ class ApplicationController extends Controller
                 );
             }
 
-            // Generate Registration Invoice if fee configured > 0
-            if ($category->registration_fee > 0) {
-                $invoice = Invoice::create([
-                    'invoice_number' => Invoice::generateInvoiceNumber(),
+            // Generate Registration Invoice with 12-digit Control Number
+            $feeAmount = $category->registration_fee > 0 ? $category->registration_fee : 50000;
+            $invoice = Invoice::firstOrCreate(
+                [
                     'member_id' => $member->id,
-                    'user_id' => $user->id,
-                    'amount' => $category->registration_fee,
-                    'currency' => 'TZS',
                     'purpose' => 'Membership Registration Fee (' . $category->name . ')',
+                ],
+                [
+                    'invoice_number' => Invoice::generateInvoiceNumber(),
+                    'control_number' => Invoice::generateControlNumber(),
+                    'user_id' => $user->id,
+                    'amount' => $feeAmount,
+                    'currency' => 'TZS',
                     'status' => 'unpaid',
                     'due_date' => now()->addDays(14),
-                ]);
-                $member->update(['status' => 'payment_pending']);
+                ]
+            );
+
+            if (empty($invoice->control_number)) {
+                $invoice->update(['control_number' => Invoice::generateControlNumber()]);
             }
+
+            $member->update(['status' => 'payment_pending']);
 
             AuditLog::log('submitted_application', 'membership', (string)$member->id, null, [
                 'category' => $category->name,
                 'full_name' => $member->full_name,
+                'control_number' => $invoice->control_number,
             ]);
 
             NotificationCustom::send(
                 $user->id,
                 'Membership Application Received',
-                'Your membership application for ' . $category->name . ' has been submitted successfully and is now undergoing TEVDA Secretariat verification.',
+                "Your application for {$category->name} has been submitted. Payment Control Number: {$invoice->control_number}. Please pay via M-Pesa, Tigo Pesa, or Bank.",
                 route('portal.dashboard'),
                 'success'
             );
 
             DB::commit();
 
-            return redirect()->route('portal.dashboard')->with('success', 'Your membership application has been submitted successfully! You can track your verification status below.');
+            return redirect()->route('portal.dashboard')->with('success', "Membership application submitted successfully! Payment Control Number: {$invoice->control_number}. Please pay {$invoice->amount} TZS to complete your verification and obtain your Certificate.");
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()->withErrors(['error' => 'An error occurred while saving your application: ' . $e->getMessage()]);

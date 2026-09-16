@@ -58,8 +58,16 @@ class PortalController extends Controller
         $invoices = Invoice::with('payments')
             ->where('member_id', $member->id)
             ->latest()
-            ->take(5)
             ->get();
+
+        // Ensure all invoices have a control number
+        foreach ($invoices as $inv) {
+            if (empty($inv->control_number)) {
+                $inv->update(['control_number' => Invoice::generateControlNumber()]);
+            }
+        }
+
+        $latestInvoice = $invoices->first();
 
         $qrCodeUri = null;
         if ($member->membership_number) {
@@ -73,6 +81,7 @@ class PortalController extends Controller
             'certificates',
             'opportunityApps',
             'invoices',
+            'latestInvoice',
             'qrCodeUri'
         ));
     }
@@ -90,21 +99,38 @@ class PortalController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        $member = Member::where('user_id', $user->id)->firstOrFail();
+        $member = Member::with('primaryVehicle')->where('user_id', $user->id)->firstOrFail();
 
         $validated = $request->validate([
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|max:20|unique:users,phone,' . $user->id,
             'physical_address' => 'required|string|max:255',
             'occupation' => 'nullable|string|max:100',
             'ev_sector' => 'nullable|string|max:100',
+            'employer' => 'nullable|string|max:100',
+            'next_of_kin_name' => 'nullable|string|max:100',
+            'next_of_kin_relationship' => 'nullable|string|max:50',
+            'next_of_kin_phone' => 'nullable|string|max:20',
             'passport_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:3072',
+
+            // Vehicle updates
+            'vehicle_type' => 'nullable|string|in:two_wheeler,three_wheeler,passenger_car,van,minibus,bus,commercial_truck,other',
+            'vehicle_make' => 'nullable|string|max:50',
+            'vehicle_model' => 'nullable|string|max:50',
+            'vehicle_registration' => 'nullable|string|max:30',
+            'charging_type' => 'nullable|string|in:ac_slow,dc_fast,battery_swap,dual,other',
         ]);
+
+        $user->update(['phone' => $validated['phone']]);
 
         $member->update([
             'phone' => $validated['phone'],
             'physical_address' => $validated['physical_address'],
             'occupation' => $validated['occupation'] ?? $member->occupation,
             'ev_sector' => $validated['ev_sector'] ?? $member->ev_sector,
+            'employer' => $validated['employer'] ?? $member->employer,
+            'next_of_kin_name' => $validated['next_of_kin_name'] ?? $member->next_of_kin_name,
+            'next_of_kin_relationship' => $validated['next_of_kin_relationship'] ?? $member->next_of_kin_relationship,
+            'next_of_kin_phone' => $validated['next_of_kin_phone'] ?? $member->next_of_kin_phone,
         ]);
 
         if ($request->hasFile('passport_photo')) {
@@ -113,9 +139,31 @@ class PortalController extends Controller
             $user->update(['avatar_path' => $photoPath]);
         }
 
+        if (!empty($validated['vehicle_registration']) || !empty($validated['vehicle_type'])) {
+            if ($member->primaryVehicle) {
+                $member->primaryVehicle->update([
+                    'vehicle_type' => $validated['vehicle_type'] ?? $member->primaryVehicle->vehicle_type,
+                    'make' => $validated['vehicle_make'] ?? $member->primaryVehicle->make,
+                    'model' => $validated['vehicle_model'] ?? $member->primaryVehicle->model,
+                    'registration_number' => $validated['vehicle_registration'] ?? $member->primaryVehicle->registration_number,
+                    'charging_type' => $validated['charging_type'] ?? $member->primaryVehicle->charging_type,
+                ]);
+            } else {
+                \App\Models\Vehicle::create([
+                    'member_id' => $member->id,
+                    'vehicle_type' => $validated['vehicle_type'] ?? 'three_wheeler',
+                    'make' => $validated['vehicle_make'] ?? null,
+                    'model' => $validated['vehicle_model'] ?? null,
+                    'registration_number' => $validated['vehicle_registration'] ?? null,
+                    'charging_type' => $validated['charging_type'] ?? 'battery_swap',
+                    'ownership_type' => 'driver_operated',
+                ]);
+            }
+        }
+
         AuditLog::log('updated_profile', 'membership', (string)$member->id);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return back()->with('success', 'Profile and vehicle information updated successfully.');
     }
 
     public function downloadCardPdf()

@@ -40,9 +40,14 @@
                     @forelse($invoices as $inv)
                         <tr class="hover:bg-slate-50/70 transition">
                             <td class="px-5 py-4">
-                                <span class="font-mono font-bold text-xs text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg">
+                                <span class="font-mono font-bold text-xs text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg block w-fit">
                                     {{ $inv->invoice_number }}
                                 </span>
+                                @if(!empty($inv->control_number))
+                                    <span class="font-mono font-bold text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded mt-1 inline-block">
+                                        CTRL: {{ $inv->control_number }}
+                                    </span>
+                                @endif
                             </td>
                             <td class="px-4 py-4">
                                 <div class="font-black text-slate-900 text-xs">{{ $inv->member->full_name ?? 'Member' }}</div>

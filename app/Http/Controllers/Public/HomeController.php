@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\Slider;
 use App\Models\MembershipCategory;
 use App\Models\TrainingProgramme;
 use App\Models\TrainingCourse;
@@ -30,6 +31,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $sliders = Slider::active()->ordered()->get();
         $categories = MembershipCategory::where('is_active', true)->orderBy('order_number')->get();
         $programmes = TrainingProgramme::where('is_active', true)->orderBy('order_number')->take(4)->get();
         $projects = Project::where('is_featured', true)->take(3)->get();
@@ -39,6 +41,7 @@ class HomeController extends Controller
         $upcomingSessions = TrainingSession::with('course.programme')->where('status', 'upcoming')->orderBy('start_date')->take(3)->get();
 
         return view('public.home', compact(
+            'sliders',
             'categories',
             'programmes',
             'projects',

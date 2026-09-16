@@ -25,6 +25,10 @@
                 Sinza Mori, Dar es Salaam
             </span>
             <div class="flex items-center gap-2">
+                <a href="{{ route('track.application') }}" class="text-[11px] bg-amber-500 text-slate-950 hover:bg-amber-400 font-extrabold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 shadow-xs">
+                    <svg class="w-3 h-3 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <span>Track Application</span>
+                </a>
                 <a href="{{ route('verify.membership') }}" class="text-[11px] bg-emerald-950/90 text-emerald-300 hover:bg-emerald-900 border border-emerald-700/60 px-2.5 py-1 rounded-lg transition-all font-semibold flex items-center gap-1 shadow-xs hover:border-emerald-500">
                     <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span>Verify Member</span>
@@ -222,7 +226,7 @@
 
                 <!-- 4. Verification Dropdown -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 {{ request()->routeIs('verify*') ? 'text-emerald-700 bg-emerald-50/90 shadow-xs' : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50' }}">
+                    <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 {{ request()->routeIs('verify*') || request()->routeIs('track*') ? 'text-emerald-700 bg-emerald-50/90 shadow-xs' : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50' }}">
                         <span>Verification</span>
                         <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180 text-emerald-600': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                     </button>
@@ -233,11 +237,20 @@
                          x-transition:leave="transition ease-in duration-150" 
                          x-transition:leave-start="opacity-100 translate-y-0 scale-100" 
                          x-transition:leave-end="opacity-0 translate-y-2 scale-95" 
-                         class="absolute left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 mt-1 z-50 ring-1 ring-black/5"
+                         class="absolute left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 mt-1 z-50 ring-1 ring-black/5"
                          style="display: none;">
                         <div class="px-3 py-1.5 mb-1 border-b border-slate-100">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Public Verification</span>
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Public Verification & Tracking</span>
                         </div>
+                        <a href="{{ route('track.application') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-amber-50/80 group transition">
+                            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800 group-hover:text-amber-900">Track Application Status</div>
+                                <div class="text-[11px] text-slate-500 font-normal">Check Control No & registration progress</div>
+                            </div>
+                        </a>
                         <a href="{{ route('verify.membership') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/80 group transition">
                             <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -389,15 +402,19 @@
 
             <!-- Verification & Contact -->
             <div class="border-t border-slate-100 pt-3">
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 mb-1.5">Quick Verification & Support</div>
-                <div class="grid grid-cols-2 gap-2 px-1 mb-2">
-                    <a href="{{ route('verify.membership') }}" class="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-100 text-center">
-                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span>Verify Member</span>
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 mb-1.5">Quick Tracking & Verification</div>
+                <div class="grid grid-cols-3 gap-2 px-1 mb-2">
+                    <a href="{{ route('track.application') }}" class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-amber-50 text-amber-950 text-[11px] font-bold border border-amber-200 text-center">
+                        <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <span>Track Status</span>
                     </a>
-                    <a href="{{ route('verify.certificate') }}" class="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold border border-slate-200 text-center">
-                        <svg class="w-3.5 h-3.5 text-cyan-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        <span>Verify Certificate</span>
+                    <a href="{{ route('verify.membership') }}" class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-emerald-50 text-emerald-800 text-[11px] font-bold border border-emerald-100 text-center">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Member</span>
+                    </a>
+                    <a href="{{ route('verify.certificate') }}" class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl bg-slate-100 text-slate-800 text-[11px] font-bold border border-slate-200 text-center">
+                        <svg class="w-4 h-4 text-cyan-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Certificate</span>
                     </a>
                 </div>
                 <a href="{{ route('contact') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50">

@@ -16,10 +16,13 @@
         @forelse ($invoices as $invoice)
             <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6" x-data="{ payOpen: false }">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <span class="text-xs font-mono text-slate-400 block uppercase">Invoice Number:</span>
+                    <div class="space-y-1">
+                        <span class="text-xs font-mono text-slate-400 block uppercase">Invoice & Control Number:</span>
                         <h2 class="text-lg font-bold text-slate-900 font-mono">{{ $invoice->invoice_number }}</h2>
-                        <p class="text-xs text-slate-600 mt-0.5">{{ $invoice->purpose }}</p>
+                        <div class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-xl text-xs font-mono font-black">
+                            <span>CONTROL NO: {{ $invoice->control_number }}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1">{{ $invoice->purpose }}</p>
                     </div>
 
                     <div class="flex items-center gap-4">

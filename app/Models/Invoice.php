@@ -11,6 +11,7 @@ class Invoice extends Model
 
     protected $fillable = [
         'invoice_number',
+        'control_number',
         'member_id',
         'user_id',
         'amount',
@@ -46,5 +47,18 @@ class Invoice extends Model
         $year = date('Y');
         $count = self::whereYear('created_at', $year)->count() + 1;
         return sprintf('TEVDA-INV-%s-%05d', $year, $count);
+    }
+
+    /**
+     * Generate unique 12-digit standard Control Number (prefix 99401).
+     */
+    public static function generateControlNumber(): string
+    {
+        do {
+            $randomDigits = mt_rand(1000000, 9999999);
+            $controlNumber = '99401' . $randomDigits;
+        } while (self::where('control_number', $controlNumber)->exists());
+
+        return $controlNumber;
     }
 }

@@ -13,7 +13,7 @@
     </div>
 @endif
 
-@if (session('error') || $errors->any())
+@if (session('error') || (isset($errors) && $errors->any()))
     <div class="mb-6 bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-xl shadow-xs animate-fade-in">
         <div class="flex items-start justify-between">
             <div class="flex items-start space-x-3">
@@ -24,7 +24,7 @@
                     @if (session('error'))
                         <p class="text-sm font-medium text-rose-800">{{ session('error') }}</p>
                     @endif
-                    @if ($errors->any())
+                    @if (isset($errors) && $errors->any())
                         <ul class="mt-1 list-disc list-inside text-sm text-rose-700 space-y-0.5">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ProjectAdminController;
 use App\Http\Controllers\Admin\FinanceAdminController;
 use App\Http\Controllers\Admin\GovernanceAdminController;
 use App\Http\Controllers\Admin\CmsAdminController;
+use App\Http\Controllers\Admin\SliderAdminController;
 use App\Http\Controllers\Admin\AuditReportController;
 use App\Http\Controllers\DocumentDownloadController;
 
@@ -55,11 +56,20 @@ Route::get('/robots.txt', [HomeController::class, 'robots'])->name('robots');
 
 /*
 |--------------------------------------------------------------------------
-| 2. PUBLIC VERIFICATION CENTER
+| 2. PUBLIC VERIFICATION & APPLICATION TRACKING CENTER
 |--------------------------------------------------------------------------
 */
+Route::get('/track', [VerificationController::class, 'trackApplication'])->name('track.application');
+Route::get('/membership/track', [VerificationController::class, 'trackApplication'])->name('membership.track');
+Route::post('/track/submit-proof/{invoiceId}', [VerificationController::class, 'submitPublicPaymentProof'])->name('track.submit_proof');
 Route::get('/verify/membership/{number?}', [VerificationController::class, 'verifyMembership'])->name('verify.membership');
 Route::get('/verify/certificate/{number?}', [VerificationController::class, 'verifyCertificate'])->name('verify.certificate');
+
+// Public Certificate & Digital ID Card Downloads (No Login Required)
+Route::get('/download/certificate/{number}', [VerificationController::class, 'downloadPublicCertificatePdf'])->name('public.certificate.download');
+Route::get('/download/card/{number}', [VerificationController::class, 'downloadPublicCardPdf'])->name('public.card.download');
+Route::get('/verify/certificate/{number}/download', [VerificationController::class, 'downloadPublicCertificatePdf'])->name('public.certificate.download_alias');
+Route::get('/verify/membership/{number}/download', [VerificationController::class, 'downloadPublicCardPdf'])->name('public.card.download_alias');
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +146,9 @@ Route::middleware(['auth', 'staff'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/members/create', [MemberManagementController::class, 'create'])->name('members.create');
     Route::post('/members', [MemberManagementController::class, 'store'])->name('members.store');
     Route::get('/members/{id}', [MemberManagementController::class, 'show'])->name('members.show');
+    Route::get('/members/{id}/edit', [MemberManagementController::class, 'edit'])->name('members.edit');
+    Route::put('/members/{id}', [MemberManagementController::class, 'update'])->name('members.update');
+    Route::delete('/members/{id}', [MemberManagementController::class, 'destroy'])->name('members.destroy');
     Route::post('/members/{id}/approve', [MemberManagementController::class, 'approve'])->name('members.approve');
     Route::post('/members/{id}/reject', [MemberManagementController::class, 'reject'])->name('members.reject');
     Route::post('/members/{id}/mark-incomplete', [MemberManagementController::class, 'markIncomplete'])->name('members.mark_incomplete');
@@ -208,6 +221,13 @@ Route::middleware(['auth', 'staff'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/governance/partners', [GovernanceAdminController::class, 'storePartner'])->name('governance.partners.store');
 
     // CMS & Communication
+    Route::get('/cms/sliders', [SliderAdminController::class, 'index'])->name('cms.sliders.index');
+    Route::get('/cms/sliders/create', [SliderAdminController::class, 'create'])->name('cms.sliders.create');
+    Route::post('/cms/sliders', [SliderAdminController::class, 'store'])->name('cms.sliders.store');
+    Route::get('/cms/sliders/{id}/edit', [SliderAdminController::class, 'edit'])->name('cms.sliders.edit');
+    Route::put('/cms/sliders/{id}', [SliderAdminController::class, 'update'])->name('cms.sliders.update');
+    Route::delete('/cms/sliders/{id}', [SliderAdminController::class, 'destroy'])->name('cms.sliders.destroy');
+    Route::post('/cms/sliders/{id}/toggle', [SliderAdminController::class, 'toggleStatus'])->name('cms.sliders.toggle');
     Route::get('/cms/news', [CmsAdminController::class, 'newsIndex'])->name('cms.news.index');
     Route::get('/cms/news/create', [CmsAdminController::class, 'createNews'])->name('cms.news.create');
     Route::post('/cms/news', [CmsAdminController::class, 'storeNews'])->name('cms.news.store');

@@ -471,4 +471,310 @@ class MemberManagementController extends Controller
 
         return back()->with('success', 'Member notified of incomplete documents.');
     }
+
+    public function edit(int $id)
+    {
+        $member = Member::with([
+            'user',
+            'category',
+            'region.districts',
+            'district',
+            'ward',
+            'branch',
+            'primaryVehicle',
+            'documents',
+            'card'
+        ])->findOrFail($id);
+
+        $categories = MembershipCategory::where('is_active', true)->orderBy('order_number')->get();
+        $regions = Region::with('districts')->where('is_active', true)->orderBy('name')->get();
+
+        return view('admin.members.edit', compact('member', 'categories', 'regions'));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $member = Member::with(['user', 'primaryVehicle', 'card'])->findOrFail($id);
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $member->user_id,
+            'phone' => 'required|string|max:20|unique:users,phone,' . $member->user_id,
+            'password' => 'nullable|string|min:6',
+            'category_id' => 'required|exists:membership_categories,id',
+            'membership_number' => 'nullable|string|max:50|unique:members,membership_number,' . $member->id,
+            'date_of_birth' => 'nullable|date|before:today',
+            'gender' => 'required|in:male,female,other',
+            'region_id' => 'required|exists:regions,id',
+            'district_id' => 'nullable|exists:districts,id',
+            'physical_address' => 'required|string|max:255',
+            'nida_number' => 'nullable|string|max:30',
+            'driving_licence_number' => 'nullable|string|max:50',
+            'licence_class' => 'nullable|string|max:20',
+            'licence_expiry_date' => 'nullable|date',
+            'occupation' => 'nullable|string|max:100',
+            'ev_sector' => 'nullable|string|max:100',
+            'employer' => 'nullable|string|max:100',
+            'ev_experience_years' => 'nullable|string|max:50',
+            'tin_number' => 'nullable|string|max:50',
+            'is_founding_member' => 'nullable|boolean',
+            'next_of_kin_name' => 'nullable|string|max:100',
+            'next_of_kin_relationship' => 'nullable|string|max:50',
+            'next_of_kin_phone' => 'nullable|string|max:20',
+            'status' => 'required|in:draft,submitted,payment_pending,payment_confirmed,under_review,documents_incomplete,additional_info_required,approved,rejected,cancelled,suspended',
+            'expiry_date' => 'nullable|date',
+            'reviewer_notes' => 'nullable|string|max:1000',
+            'rejection_reason' => 'nullable|string|max:1000',
+
+            // Vehicle
+            'vehicle_type' => 'nullable|string|in:two_wheeler,three_wheeler,passenger_car,van,minibus,bus,commercial_truck,other',
+            'vehicle_make' => 'nullable|string|max:50',
+            'vehicle_model' => 'nullable|string|max:50',
+            'vehicle_registration' => 'nullable|string|max:30',
+            'ownership_type' => 'nullable|string|in:owned,leased,company_owned,driver_operated,other',
+            'charging_type' => 'nullable|string|in:ac_slow,dc_fast,battery_swap,dual,other',
+            'battery_capacity_kwh' => 'nullable|numeric|min:0',
+            'daily_average_km' => 'nullable|integer|min:0',
+
+            // Files
+            'passport_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'nida_document' => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:5120',
+            'driving_licence_document' => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:5120',
+        ];
+
+        $validated = $request->validate($rules);
+
+        DB::beginTransaction();
+        try {
+            $oldValues = [
+                'full_name' => $member->full_name,
+                'email' => $member->email,
+                'phone' => $member->phone,
+                'category_id' => $member->category_id,
+                'status' => $member->status,
+                'region_id' => $member->region_id,
+                'membership_number' => $member->membership_number,
+            ];
+
+            // 1. Update User Account
+            if ($member->user) {
+                $userUpdates = [
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'],
+                ];
+                if ($request->filled('password')) {
+                    $userUpdates['password'] = Hash::make($request->password);
+                }
+                $member->user->update($userUpdates);
+            }
+
+            // 2. Handle Membership Number & Approval status
+            $membershipNumber = $request->filled('membership_number') ? $validated['membership_number'] : $member->membership_number;
+            $approvedBy = $member->approved_by;
+            $approvedAt = $member->approved_at;
+
+            if ($validated['status'] === 'approved') {
+                if (!$membershipNumber) {
+                    $membershipNumber = Member::generateMembershipNumber();
+                }
+                if (!$approvedBy) {
+                    $approvedBy = Auth::id();
+                    $approvedAt = now();
+                }
+            }
+
+            $expiryDate = $validated['expiry_date'] ?? $member->expiry_date;
+            if (!$expiryDate && $validated['status'] === 'approved') {
+                $expiryDate = now()->addYear();
+            }
+
+            // 3. Update Member Record
+            $member->update([
+                'category_id' => $validated['category_id'],
+                'region_id' => $validated['region_id'],
+                'district_id' => $validated['district_id'] ?? null,
+                'membership_number' => $membershipNumber,
+                'full_name' => $validated['name'],
+                'date_of_birth' => $validated['date_of_birth'] ?? null,
+                'gender' => $validated['gender'],
+                'phone' => $validated['phone'],
+                'email' => $validated['email'],
+                'physical_address' => $validated['physical_address'],
+                'nida_number' => $validated['nida_number'] ?? null,
+                'driving_licence_number' => $validated['driving_licence_number'] ?? null,
+                'licence_class' => $validated['licence_class'] ?? null,
+                'licence_expiry_date' => $validated['licence_expiry_date'] ?? null,
+                'occupation' => $validated['occupation'] ?? null,
+                'ev_sector' => $validated['ev_sector'] ?? null,
+                'employer' => $validated['employer'] ?? null,
+                'ev_experience_years' => $validated['ev_experience_years'] ?? null,
+                'tin_number' => $validated['tin_number'] ?? null,
+                'is_founding_member' => $request->boolean('is_founding_member', false),
+                'next_of_kin_name' => $validated['next_of_kin_name'] ?? null,
+                'next_of_kin_relationship' => $validated['next_of_kin_relationship'] ?? null,
+                'next_of_kin_phone' => $validated['next_of_kin_phone'] ?? null,
+                'status' => $validated['status'],
+                'reviewer_notes' => $validated['reviewer_notes'] ?? $member->reviewer_notes,
+                'rejection_reason' => $validated['status'] === 'rejected' ? ($validated['rejection_reason'] ?? $member->rejection_reason) : null,
+                'approved_by' => $approvedBy,
+                'approved_at' => $approvedAt,
+                'expiry_date' => $expiryDate,
+            ]);
+
+            // 4. Handle Passport Photo
+            if ($request->hasFile('passport_photo')) {
+                $photoPath = DocumentService::storePublic($request->file('passport_photo'), 'avatars');
+                $member->update(['passport_photo_path' => $photoPath]);
+                if ($member->user) {
+                    $member->user->update(['avatar_path' => $photoPath]);
+                }
+            }
+
+            // 5. Handle NIDA Document
+            if ($request->hasFile('nida_document')) {
+                $doc = DocumentService::storePrivate($request->file('nida_document'), 'nida');
+                MembershipDocument::create([
+                    'member_id' => $member->id,
+                    'document_type' => 'nida',
+                    'file_path' => $doc['file_path'],
+                    'file_name' => $doc['file_name'],
+                    'file_size' => $doc['file_size'],
+                    'mime_type' => $doc['mime_type'],
+                    'verification_status' => $validated['status'] === 'approved' ? 'verified' : 'pending',
+                    'verified_by' => $validated['status'] === 'approved' ? Auth::id() : null,
+                    'verified_at' => $validated['status'] === 'approved' ? now() : null,
+                ]);
+            }
+
+            // 6. Handle Driving Licence Document
+            if ($request->hasFile('driving_licence_document')) {
+                $doc = DocumentService::storePrivate($request->file('driving_licence_document'), 'driving_licence');
+                MembershipDocument::create([
+                    'member_id' => $member->id,
+                    'document_type' => 'driving_licence',
+                    'file_path' => $doc['file_path'],
+                    'file_name' => $doc['file_name'],
+                    'file_size' => $doc['file_size'],
+                    'mime_type' => $doc['mime_type'],
+                    'verification_status' => $validated['status'] === 'approved' ? 'verified' : 'pending',
+                    'verified_by' => $validated['status'] === 'approved' ? Auth::id() : null,
+                    'verified_at' => $validated['status'] === 'approved' ? now() : null,
+                ]);
+            }
+
+            // 7. Handle Vehicle
+            if (!empty($validated['vehicle_type']) || !empty($validated['vehicle_registration']) || !empty($validated['vehicle_make'])) {
+                if ($member->primaryVehicle) {
+                    $member->primaryVehicle->update([
+                        'vehicle_type' => $validated['vehicle_type'] ?? $member->primaryVehicle->vehicle_type,
+                        'make' => $validated['vehicle_make'] ?? $member->primaryVehicle->make,
+                        'model' => $validated['vehicle_model'] ?? $member->primaryVehicle->model,
+                        'registration_number' => $validated['vehicle_registration'] ?? $member->primaryVehicle->registration_number,
+                        'ownership_type' => $validated['ownership_type'] ?? $member->primaryVehicle->ownership_type,
+                        'charging_type' => $validated['charging_type'] ?? $member->primaryVehicle->charging_type,
+                        'battery_capacity_kwh' => $validated['battery_capacity_kwh'] ?? $member->primaryVehicle->battery_capacity_kwh,
+                        'daily_average_km' => $validated['daily_average_km'] ?? $member->primaryVehicle->daily_average_km,
+                    ]);
+                } else {
+                    Vehicle::create([
+                        'member_id' => $member->id,
+                        'vehicle_type' => $validated['vehicle_type'] ?? 'three_wheeler',
+                        'make' => $validated['vehicle_make'] ?? null,
+                        'model' => $validated['vehicle_model'] ?? null,
+                        'registration_number' => $validated['vehicle_registration'] ?? null,
+                        'ownership_type' => $validated['ownership_type'] ?? 'driver_operated',
+                        'charging_type' => $validated['charging_type'] ?? 'battery_swap',
+                        'battery_capacity_kwh' => $validated['battery_capacity_kwh'] ?? null,
+                        'daily_average_km' => $validated['daily_average_km'] ?? null,
+                    ]);
+                }
+            }
+
+            // 8. Synchronize Digital Card and Certificate if Approved
+            $category = MembershipCategory::find($validated['category_id']);
+            if ($member->status === 'approved' && $member->membership_number) {
+                $verifyMembershipUrl = url('/verify/membership/' . $member->membership_number);
+                MembershipCard::updateOrCreate(
+                    ['member_id' => $member->id],
+                    [
+                        'card_number' => 'CARD-' . $member->membership_number,
+                        'issue_date' => $member->approved_at ?? now(),
+                        'expiry_date' => $member->expiry_date,
+                        'qr_code_path' => $verifyMembershipUrl,
+                        'card_data' => [
+                            'name' => $member->full_name,
+                            'category' => $category?->name ?? 'General Member',
+                            'region' => $member->region?->name ?? 'Tanzania',
+                            'phone' => $member->phone,
+                            'motto' => 'SMART DRIVERS SMART MOBILITY',
+                        ],
+                        'is_active' => true,
+                    ]
+                );
+
+                $membershipTemplate = CertificateTemplate::where('certificate_type', 'membership')->first();
+                $existingCert = Certificate::where('member_id', $member->id)->where('certificate_type', 'membership')->first();
+                $certNumber = $existingCert?->certificate_number ?? Certificate::generateCertificateNumber('MEM');
+                $verifyCertUrl = url('/verify/certificate/' . $certNumber);
+
+                Certificate::updateOrCreate(
+                    ['member_id' => $member->id, 'certificate_type' => 'membership'],
+                    [
+                        'certificate_number' => $certNumber,
+                        'template_id' => $membershipTemplate?->id,
+                        'title' => 'Certificate of Membership',
+                        'recipient_name' => $member->full_name,
+                        'course_name' => $category?->name ?? 'General Member',
+                        'issue_date' => $member->approved_at ?? now(),
+                        'expiry_date' => $member->expiry_date,
+                        'authorized_person_name' => 'Dr. Charles Mwansasu',
+                        'authorized_person_title' => 'Founding Chairperson',
+                        'qr_code_path' => $verifyCertUrl,
+                        'status' => 'valid',
+                    ]
+                );
+            }
+
+            AuditLog::log('updated_member', 'membership', (string)$member->id, $oldValues, [
+                'full_name' => $member->full_name,
+                'email' => $member->email,
+                'phone' => $member->phone,
+                'category_id' => $member->category_id,
+                'status' => $member->status,
+                'membership_number' => $member->membership_number,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.members.show', $member->id)
+                ->with('success', "Member {$member->full_name}'s information updated successfully!");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()->withErrors(['error' => 'Failed to update member: ' . $e->getMessage()]);
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $member = Member::with('user')->findOrFail($id);
+        $name = $member->full_name;
+
+        DB::beginTransaction();
+        try {
+            if ($member->user) {
+                $member->user->update(['is_active' => false]);
+            }
+            $member->delete();
+
+            AuditLog::log('deleted_member', 'membership', (string)$id, null, ['full_name' => $name]);
+
+            DB::commit();
+
+            return redirect()->route('admin.members.index')->with('success', "Member {$name} has been archived/deleted successfully.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Failed to delete member: ' . $e->getMessage()]);
+        }
+    }
 }

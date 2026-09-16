@@ -47,12 +47,60 @@
                     @endif
                 @else
                     <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-[11px] text-slate-300">
-                        Your application is undergoing verification. ID Card & Certificate will be unlocked upon approval.
+                        Your application is undergoing verification. ID Card & Certificate will be unlocked upon fee payment and approval.
                     </div>
                 @endif
             </div>
         </div>
     </div>
+
+    <!-- Payment Control Number Box (When Unpaid) -->
+    @if ($latestInvoice && $latestInvoice->status !== 'paid')
+        <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-emerald-950 rounded-3xl p-6 sm:p-8 text-white border-2 border-emerald-500/50 shadow-2xl space-y-6" x-data="{ copied: false }">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pb-4 border-b border-white/10">
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950 px-3 py-1 rounded-md border border-emerald-700">
+                        Electronic Payment Required
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-black font-heading text-white mt-1">
+                        Membership Fee Payment & Certificate Issuance
+                    </h2>
+                    <p class="text-xs text-slate-300">
+                        In order to receive and print your official <strong>Certificate of Membership</strong> and Smart ID Card, please pay using your Control Number below.
+                    </p>
+                </div>
+                <div class="bg-emerald-900/50 p-3.5 rounded-2xl border border-emerald-500/40 text-left sm:text-right shrink-0">
+                    <span class="text-[10px] uppercase font-bold text-emerald-300 block">Amount to Pay</span>
+                    <strong class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono">
+                        {{ number_format($latestInvoice->amount) }} {{ $latestInvoice->currency }}
+                    </strong>
+                </div>
+            </div>
+
+            <!-- Big Control Number Box -->
+            <div class="p-5 bg-slate-900/90 rounded-2xl border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs uppercase font-extrabold text-slate-400 tracking-wider block">Official Payment Control Number</span>
+                    <div class="text-3xl sm:text-4xl font-black font-mono tracking-wider text-emerald-400 mt-1">
+                        {{ $latestInvoice->control_number }}
+                    </div>
+                    <span class="text-[11px] text-slate-400">Pay via M-Pesa, Tigo Pesa, Airtel Money, Halopesa, or NMB/CRDB Bank</span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" 
+                            @click="navigator.clipboard.writeText('{{ $latestInvoice->control_number }}'); copied = true; setTimeout(() => copied = false, 3000)" 
+                            class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-5 py-3 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2 transition shadow-lg cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        <span x-text="copied ? 'Copied!' : 'Copy Control Number'"></span>
+                    </button>
+                    <a href="{{ route('portal.payments') }}" class="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-600/50 font-bold px-4 py-3 rounded-xl text-xs transition">
+                        Submit Payment Proof &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Main Grid: Digital ID Card Preview & Summary Columns -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -124,7 +172,7 @@
                                     </div>
                                 </div>
                                 <div class="col-span-3 flex flex-col items-end">
-                                    @if ($qrCodeUri)
+                                    @if (!empty($qrCodeUri))
                                         <div class="bg-white p-1 rounded-md shadow-xs">
                                             <img src="{{ $qrCodeUri }}" alt="QR" class="w-10 h-10">
                                         </div>
@@ -212,7 +260,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    @forelse ($enrolments as $enrolment)
+                    @forelse (($enrolments ?? collect()) as $enrolment)
                         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <span class="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">{{ $enrolment->session->session_code }}</span>
@@ -239,11 +287,11 @@
             <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                 <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                     <h3 class="text-sm font-bold text-slate-900 font-heading">My Official Certificates</h3>
-                    <span class="text-xs text-slate-500">{{ $certificates->count() }} Issued</span>
+                    <span class="text-xs text-slate-500">{{ ($certificates ?? collect())->count() }} Issued</span>
                 </div>
 
                 <div class="space-y-3">
-                    @forelse ($certificates as $cert)
+                    @forelse (($certificates ?? collect()) as $cert)
                         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
                             <div>
                                 <span class="text-[10px] uppercase font-bold text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded-full">{{ $cert->certificate_type }}</span>
@@ -269,7 +317,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    @forelse ($invoices as $inv)
+                    @forelse (($invoices ?? collect()) as $inv)
                         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center">
                             <div>
                                 <span class="text-xs font-bold text-slate-900">{{ $inv->purpose }}</span>

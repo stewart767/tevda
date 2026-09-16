@@ -485,4 +485,74 @@ class TevdaPlatformTest extends TestCase
         $bulkRes = $this->actingAs($superAdmin)->get(route('admin.cards.bulk_download'));
         $bulkRes->assertStatus(200);
     }
+
+    /**
+     * Test 10: Approved Member Public Certificate & ID Card Downloads Without Login
+     */
+    public function test_approved_member_public_downloads_without_login()
+    {
+        $category = MembershipCategory::first();
+        $region = Region::first();
+        $memberRole = Role::where('slug', 'member')->first();
+
+        $unique = uniqid();
+        $user = User::create([
+            'name' => 'Kassim Said Test',
+            'email' => "kassim.{$unique}@tevda.or.tz",
+            'phone' => "+2557" . rand(10000000, 99999999),
+            'password' => Hash::make('Password123!'),
+            'role_id' => $memberRole?->id,
+            'is_active' => true,
+        ]);
+
+        $member = Member::create([
+            'user_id' => $user->id,
+            'category_id' => $category->id,
+            'region_id' => $region->id,
+            'full_name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'driving_licence_number' => 'DL-KASSIM-' . rand(10000, 99999),
+            'status' => 'approved',
+            'membership_number' => Member::generateMembershipNumber(),
+            'approved_at' => now(),
+            'expiry_date' => now()->addYear(),
+        ]);
+
+        $member->ensureCredentialsGenerated();
+
+        // 1. Download Certificate PDF as Guest (No Login)
+        $cert = $member->membershipCertificate;
+        $this->assertNotNull($cert);
+        $certDownloadRes = $this->get(route('public.certificate.download', $cert->certificate_number));
+        $certDownloadRes->assertStatus(200);
+        $this->assertEquals('application/pdf', $certDownloadRes->headers->get('content-type'));
+
+        // 2. Download ID Card CR80 PDF as Guest (No Login)
+        $cardDownloadRes = $this->get(route('public.card.download', $member->membership_number));
+        $cardDownloadRes->assertStatus(200);
+        $this->assertEquals('application/pdf', $cardDownloadRes->headers->get('content-type'));
+
+        // 3. Download ID Card A4 Sheet PDF as Guest (No Login)
+        $sheetDownloadRes = $this->get(route('public.card.download', ['number' => $member->membership_number, 'format' => 'a4']));
+        $sheetDownloadRes->assertStatus(200);
+        $this->assertEquals('application/pdf', $sheetDownloadRes->headers->get('content-type'));
+
+        // 4. View Tracking Page as Guest -> Confirm Download Links Present
+        $trackRes = $this->get(route('track.application', ['query' => $member->driving_licence_number]));
+        $trackRes->assertStatus(200);
+        $trackRes->assertSee('Download Certificate (PDF)');
+        $trackRes->assertSee('Download ID Card (PDF)');
+
+        // 5. View Public Membership Verification Page -> Confirm Download Links Present
+        $verifyMemberRes = $this->get(route('verify.membership', ['number' => $member->membership_number]));
+        $verifyMemberRes->assertStatus(200);
+        $verifyMemberRes->assertSee('Download ID Card (PDF)');
+        $verifyMemberRes->assertSee('Download Certificate (PDF)');
+
+        // 6. View Public Certificate Verification Page -> Confirm Download Link Present
+        $verifyCertRes = $this->get(route('verify.certificate', ['number' => $cert->certificate_number]));
+        $verifyCertRes->assertStatus(200);
+        $verifyCertRes->assertSee('Download Authentic Certificate (PDF)');
+    }
 }

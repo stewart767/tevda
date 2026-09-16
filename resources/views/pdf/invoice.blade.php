@@ -92,8 +92,13 @@
             <td style="text-align: right;">
                 <div style="font-size: 18px; font-weight: bold; color: #065f46;">OFFICIAL INVOICE</div>
                 <div class="invoice-no">{{ $invoice->invoice_number }}</div>
+                @if(!empty($invoice->control_number))
+                    <div style="margin-top: 4px; padding: 4px 8px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 4px; font-family: monospace; font-size: 12px; font-weight: bold; color: #065f46; display: inline-block;">
+                        CONTROL NO: {{ $invoice->control_number }}
+                    </div>
+                @endif
                 <div style="font-size: 10px; color: #64748b; margin-top: 4px;">
-                    Issue Date: {{ $invoice->issue_date ? $invoice->issue_date->format('d F Y') : date('d F Y') }}<br/>
+                    Issue Date: {{ $invoice->created_at ? $invoice->created_at->format('d F Y') : date('d F Y') }}<br/>
                     Due Date: {{ $invoice->due_date ? $invoice->due_date->format('d F Y') : 'Immediate' }}
                 </div>
             </td>
@@ -104,9 +109,9 @@
         <tr>
             <td style="width: 50%;">
                 <strong style="color: #64748b; font-size: 10px; text-transform: uppercase;">Billed To:</strong><br/>
-                <strong style="font-size: 13px;">{{ $invoice->member->full_name ?? 'Valued Member' }}</strong><br/>
+                <strong style="font-size: 13px;">{{ $invoice->member->full_name ?? ($invoice->user->name ?? 'Valued Member') }}</strong><br/>
                 <span>Member No: {{ $invoice->member->membership_number ?? 'Pending' }}</span><br/>
-                <span>Phone: {{ $invoice->member->phone ?? 'N/A' }}</span><br/>
+                <span>Phone: {{ $invoice->member->phone ?? ($invoice->user->phone ?? 'N/A') }}</span><br/>
                 <span>Location: {{ $invoice->member->region->name ?? 'Tanzania' }}</span>
             </td>
             <td style="width: 50%; text-align: right;">
@@ -127,7 +132,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{ $invoice->description ?? 'Official Association Tariff / Membership Fee' }}</td>
+                <td>{{ $invoice->purpose ?? ($invoice->description ?? 'Official Association Tariff / Membership Registration Fee') }}</td>
                 <td style="text-align: right;">{{ number_format($invoice->amount, 2) }} {{ $invoice->currency }}</td>
             </tr>
         </tbody>
@@ -139,7 +144,7 @@
 
     <div class="payment-instructions">
         <strong>Bank & Mobile Money Payment Instructions:</strong><br/>
-        Please make payments referencing invoice number <strong>{{ $invoice->invoice_number }}</strong> to the official TEVDA Association bank account or M-Pesa / Tigo Pesa merchant till. Upload your payment confirmation slip in your member portal for automated receipt generation.
+        Please pay using Control Number <strong>{{ $invoice->control_number }}</strong> via Vodacom M-Pesa (*150*00# -> Lipa Namba -> Paybill), Tigo Pesa, Airtel Money, or bank deposit (CRDB / NMB / NBC). Once paid, your official Certificate of Membership and Smart ID Card will be generated and issued.
     </div>
 
     <div class="footer-note">

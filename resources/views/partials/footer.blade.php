@@ -79,6 +79,12 @@
                 <h4 class="text-white font-extrabold text-xs uppercase tracking-widest mb-4 font-heading text-amber-400">Integrity & Verification</h4>
                 <ul class="space-y-2.5 text-xs sm:text-sm">
                     <li>
+                        <a href="{{ route('track.application') }}" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold text-amber-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            Track Application & Control No
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('verify.membership') }}" class="hover:text-emerald-300 transition flex items-center gap-1.5 font-bold text-emerald-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             Verify Member ID
@@ -86,7 +92,7 @@
                     </li>
                     <li>
                         <a href="{{ route('verify.certificate') }}" class="hover:text-emerald-300 transition flex items-center gap-1.5 font-bold text-emerald-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             Verify Certificate
                         </a>
                     </li>

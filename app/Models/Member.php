@@ -33,6 +33,10 @@ class Member extends Model
         'employer',
         'ev_experience_years',
         'tin_number',
+        'is_founding_member',
+        'next_of_kin_name',
+        'next_of_kin_relationship',
+        'next_of_kin_phone',
         'passport_photo_path',
         'status',
         'reviewer_notes',
@@ -47,6 +51,7 @@ class Member extends Model
     protected $casts = [
         'date_of_birth' => 'date',
         'licence_expiry_date' => 'date',
+        'is_founding_member' => 'boolean',
         'reviewed_at' => 'datetime',
         'approved_at' => 'datetime',
         'expiry_date' => 'date',
@@ -127,6 +132,11 @@ class Member extends Model
         return $this->hasOne(Certificate::class)->where('certificate_type', 'membership')->where('status', 'valid')->latestOfMany();
     }
 
+    public function activeCertificate()
+    {
+        return $this->hasOne(Certificate::class)->where('status', 'valid')->latestOfMany();
+    }
+
     public function enrolments()
     {
         return $this->hasMany(TrainingEnrolment::class);
@@ -157,5 +167,74 @@ class Member extends Model
         $year = date('Y');
         $count = self::whereNotNull('membership_number')->count() + 1;
         return sprintf('TEVDA-%s-%05d', $year, $count);
+    }
+
+    /**
+     * Guarantees that an approved member has an active membership card and valid certificate.
+     */
+    public function ensureCredentialsGenerated(): void
+    {
+        if ($this->status !== 'approved') {
+            return;
+        }
+
+        // 1. Membership Number
+        if (!$this->membership_number) {
+            $this->membership_number = self::generateMembershipNumber();
+            if (!$this->approved_at) {
+                $this->approved_at = now();
+            }
+            if (!$this->expiry_date) {
+                $this->expiry_date = now()->addYear();
+            }
+            $this->save();
+        }
+
+        // 2. Digital Membership Card
+        if (!$this->card()->exists()) {
+            $verifyMembershipUrl = url('/verify/membership/' . $this->membership_number);
+            MembershipCard::updateOrCreate(
+                ['member_id' => $this->id],
+                [
+                    'card_number' => 'CARD-' . $this->membership_number,
+                    'issue_date' => $this->approved_at ?? now(),
+                    'expiry_date' => $this->expiry_date ?: now()->addYear(),
+                    'qr_code_path' => $verifyMembershipUrl,
+                    'card_data' => [
+                        'name' => $this->full_name,
+                        'category' => $this->category?->name ?? 'Commercial EV Member',
+                        'region' => $this->region?->name ?? 'Tanzania',
+                        'phone' => $this->phone,
+                        'theme' => 'emerald',
+                        'motto' => 'SMART DRIVERS SMART MOBILITY',
+                    ],
+                    'is_active' => true,
+                ]
+            );
+        }
+
+        // 3. Official Certificate of Membership
+        if (!$this->membershipCertificate()->exists()) {
+            $membershipTemplate = CertificateTemplate::where('certificate_type', 'membership')->first();
+            $certNumber = Certificate::generateCertificateNumber('MEM');
+            $verifyCertUrl = url('/verify/certificate/' . $certNumber);
+
+            Certificate::updateOrCreate(
+                ['member_id' => $this->id, 'certificate_type' => 'membership'],
+                [
+                    'certificate_number' => $certNumber,
+                    'template_id' => $membershipTemplate?->id,
+                    'title' => 'Certificate of Membership',
+                    'recipient_name' => $this->full_name,
+                    'course_name' => $this->category?->name ?? 'Commercial EV Full Member',
+                    'issue_date' => $this->approved_at ?? now(),
+                    'expiry_date' => $this->expiry_date ?: now()->addYear(),
+                    'authorized_person_name' => 'Dr. Charles Mwansasu',
+                    'authorized_person_title' => 'Founding Chairperson',
+                    'qr_code_path' => $verifyCertUrl,
+                    'status' => 'valid',
+                ]
+            );
+        }
     }
 }
