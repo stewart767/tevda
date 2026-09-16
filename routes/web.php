@@ -79,6 +79,47 @@ Route::any('/public/{any}', function ($any = '') {
     return redirect('/' . $any, 301);
 })->where('any', '.*');
 
+// System Setup & Migration Runner (Protected by key)
+Route::get('/system/setup-database', function (\Illuminate\Http\Request $request) {
+    if ($request->get('key') !== 'tevda2026') {
+        return response("<div style='font-family:sans-serif;padding:30px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;'><h2>Unauthorized</h2><p>Access key is missing or invalid. Use <code>?key=tevda2026</code> to run.</p></div>", 403);
+    }
+    
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $migrateOutput = \Illuminate\Support\Facades\Artisan::output();
+        
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        $seedOutput = \Illuminate\Support\Facades\Artisan::output();
+        
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        $clearOutput = \Illuminate\Support\Facades\Artisan::output();
+        
+        return response("
+            <div style='font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:#0f172a;color:#f8fafc;padding:30px;border-radius:8px;max-width:800px;margin:30px auto;box-shadow:0 10px 25px rgba(0,0,0,0.5);'>
+                <h2 style='color:#10b981;margin-top:0;'>&#10004; TEVDA Database Migrations & Seeds Executed Successfully</h2>
+                <h4 style='color:#38bdf8;border-bottom:1px solid #334155;padding-bottom:5px;'>1. Migration Output:</h4>
+                <pre style='background:#1e293b;padding:15px;border-radius:6px;overflow-x:auto;color:#cbd5e1;font-size:13px;'>" . htmlspecialchars($migrateOutput) . "</pre>
+                <h4 style='color:#38bdf8;border-bottom:1px solid #334155;padding-bottom:5px;'>2. Seeder Output:</h4>
+                <pre style='background:#1e293b;padding:15px;border-radius:6px;overflow-x:auto;color:#cbd5e1;font-size:13px;'>" . htmlspecialchars($seedOutput) . "</pre>
+                <h4 style='color:#38bdf8;border-bottom:1px solid #334155;padding-bottom:5px;'>3. Cache Clear:</h4>
+                <pre style='background:#1e293b;padding:15px;border-radius:6px;overflow-x:auto;color:#cbd5e1;font-size:13px;'>" . htmlspecialchars($clearOutput) . "</pre>
+                <div style='margin-top:25px;'>
+                    <a href='/' style='display:inline-block;background:#0284c7;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;'>Go to TEVDA Homepage &rarr;</a>
+                </div>
+            </div>
+        ");
+    } catch (\Throwable $e) {
+        return response("
+            <div style='font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:#0f172a;color:#f8fafc;padding:30px;border-radius:8px;max-width:800px;margin:30px auto;'>
+                <h2 style='color:#ef4444;margin-top:0;'>&#10008; Database Migration Failed</h2>
+                <p style='color:#fca5a5;'><strong>Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>
+                <pre style='background:#1e293b;padding:15px;border-radius:6px;overflow-x:auto;color:#94a3b8;font-size:12px;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>
+            </div>
+        ", 500);
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | 3. AUTHENTICATION ROUTES
