@@ -29,9 +29,9 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Redirect direct requests containing /public to clean URL
-    RewriteCond %{THE_REQUEST} \s/+(.+/)?public/([^\s?]*) [NC]
-    RewriteRule ^ %1%2 [L,NE,R=301]
+    # Redirect direct requests to /public or /public/* to clean root URL
+    RewriteCond %{THE_REQUEST} \s/+(?:.*/)?public(?:/([^\s?]*))? [NC]
+    RewriteRule ^ /%1 [L,NE,R=301]
 
     # If requested file exists in public directory, rewrite to it
     RewriteCond %{REQUEST_FILENAME} !-f

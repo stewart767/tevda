@@ -71,6 +71,14 @@ Route::get('/download/card/{number}', [VerificationController::class, 'downloadP
 Route::get('/verify/certificate/{number}/download', [VerificationController::class, 'downloadPublicCertificatePdf'])->name('public.certificate.download_alias');
 Route::get('/verify/membership/{number}/download', [VerificationController::class, 'downloadPublicCardPdf'])->name('public.card.download_alias');
 
+// Fallback Redirects for Direct /public URLs
+Route::any('/public', function () {
+    return redirect('/', 301);
+});
+Route::any('/public/{any}', function ($any = '') {
+    return redirect('/' . $any, 301);
+})->where('any', '.*');
+
 /*
 |--------------------------------------------------------------------------
 | 3. AUTHENTICATION ROUTES
