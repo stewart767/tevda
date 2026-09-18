@@ -68,6 +68,46 @@ class Certificate extends Model
         return $this->status === 'valid' && (!$this->expiry_date || $this->expiry_date->isFuture());
     }
 
+    /**
+     * Resolve base64 data URI for certificate signature (specific signature or system chairman signature).
+     */
+    public function getSignatureDataUri(): ?string
+    {
+        if ($this->signature_image_path) {
+            $cleanPath = ltrim(str_replace('\\', '/', $this->signature_image_path), '/');
+            $diskPath = \Illuminate\Support\Str::startsWith($cleanPath, 'storage/') 
+                ? \Illuminate\Support\Str::after($cleanPath, 'storage/') 
+                : $cleanPath;
+
+            $path = \Illuminate\Support\Facades\Storage::disk('public')->path($diskPath);
+            if (!file_exists($path)) {
+                $path = public_path('storage/' . $diskPath);
+            }
+            if (!file_exists($path)) {
+                $path = public_path($cleanPath);
+            }
+
+            if (file_exists($path)) {
+                $mime = mime_content_type($path) ?: 'image/png';
+                return 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path));
+            }
+        }
+
+        return Setting::getChairmanSignatureDataUri();
+    }
+
+    /**
+     * Resolve public URL for certificate signature.
+     */
+    public function getSignatureUrl(): ?string
+    {
+        if ($this->signature_image_path) {
+            return \App\Helpers\ImageHelper::getUrl($this->signature_image_path);
+        }
+
+        return Setting::getChairmanSignatureUrl();
+    }
+
     public static function generateCertificateNumber(string $type = 'CERT'): string
     {
         $year = date('Y');
@@ -75,3 +115,4 @@ class Certificate extends Model
         return sprintf('TEVDA-%s-%s-%06d', strtoupper($type), $year, $count);
     }
 }
+

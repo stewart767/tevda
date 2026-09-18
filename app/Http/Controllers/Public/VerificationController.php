@@ -13,6 +13,7 @@ use App\Models\AuditLog;
 use App\Models\NotificationCustom;
 use App\Services\DocumentService;
 use App\Services\PdfService;
+use App\Services\QrCodeService;
 use Illuminate\Http\Request;
 
 class VerificationController extends Controller
@@ -138,6 +139,7 @@ class VerificationController extends Controller
     {
         $searchQuery = trim($number ?: $request->query('number', $request->query('query', '')));
         $member = null;
+        $qrCodeUri = null;
         $searchPerformed = false;
 
         if (!empty($searchQuery)) {
@@ -146,11 +148,13 @@ class VerificationController extends Controller
 
             if ($member && $member->status === 'approved') {
                 $member->ensureCredentialsGenerated();
-                $member->load(['membershipCertificate', 'card']);
+                $member->load(['membershipCertificate', 'card', 'category', 'region', 'district', 'primaryVehicle']);
+                $verifyUrl = url('/verify/membership/' . $member->membership_number);
+                $qrCodeUri = QrCodeService::dataUri($verifyUrl, 160);
             }
         }
 
-        return view('public.verify_membership', compact('member', 'searchQuery', 'searchPerformed'));
+        return view('public.verify_membership', compact('member', 'searchQuery', 'searchPerformed', 'qrCodeUri'));
     }
 
     /**
@@ -158,15 +162,25 @@ class VerificationController extends Controller
      */
     public function verifyCertificate(Request $request, ?string $number = null)
     {
-        $certificateNumber = $number ?: $request->query('number');
+        $certificateNumber = trim($number ?: $request->query('number', $request->query('query', '')));
         $certificate = null;
+        $qrCodeUri = null;
         $searchPerformed = false;
 
-        if ($certificateNumber) {
+        if (!empty($certificateNumber)) {
             $searchPerformed = true;
-            $certificate = Certificate::with(['member.category', 'course.programme'])
-                ->where('certificate_number', trim($certificateNumber))
+            $certificate = Certificate::with(['member.category', 'course.programme', 'template'])
+                ->where('certificate_number', $certificateNumber)
                 ->first();
+
+            if (!$certificate) {
+                // Also support looking up certificate by member identifier
+                $member = $this->findMemberByAnyIdentifier($certificateNumber);
+                if ($member && $member->status === 'approved') {
+                    $member->ensureCredentialsGenerated();
+                    $certificate = $member->membershipCertificate ?? $member->activeCertificate ?? $member->certificates()->latest()->first();
+                }
+            }
 
             if ($certificate) {
                 // Log verification hit
@@ -176,10 +190,13 @@ class VerificationController extends Controller
                     'user_agent' => $request->userAgent(),
                     'verified_at' => now(),
                 ]);
+
+                $verifyUrl = url('/verify/certificate/' . $certificate->certificate_number);
+                $qrCodeUri = QrCodeService::dataUri($verifyUrl, 160);
             }
         }
 
-        return view('public.verify_certificate', compact('certificate', 'certificateNumber', 'searchPerformed'));
+        return view('public.verify_certificate', compact('certificate', 'certificateNumber', 'searchPerformed', 'qrCodeUri'));
     }
 
     /**
@@ -246,6 +263,9 @@ class VerificationController extends Controller
     protected function findMemberByAnyIdentifier(string $rawQuery): ?Member
     {
         $query = trim($rawQuery);
+        if (empty($query)) {
+            return null;
+        }
         $cleanDigits = preg_replace('/[^0-9]/', '', $query);
 
         // 1. Direct search on Member model
@@ -273,7 +293,23 @@ class VerificationController extends Controller
             return $member;
         }
 
-        // 2. Search via Control Number on Invoices table
+        // 2. Search via MembershipCard card_number (e.g. CARD-TEVDA-2026-00001)
+        $card = MembershipCard::with(['member.category', 'member.region', 'member.district', 'member.primaryVehicle', 'member.documents', 'member.invoices.payments', 'member.membershipCertificate', 'member.card'])
+            ->where('card_number', $query)
+            ->first();
+        if ($card && $card->member) {
+            return $card->member;
+        }
+
+        // 3. Search via Certificate certificate_number
+        $certificate = Certificate::with(['member.category', 'member.region', 'member.district', 'member.primaryVehicle', 'member.documents', 'member.invoices.payments', 'member.membershipCertificate', 'member.card'])
+            ->where('certificate_number', $query)
+            ->first();
+        if ($certificate && $certificate->member) {
+            return $certificate->member;
+        }
+
+        // 4. Search via Control Number on Invoices table
         if (!empty($cleanDigits) || !empty($query)) {
             $invoice = Invoice::with(['member.category', 'member.region', 'member.district', 'member.primaryVehicle', 'member.documents', 'member.invoices.payments', 'member.membershipCertificate', 'member.card'])
                 ->where('control_number', $query)

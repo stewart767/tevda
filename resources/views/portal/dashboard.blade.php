@@ -225,8 +225,12 @@
                             <div class="grid grid-cols-2 gap-3 items-end">
                                 <div class="space-y-0.5">
                                     <span class="text-[6.5px] uppercase text-slate-400 block font-semibold">Authorized Signatory</span>
-                                    <div class="border-b border-slate-600 pb-0.5">
-                                        <span class="font-serif italic text-sm text-emerald-400">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
+                                    <div class="border-b border-slate-600 pb-0.5 min-h-[20px] flex items-center">
+                                        @if(\App\Models\Setting::hasChairmanSignature())
+                                            <img src="{{ \App\Models\Setting::getChairmanSignatureUrl() }}" alt="Signature" class="max-h-5 max-w-[80px] object-contain filter brightness-150">
+                                        @else
+                                            <span class="font-serif italic text-sm text-emerald-400">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
+                                        @endif
                                     </div>
                                     <span class="text-[7.5px] font-bold block text-white">{{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</span>
                                     <span class="text-[6.5px] text-slate-400 block">{{ \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }} • TEVDA</span>

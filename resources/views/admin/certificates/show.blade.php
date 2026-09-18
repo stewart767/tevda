@@ -85,9 +85,13 @@
         <div class="pt-8 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 items-center gap-6 text-left relative">
             <div class="text-center sm:text-left space-y-1">
                 <div class="h-10 flex items-end justify-center sm:justify-start">
-                    <span class="font-serif italic font-bold text-slate-800 border-b-2 border-slate-300 pb-1 px-4">{{ $certificate->authorized_person_name }}</span>
+                    @if($certificate->getSignatureUrl())
+                        <img src="{{ $certificate->getSignatureUrl() }}" alt="Signature" class="max-h-10 max-w-[170px] object-contain border-b-2 border-slate-300 pb-1">
+                    @else
+                        <span class="font-serif italic font-bold text-slate-800 border-b-2 border-slate-300 pb-1 px-4">{{ $certificate->authorized_person_name ?? \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</span>
+                    @endif
                 </div>
-                <div class="text-[11px] font-bold text-slate-700">{{ $certificate->authorized_person_title ?? 'Founding Chairperson' }}</div>
+                <div class="text-[11px] font-bold text-slate-700">{{ $certificate->authorized_person_title ?? \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }}</div>
                 <div class="text-[10px] text-slate-400">TEVDA Executive Council</div>
             </div>
 

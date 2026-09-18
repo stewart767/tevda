@@ -363,9 +363,13 @@
                 <div class="item-box" style="top: {{ $sgTop }}%; left: {{ $sgLeft }}%; width: {{ $sgWidth }}%; text-align: center;">
                     <div style="font-size: 4.2pt; text-transform: uppercase; color: #94a3b8; margin-bottom: 2pt;">Authorized Signatory</div>
                     <div style="border-bottom: 0.6pt solid #475569; padding-bottom: 1pt; margin-bottom: 1.5pt;">
-                        <span style="font-family: 'DejaVu Sans', cursive, sans-serif; font-style: italic; font-size: 8.5pt; font-weight: bold; color: #34d399;">
-                            {{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}
-                        </span>
+                        @if(!empty($signatureDataUri))
+                            <img src="{{ $signatureDataUri }}" style="max-height: 13pt; max-width: 65pt; object-fit: contain; display: inline-block;" alt="Signature">
+                        @else
+                            <span style="font-family: 'DejaVu Sans', cursive, sans-serif; font-style: italic; font-size: 8.5pt; font-weight: bold; color: #34d399;">
+                                {{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}
+                            </span>
+                        @endif
                     </div>
                     <div style="font-size: {{ $sgFontSize }}pt; font-weight: bold; color: {{ $sgColor }}; line-height: 1.1;">
                         {{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}

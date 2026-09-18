@@ -519,7 +519,13 @@
                 <div class="back-grid">
                     <div class="sig-col">
                         <span class="info-lbl" style="margin-bottom: 0.5mm;">Authorized Signatory</span>
-                        <div class="sig-box">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</div>
+                        <div class="sig-box">
+                            @if(\App\Models\Setting::hasChairmanSignature())
+                                <img src="{{ \App\Models\Setting::getChairmanSignatureUrl() }}" style="max-height: 4.2mm; max-width: 25mm; object-fit: contain; display: inline-block;" alt="Signature">
+                            @else
+                                {{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}
+                            @endif
+                        </div>
                         <div class="sig-name">{{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</div>
                         <div class="sig-title">{{ \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }} • TEVDA</div>
                     </div>

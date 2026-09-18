@@ -249,15 +249,21 @@
                 width: {{ $sigWidth }}%;
                 text-align: {{ $sigAlign }};
             ">
-                <div style="font-family: 'Great Vibes', 'Alex Brush', cursive; font-size: 23pt; color: {{ $cfg['signatory']['color'] ?? '#0f172a' }}; line-height: 1.1; margin-bottom: 2px;">
-                    {{ $certificate->authorized_person_name ?? 'Dr. Charles Mwansasu' }}
-                </div>
+                @if(!empty($signatureDataUri))
+                    <div style="min-height: 38px; display: inline-block; margin-bottom: 2px;">
+                        <img src="{{ $signatureDataUri }}" style="max-height: 44px; max-width: 170px; object-fit: contain; display: block; margin: 0 auto;" alt="Signature">
+                    </div>
+                @else
+                    <div style="font-family: 'Great Vibes', 'Alex Brush', cursive; font-size: 23pt; color: {{ $cfg['signatory']['color'] ?? '#0f172a' }}; line-height: 1.1; margin-bottom: 2px;">
+                        {{ $certificate->authorized_person_name ?? \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}
+                    </div>
+                @endif
                 <div style="border-top: 1.5px solid #475569; width: 170px; margin: 0 auto 3px auto;"></div>
                 <div style="font-family: 'Arial', 'Helvetica', sans-serif; font-weight: bold; font-size: 10.5pt; color: #0f172a;">
-                    {{ $certificate->authorized_person_name ?? 'Dr. Charles Mwansasu' }}
+                    {{ $certificate->authorized_person_name ?? \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}
                 </div>
                 <div style="font-family: 'Arial', 'Helvetica', sans-serif; font-size: 9pt; color: #334155; margin-top: 1px;">
-                    {{ $certificate->authorized_person_title ?? 'Founding Chairperson' }}
+                    {{ $certificate->authorized_person_title ?? \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }}
                 </div>
                 <div style="font-family: 'Arial', 'Helvetica', sans-serif; font-size: 8.5pt; color: #64748b; margin-top: 1px;">
                     TEVDA Executive Council

@@ -120,7 +120,107 @@
             </div>
         </div>
 
-        <!-- 2. Chairman's Welcome Message & Executive Profile Box -->
+        <!-- 2. Official Chairman Signature Box -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-signature text-emerald-600"></i> Official Chairman Signature
+                </h2>
+                <span class="text-[11px] text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold border border-emerald-200">
+                    Live on Certificates & ID Cards
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Current Signature Dual-Preview Card -->
+                <div class="md:col-span-5 flex flex-col items-center justify-center p-5 bg-slate-900 rounded-2xl border border-slate-800 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2 block">Active Signature Preview</span>
+                    
+                    <!-- Dual Preview: Light / Dark -->
+                    <div class="w-full grid grid-cols-2 gap-2" id="signaturePreviewContainer">
+                        <!-- Certificate View (Light Backdrop) -->
+                        <div class="flex flex-col items-center justify-center p-3 bg-white rounded-xl border border-slate-200 min-h-[90px]">
+                            <span class="text-[8px] uppercase font-bold text-slate-400 mb-1">Certificate View</span>
+                            <div class="h-12 w-full flex items-center justify-center" id="sigLightBox">
+                                @if(\App\Models\Setting::hasChairmanSignature())
+                                    <img src="{{ \App\Models\Setting::getChairmanSignatureUrl() }}" alt="Signature" class="max-h-11 max-w-full object-contain">
+                                @else
+                                    <span class="font-serif italic text-slate-800 font-bold text-sm tracking-tight border-b border-slate-300 pb-0.5 px-2">
+                                        {{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- ID Card View (Dark Backdrop) -->
+                        <div class="flex flex-col items-center justify-center p-3 bg-slate-950 rounded-xl border border-slate-800 min-h-[90px]">
+                            <span class="text-[8px] uppercase font-bold text-slate-400 mb-1">ID Card View</span>
+                            <div class="h-12 w-full flex items-center justify-center" id="sigDarkBox">
+                                @if(\App\Models\Setting::hasChairmanSignature())
+                                    <img src="{{ \App\Models\Setting::getChairmanSignatureUrl() }}" alt="Signature" class="max-h-11 max-w-full object-contain filter brightness-150">
+                                @else
+                                    <span class="font-serif italic text-emerald-400 font-bold text-sm tracking-tight border-b border-slate-700 pb-0.5 px-2">
+                                        {{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-400 mt-3">
+                        @if(\App\Models\Setting::hasChairmanSignature())
+                            <span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> Custom Signature Active</span>
+                        @else
+                            <span class="text-amber-400 font-medium"><i class="fa-solid fa-pen-nib"></i> Using Font Signature Fallback</span>
+                        @endif
+                    </p>
+
+                    @if(\App\Models\Setting::hasChairmanSignature())
+                        <div class="mt-3 pt-3 border-t border-slate-800 w-full flex justify-center">
+                            <label class="inline-flex items-center gap-2 text-xs font-semibold text-rose-400 hover:text-rose-300 cursor-pointer">
+                                <input type="checkbox" name="remove_chairman_signature" value="1" class="rounded text-rose-600 focus:ring-rose-500 border-slate-700 bg-slate-800">
+                                <span>Remove & Reset to Font Fallback</span>
+                            </label>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Upload New Signature Input Area -->
+                <div class="md:col-span-7 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Upload Official Chairman Signature (PNG, SVG, JPG, WEBP)</label>
+                        <p class="text-xs text-slate-500 mb-3">
+                            This signature is dynamically rendered on all issued <strong>Membership Certificates</strong>, <strong>Course Graduation Certificates</strong>, and the reverse side of <strong>Member Smart ID Cards</strong>.
+                        </p>
+                    </div>
+
+                    <div class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-5 text-center transition bg-slate-50 hover:bg-emerald-50/20 relative cursor-pointer" onclick="document.getElementById('chairman_signature_input').click()">
+                        <input type="file" name="chairman_signature" id="chairman_signature_input" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden" onchange="previewChairmanSignature(this)">
+                        
+                        <div class="space-y-2">
+                            <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                                <i class="fa-solid fa-signature text-lg"></i>
+                            </div>
+                            <div class="text-xs font-bold text-slate-700">
+                                Click or drag image here to upload signature
+                            </div>
+                            <div class="text-[11px] text-slate-400 space-y-0.5">
+                                <div>Recommended: <strong>Transparent PNG or Vector SVG</strong> (clean black/dark ink with transparent background)</div>
+                                <div>Dimensions: <strong>300x100px to 600x200px</strong> • Max 5MB</div>
+                            </div>
+                        </div>
+
+                        <div id="sigFileSelectedNotice" class="hidden mt-3 p-2 bg-emerald-100 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-900">
+                            Selected file: <span id="sigFileNameDisplay" class="font-mono"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Chairman's Welcome Message & Executive Profile Box -->
         <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-6">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
@@ -331,6 +431,7 @@
             $handledKeys = [
                 'site_logo',
                 'chairman_photo',
+                'chairman_signature',
                 'chairman_message',
                 'chairman_name',
                 'chairman_role',
@@ -399,7 +500,7 @@
 
         <div class="flex items-center justify-end sticky bottom-4 z-20">
             <button type="submit" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition shadow-lg shadow-emerald-600/30 flex items-center gap-2">
-                <i class="fa-solid fa-floppy-disk"></i> Save All Settings & System Logo
+                <i class="fa-solid fa-floppy-disk"></i> Save All Platform Settings & Brand Assets
             </button>
         </div>
     </form>
@@ -416,6 +517,27 @@ function previewLogo(input) {
         reader.onload = function(e) {
             const container = document.getElementById('logoPreviewContainer');
             container.innerHTML = '<img src="' + e.target.result + '" alt="New Logo Preview" class="max-h-24 max-w-full object-contain filter drop-shadow-md">';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function previewChairmanSignature(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('sigFileNameDisplay').textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        document.getElementById('sigFileSelectedNotice').classList.remove('hidden');
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const lightBox = document.getElementById('sigLightBox');
+            const darkBox = document.getElementById('sigDarkBox');
+            if (lightBox) {
+                lightBox.innerHTML = '<img src="' + e.target.result + '" alt="New Signature Preview (Light)" class="max-h-11 max-w-full object-contain">';
+            }
+            if (darkBox) {
+                darkBox.innerHTML = '<img src="' + e.target.result + '" alt="New Signature Preview (Dark)" class="max-h-11 max-w-full object-contain filter brightness-150">';
+            }
         };
         reader.readAsDataURL(file);
     }

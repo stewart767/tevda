@@ -151,6 +151,7 @@ class CmsAdminController extends Controller
         $request->validate([
             'site_logo' => 'nullable|image|mimes:png,jpg,jpeg,svg,webp|max:5120',
             'chairman_photo' => 'nullable|image|mimes:png,jpg,jpeg,svg,webp|max:5120',
+            'chairman_signature' => 'nullable|image|mimes:png,jpg,jpeg,svg,webp|max:5120',
         ]);
 
         // Handle Site Logo
@@ -187,7 +188,32 @@ class CmsAdminController extends Controller
             Setting::set('chairman_photo', $path, 'about', 'file', 'Chairman Portrait Photo');
         }
 
-        $data = $request->except(['_token', 'site_logo', 'remove_logo', 'chairman_photo', 'remove_chairman_photo']);
+        // Handle Chairman Official Signature
+        if ($request->boolean('remove_chairman_signature')) {
+            $oldSig = Setting::get('chairman_signature');
+            if ($oldSig && Storage::disk('public')->exists($oldSig)) {
+                Storage::disk('public')->delete($oldSig);
+            }
+            Setting::set('chairman_signature', null, 'site', 'file', 'Official Chairman Signature');
+        } elseif ($request->hasFile('chairman_signature')) {
+            $oldSig = Setting::get('chairman_signature');
+            if ($oldSig && Storage::disk('public')->exists($oldSig)) {
+                Storage::disk('public')->delete($oldSig);
+            }
+
+            $path = DocumentService::storePublic($request->file('chairman_signature'), 'branding');
+            Setting::set('chairman_signature', $path, 'site', 'file', 'Official Chairman Signature');
+        }
+
+        $data = $request->except([
+            '_token', 
+            'site_logo', 
+            'remove_logo', 
+            'chairman_photo', 
+            'remove_chairman_photo',
+            'chairman_signature',
+            'remove_chairman_signature'
+        ]);
 
         foreach ($data as $key => $value) {
             Setting::updateOrCreate(

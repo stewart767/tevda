@@ -636,7 +636,11 @@
                                 <td style="width: 48%; vertical-align: top; padding-right: 4pt;">
                                     <div class="label-micro" style="text-align: center; margin-bottom: 1.5pt;">Authorized Signatory</div>
                                     <div class="signatory-box">
-                                        <span class="signature-font">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
+                                        @if(!empty($signatureDataUri))
+                                            <img src="{{ $signatureDataUri }}" style="max-height: 13pt; max-width: 65pt; object-fit: contain; display: inline-block;" alt="Signature">
+                                        @else
+                                            <span class="signature-font">{{ \App\Models\Setting::get('chairman_name', 'Charles Mwansasu') }}</span>
+                                        @endif
                                     </div>
                                     <div class="signatory-name">{{ \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</div>
                                     <div class="signatory-title">{{ \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }} • TEVDA</div>

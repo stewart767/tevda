@@ -269,8 +269,15 @@
                 <tr>
                     {{-- Left: Authorized Signatory --}}
                     <td class="footer-col" style="width: 33%; text-align: left;">
-                        <div class="sig-name">{{ $certificate->authorized_person_name ?? 'Dr. Charles Mwansasu' }}</div>
-                        <div class="sig-title">{{ $certificate->authorized_person_title ?? 'Founding Chairperson' }}</div>
+                        @if(!empty($signatureDataUri))
+                            <div style="min-height: 38px; display: inline-block;">
+                                <img src="{{ $signatureDataUri }}" style="max-height: 44px; max-width: 190px; object-fit: contain; display: block; margin-bottom: 2px;" alt="Authorized Signature">
+                            </div>
+                            <div style="border-top: 1.5px solid #94a3b8; width: 190px; margin-bottom: 4px;"></div>
+                        @else
+                            <div class="sig-name">{{ $certificate->authorized_person_name ?? \App\Models\Setting::get('chairman_name', 'Dr. Charles Mwansasu') }}</div>
+                        @endif
+                        <div class="sig-title">{{ $certificate->authorized_person_title ?? \App\Models\Setting::get('chairman_role', 'Founding Chairperson') }}</div>
                         <div class="sig-dept">TEVDA Executive Council</div>
                     </td>
 

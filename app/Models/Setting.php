@@ -151,5 +151,90 @@ class Setting extends Model
 
         return \App\Helpers\ImageHelper::getUrl($photo, asset('images/chairman_dr_charles_mwansasu.jpg'));
     }
+
+    /**
+     * Check if a custom chairman signature is uploaded and present.
+     */
+    public static function hasChairmanSignature(): bool
+    {
+        $sig = self::get('chairman_signature');
+        if (empty($sig)) {
+            return false;
+        }
+
+        return \App\Helpers\ImageHelper::exists($sig);
+    }
+
+    /**
+     * Get the web URL of the chairman signature.
+     */
+    public static function getChairmanSignatureUrl(): ?string
+    {
+        $sig = self::get('chairman_signature');
+        if (empty($sig)) {
+            return null;
+        }
+
+        return \App\Helpers\ImageHelper::getUrl($sig);
+    }
+
+    /**
+     * Get the absolute filesystem path of the chairman signature.
+     */
+    public static function getChairmanSignaturePath(): ?string
+    {
+        $sig = self::get('chairman_signature');
+        if (empty($sig)) {
+            return null;
+        }
+
+        $cleanPath = ltrim(str_replace('\\', '/', $sig), '/');
+        $diskPath = \Illuminate\Support\Str::startsWith($cleanPath, 'storage/') 
+            ? \Illuminate\Support\Str::after($cleanPath, 'storage/') 
+            : $cleanPath;
+
+        $path = Storage::disk('public')->path($diskPath);
+        if (file_exists($path)) {
+            return $path;
+        }
+
+        $publicPath = public_path('storage/' . $diskPath);
+        if (file_exists($publicPath)) {
+            return $publicPath;
+        }
+
+        $directPath = public_path($cleanPath);
+        if (file_exists($directPath)) {
+            return $directPath;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get base64 Data URI of the chairman signature (ideal for DomPDF).
+     */
+    public static function getChairmanSignatureDataUri(): ?string
+    {
+        $path = self::getChairmanSignaturePath();
+        if ($path && file_exists($path)) {
+            $mime = mime_content_type($path);
+            if (!$mime || $mime === 'text/plain') {
+                $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+                $mime = match ($ext) {
+                    'png' => 'image/png',
+                    'jpg', 'jpeg' => 'image/jpeg',
+                    'svg' => 'image/svg+xml',
+                    'webp' => 'image/webp',
+                    default => 'image/png',
+                };
+            }
+            $data = file_get_contents($path);
+            return 'data:' . $mime . ';base64,' . base64_encode($data);
+        }
+
+        return null;
+    }
 }
+
 

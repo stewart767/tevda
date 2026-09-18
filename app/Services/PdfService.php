@@ -21,6 +21,7 @@ class PdfService
         $verifyUrl = url('/verify/certificate/' . $certificate->certificate_number);
         $qrCodeUri = QrCodeService::dataUri($verifyUrl, 140);
         $logoDataUri = Setting::getLogoDataUri();
+        $signatureDataUri = $certificate->getSignatureDataUri() ?: Setting::getChairmanSignatureDataUri();
         
         $template = $certificate->template;
 
@@ -35,6 +36,7 @@ class PdfService
                 'qrCodeUri' => $qrCodeUri,
                 'backgroundDataUri' => $backgroundDataUri,
                 'logoDataUri' => $logoDataUri,
+                'signatureDataUri' => $signatureDataUri,
             ])->setPaper('a4', $orientation);
 
             return $pdf;
@@ -45,6 +47,7 @@ class PdfService
             'verifyUrl' => $verifyUrl,
             'qrCodeUri' => $qrCodeUri,
             'logoDataUri' => $logoDataUri,
+            'signatureDataUri' => $signatureDataUri,
         ])->setPaper('a4', 'landscape');
 
         return $pdf;
@@ -59,6 +62,7 @@ class PdfService
         $verifyUrl = url('/verify/certificate/' . $sampleNumber);
         $qrCodeUri = QrCodeService::dataUri($verifyUrl, 140);
         $logoDataUri = Setting::getLogoDataUri();
+        $signatureDataUri = Setting::getChairmanSignatureDataUri();
         $backgroundDataUri = $template->getBackgroundImageDataUri();
         $orientation = $template->orientation ?? 'landscape';
 
@@ -72,8 +76,8 @@ class PdfService
             'grade' => 'Distinction (Grade A)',
             'issue_date' => now(),
             'expiry_date' => now()->addYear(),
-            'authorized_person_name' => 'Dr. Charles Mwansasu',
-            'authorized_person_title' => 'Founding & National Chairperson',
+            'authorized_person_name' => Setting::get('chairman_name', 'Dr. Charles Mwansasu'),
+            'authorized_person_title' => Setting::get('chairman_role', 'Founding & National Chairperson'),
             'status' => 'valid',
         ]);
 
@@ -85,6 +89,7 @@ class PdfService
                 'qrCodeUri' => $qrCodeUri,
                 'backgroundDataUri' => $backgroundDataUri,
                 'logoDataUri' => $logoDataUri,
+                'signatureDataUri' => $signatureDataUri,
             ])->setPaper('a4', $orientation);
         } else {
             $pdf = Pdf::loadView('pdf.certificate', [
@@ -92,6 +97,7 @@ class PdfService
                 'verifyUrl' => $verifyUrl,
                 'qrCodeUri' => $qrCodeUri,
                 'logoDataUri' => $logoDataUri,
+                'signatureDataUri' => $signatureDataUri,
             ])->setPaper('a4', $orientation);
         }
 
@@ -107,6 +113,7 @@ class PdfService
         $verifyUrl = url('/verify/membership/' . $member->membership_number);
         $qrCodeUri = QrCodeService::dataUri($verifyUrl, 140);
         $logoDataUri = Setting::getLogoDataUri();
+        $signatureDataUri = Setting::getChairmanSignatureDataUri();
 
         // Convert member passport photo to base64 Data URI for reliable offline DomPDF embedding
         $photoDataUri = null;
@@ -147,6 +154,7 @@ class PdfService
                 'verifyUrl' => $verifyUrl,
                 'qrCodeUri' => $qrCodeUri,
                 'logoDataUri' => $logoDataUri,
+                'signatureDataUri' => $signatureDataUri,
                 'photoDataUri' => $photoDataUri,
                 'frontBackgroundDataUri' => $frontBackgroundDataUri,
                 'backBackgroundDataUri' => $backBackgroundDataUri,
@@ -161,6 +169,7 @@ class PdfService
             'verifyUrl' => $verifyUrl,
             'qrCodeUri' => $qrCodeUri,
             'logoDataUri' => $logoDataUri,
+            'signatureDataUri' => $signatureDataUri,
             'photoDataUri' => $photoDataUri,
             'theme' => $theme,
             'showBack' => $showBack,
@@ -178,6 +187,7 @@ class PdfService
         $verifyUrl = url('/verify/membership/' . $sampleNumber);
         $qrCodeUri = QrCodeService::dataUri($verifyUrl, 140);
         $logoDataUri = Setting::getLogoDataUri();
+        $signatureDataUri = Setting::getChairmanSignatureDataUri();
         $frontBackgroundDataUri = $template->getFrontBackgroundImageDataUri();
         $backBackgroundDataUri = $template->getBackBackgroundImageDataUri();
 
@@ -213,6 +223,7 @@ class PdfService
             'verifyUrl' => $verifyUrl,
             'qrCodeUri' => $qrCodeUri,
             'logoDataUri' => $logoDataUri,
+            'signatureDataUri' => $signatureDataUri,
             'photoDataUri' => $photoDataUri,
             'frontBackgroundDataUri' => $frontBackgroundDataUri,
             'backBackgroundDataUri' => $backBackgroundDataUri,
@@ -233,6 +244,7 @@ class PdfService
         }
 
         $logoDataUri = Setting::getLogoDataUri();
+        $signatureDataUri = Setting::getChairmanSignatureDataUri();
         $theme = $options['theme'] ?? 'emerald';
 
         // Prepare member data items with photo and QR code base64 URIs
@@ -263,6 +275,7 @@ class PdfService
         $pdf = Pdf::loadView('pdf.membership_card_a4', [
             'preparedMembers' => $preparedMembers,
             'logoDataUri' => $logoDataUri,
+            'signatureDataUri' => $signatureDataUri,
             'theme' => $theme,
         ])->setPaper('a4', 'portrait');
 
