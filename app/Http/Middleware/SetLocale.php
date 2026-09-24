@@ -55,16 +55,16 @@ class SetLocale
             }
         }
 
-        // 4. Fallback to default
+        // 4. Fallback to default (Kiswahili)
         if (!$locale || !in_array($locale, $supported)) {
-            $locale = config('app.locale', 'en');
+            $locale = config('app.locale', 'sw');
         }
 
         App::setLocale($locale);
 
         // Share locale variables across all views
         View::share('activeLocale', $locale);
-        View::share('activeLocaleInfo', LocaleController::$supportedLocales[$locale] ?? LocaleController::$supportedLocales['en']);
+        View::share('activeLocaleInfo', LocaleController::$supportedLocales[$locale] ?? LocaleController::$supportedLocales['sw']);
         View::share('allLocales', LocaleController::$supportedLocales);
 
         return $next($request);

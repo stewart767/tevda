@@ -66,7 +66,7 @@ class LocaleController extends Controller
         }
 
         if (!array_key_exists($locale, self::$supportedLocales)) {
-            $locale = 'en';
+            $locale = 'sw';
         }
 
         // Save in session and permanent cookies
@@ -74,9 +74,9 @@ class LocaleController extends Controller
         App::setLocale($locale);
 
         $googTransValue = match($locale) {
-            'sw' => '/en/sw',
             'zh' => '/en/zh-CN',
-            default => '/en/en',
+            'en' => '/en/en',
+            default => '/en/sw',
         };
 
         $cookieTevda = Cookie::make('tevda_locale', $locale, 60 * 24 * 365 * 5, '/', null, false, false);
@@ -97,7 +97,7 @@ class LocaleController extends Controller
     public static function getCurrentLocale(): array
     {
         $locale = App::getLocale();
-        return self::$supportedLocales[$locale] ?? self::$supportedLocales['en'];
+        return self::$supportedLocales[$locale] ?? self::$supportedLocales['sw'];
     }
 
     /**

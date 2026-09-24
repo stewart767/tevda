@@ -26,7 +26,7 @@
             'gt' => '/en/zh-CN',
         ],
     ];
-    $active = $locales[$current] ?? $locales['en'];
+    $active = $locales[$current] ?? $locales['sw'];
 @endphp
 
 <!-- Desktop Language Switcher Dropdown -->
