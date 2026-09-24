@@ -19,13 +19,15 @@ use App\Http\Controllers\Admin\GovernanceAdminController;
 use App\Http\Controllers\Admin\CmsAdminController;
 use App\Http\Controllers\Admin\SliderAdminController;
 use App\Http\Controllers\Admin\AuditReportController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\DocumentDownloadController;
 
 /*
 |--------------------------------------------------------------------------
-| 1. PUBLIC WEBSITE ROUTES
+| 1. PUBLIC WEBSITE ROUTES & LOCALIZATION
 |--------------------------------------------------------------------------
 */
+Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/leadership', [HomeController::class, 'leadership'])->name('leadership');

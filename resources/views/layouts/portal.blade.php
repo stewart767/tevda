@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Member Portal') — TEVDA</title>
+    <title>@yield('title', __('Member Portal')) — TEVDA</title>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -61,11 +61,14 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('home') }}" class="text-xs text-slate-300 hover:text-white hidden sm:inline px-2 py-1">Public Site</a>
+                    <!-- Language Switcher in Portal -->
+                    @include('partials.language_selector')
+
+                    <a href="{{ route('home') }}" class="text-xs text-slate-300 hover:text-white hidden sm:inline px-2 py-1">{{ __('Public Site') }}</a>
 
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="text-xs bg-slate-800 hover:bg-rose-900 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition font-medium">Logout</button>
+                        <button type="submit" class="text-xs bg-slate-800 hover:bg-rose-900 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition font-medium">{{ __('Logout') }}</button>
                     </form>
                 </div>
             </div>
@@ -74,12 +77,12 @@
         <!-- Sub navigation -->
         <nav class="bg-slate-800 border-t border-slate-700/60 overflow-x-auto">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-4 py-1.5">
-                <a href="{{ route('portal.dashboard') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.dashboard') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">Dashboard</a>
-                <a href="{{ route('portal.profile') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.profile*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">My Profile</a>
-                <a href="{{ route('portal.training') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.training*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">Training</a>
-                <a href="{{ route('portal.opportunities') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.opportunities*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">Opportunities</a>
-                <a href="{{ route('portal.projects') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.projects*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">Projects</a>
-                <a href="{{ route('portal.payments') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.payments*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">Payments & Invoices</a>
+                <a href="{{ route('portal.dashboard') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.dashboard') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('Dashboard') }}</a>
+                <a href="{{ route('portal.profile') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.profile*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('My Profile') }}</a>
+                <a href="{{ route('portal.training') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.training*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('Training') }}</a>
+                <a href="{{ route('portal.opportunities') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.opportunities*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('Opportunities') }}</a>
+                <a href="{{ route('portal.projects') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.projects*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('Projects') }}</a>
+                <a href="{{ route('portal.payments') }}" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap {{ request()->routeIs('portal.payments*') ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }} transition">{{ __('Payments & Invoices') }}</a>
             </div>
         </nav>
     </header>
@@ -90,8 +93,10 @@
     </main>
 
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        <p>&copy; {{ date('Y') }} Tanzania Electric Vehicle Drivers Association (TEVDA). SMART DRIVERS SMART MOBILITY.</p>
+        <p>&copy; {{ date('Y') }} {{ __('Tanzania Electric Vehicle Drivers Association (TEVDA)') }}. {{ __('SMART DRIVERS SMART MOBILITY') }}.</p>
     </footer>
+
+    @include('partials.translator_script')
 
     @stack('scripts')
 </body>
