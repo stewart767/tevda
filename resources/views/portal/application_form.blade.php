@@ -46,7 +46,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-0 sm:ml-9">
                         @foreach ($categories as $cat)
-                            <label class="p-4 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between" :class="selectedCategory === '{{ $cat->slug }}' ? 'border-emerald-600 bg-emerald-50/40 shadow-xs' : 'border-slate-200 bg-slate-50 hover:border-slate-300'">
+                            <label class="p-4 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between" :class="selectedCategory === '{{ $cat->slug }}' ? 'border-emerald-600 bg-emerald-50/40 shadow-sm' : 'border-slate-200 bg-slate-50 hover:border-slate-300'">
                                 <div class="flex items-start justify-between mb-2">
                                     <input type="radio" name="category_id" value="{{ $cat->id }}" x-model="selectedCategory" class="text-emerald-600 focus:ring-emerald-500 mt-1">
                                     <span class="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
@@ -77,17 +77,17 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-0 sm:ml-9">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Full Legal Name <span class="text-rose-500">*</span></label>
-                            <input type="text" name="full_name" required value="{{ old('full_name', auth()->user()->name) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <input type="text" name="full_name" required value="{{ old('full_name', auth()->user()->name) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Date of Birth <span class="text-rose-500">*</span></label>
-                            <input type="date" name="date_of_birth" required value="{{ old('date_of_birth', $member?->date_of_birth?->format('Y-m-d')) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <input type="date" name="date_of_birth" required value="{{ old('date_of_birth', $member?->date_of_birth?->format('Y-m-d')) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Gender <span class="text-rose-500">*</span></label>
-                            <select name="gender" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <select name="gender" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                                 <option value="male" {{ old('gender', $member?->gender) === 'male' ? 'selected' : '' }}>Male</option>
                                 <option value="female" {{ old('gender', $member?->gender) === 'female' ? 'selected' : '' }}>Female</option>
                                 <option value="other" {{ old('gender', $member?->gender) === 'other' ? 'selected' : '' }}>Other</option>
@@ -96,12 +96,12 @@
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number <span class="text-rose-500">*</span></label>
-                            <input type="text" name="phone" required value="{{ old('phone', auth()->user()->phone) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <input type="text" name="phone" required value="{{ old('phone', auth()->user()->phone) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Operating Region <span class="text-rose-500">*</span></label>
-                            <select name="region_id" x-model="selectedRegion" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <select name="region_id" x-model="selectedRegion" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                                 @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
                                 @endforeach
@@ -110,7 +110,7 @@
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">District</label>
-                            <select name="district_id" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <select name="district_id" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                                 <option value="">Select District</option>
                                 <template x-for="dist in currentDistricts" :key="dist.id">
                                     <option :value="dist.id" x-text="dist.name" :selected="dist.id == {{ old('district_id', $member?->district_id ?? 0) }}"></option>
@@ -120,7 +120,7 @@
 
                         <div class="sm:col-span-2">
                             <label class="block text-xs font-bold text-slate-700 mb-1">Physical Address / Operating Hub <span class="text-rose-500">*</span></label>
-                            <input type="text" name="physical_address" required value="{{ old('physical_address', $member?->physical_address) }}" placeholder="e.g. Sinza, Kinondoni" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <input type="text" name="physical_address" required value="{{ old('physical_address', $member?->physical_address) }}" placeholder="e.g. Sinza, Kinondoni" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                         </div>
                     </div>
                 </div>
@@ -136,23 +136,23 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-0 sm:ml-9">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">National ID (NIDA) Number</label>
-                            <input type="text" name="nida_number" value="{{ old('nida_number', $member?->nida_number) }}" placeholder="20-digit NIDA number" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500 font-mono">
+                            <input type="text" name="nida_number" value="{{ old('nida_number', $member?->nida_number) }}" placeholder="20-digit NIDA number" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-mono transition">
                         </div>
 
                         <!-- Full Member Specific -->
                         <div x-show="selectedCategory === 'full-member'">
                             <label class="block text-xs font-bold text-slate-700 mb-1">Driving Licence Number <span class="text-rose-500">*</span></label>
-                            <input type="text" name="driving_licence_number" value="{{ old('driving_licence_number', $member?->driving_licence_number) }}" placeholder="e.g. DL-XXXXXX" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500 font-mono">
+                            <input type="text" name="driving_licence_number" value="{{ old('driving_licence_number', $member?->driving_licence_number) }}" placeholder="e.g. DL-XXXXXX" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-mono transition">
                         </div>
 
                         <div x-show="selectedCategory === 'full-member'">
                             <label class="block text-xs font-bold text-slate-700 mb-1">Licence Class <span class="text-rose-500">*</span></label>
-                            <input type="text" name="licence_class" value="{{ old('licence_class', $member?->licence_class ?? 'C3') }}" placeholder="e.g. A, B, C3, D" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <input type="text" name="licence_class" value="{{ old('licence_class', $member?->licence_class ?? 'C3') }}" placeholder="e.g. A, B, C3, D" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Vehicle Type / Fleet</label>
-                            <select name="vehicle_type" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-hidden focus:border-emerald-500">
+                            <select name="vehicle_type" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                                 <option value="three_wheeler" selected>Electric Three-Wheeler (Bajaj)</option>
                                 <option value="two_wheeler">Electric Motorcycle / Boda Boda</option>
                                 <option value="passenger_car">Electric Passenger Taxi / Car</option>

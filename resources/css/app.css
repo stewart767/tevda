@@ -1,5 +1,50 @@
 @import 'tailwindcss';
 
+/* Alpine Cloak to avoid FOUC */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Eliminate Google Translate residual banners & iframes */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+iframe[id*=":1.container"],
+iframe[id*="google"],
+iframe[class*="goog"],
+.goog-te-menu-frame,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-ORHb,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-l4eHX-hSRLGd,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-gadget,
+#google_translate_element {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+html, body {
+    top: 0px !important;
+    position: static !important;
+}
+
+.goog-text-highlight {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 /* Crisp, distinct ghost placeholder text across all inputs and browsers */
 input::placeholder,
 textarea::placeholder,

@@ -20,7 +20,7 @@
 
             <div>
                 <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email or Phone Number</label>
-                <input id="email" name="email" type="text" required value="{{ old('email') }}" placeholder="user@tevda.or.tz or +255..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                <input id="email" name="email" type="text" required value="{{ old('email') }}" placeholder="user@tevda.or.tz or +255..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
             </div>
 
             <div>
@@ -30,7 +30,7 @@
                         Forgot password?
                     </a>
                 </div>
-                <input id="password" name="password" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                <input id="password" name="password" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
             </div>
 
             <div class="flex items-center justify-between text-xs">

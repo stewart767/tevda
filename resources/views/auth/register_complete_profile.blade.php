@@ -9,7 +9,7 @@
     <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-xs">
+        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-sm">
             <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span>Hatua ya 3 ya 3 • Hatua ya Mwisho ya Fomu</span>
         </div>
@@ -46,7 +46,7 @@
         <!-- Congratulatory Payment Verified Banner -->
         <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg flex items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-xs flex items-center justify-center shrink-0">
+                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div>
@@ -85,7 +85,7 @@
                             <label for="driving_licence_number" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Namba ya Leseni ya Udereva <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="driving_licence_number" name="driving_licence_number" required value="{{ old('driving_licence_number', $member->driving_licence_number) }}" placeholder="e.g. DL-123456" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" id="driving_licence_number" name="driving_licence_number" required value="{{ old('driving_licence_number', $member->driving_licence_number) }}" placeholder="e.g. DL-123456" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm @error('driving_licence_number') border-rose-400 bg-rose-50/30 @enderror">
                             @error('driving_licence_number') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -93,14 +93,14 @@
                             <label for="licence_class" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Daraja la Leseni (Class)
                             </label>
-                            <input type="text" id="licence_class" name="licence_class" value="{{ old('licence_class', $member->licence_class ?? 'C3') }}" placeholder="e.g. A, B, C3, D" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" id="licence_class" name="licence_class" value="{{ old('licence_class', $member->licence_class ?? 'C3') }}" placeholder="e.g. A, B, C3, D" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm">
                         </div>
 
                         <div>
                             <label for="nida_number" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Namba ya NIDA (Hiari)
                             </label>
-                            <input type="text" id="nida_number" name="nida_number" value="{{ old('nida_number', $member->nida_number) }}" placeholder="Namba ya NIDA ya tarakimu 20" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" id="nida_number" name="nida_number" value="{{ old('nida_number', $member->nida_number) }}" placeholder="Namba ya NIDA ya tarakimu 20" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm">
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                             <label for="vehicle_type" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Aina ya Chombo <span class="text-rose-500">*</span>
                             </label>
-                            <select id="vehicle_type" name="vehicle_type" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:bg-white focus:border-emerald-500 outline-none">
+                            <select id="vehicle_type" name="vehicle_type" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm">
                                 <option value="three_wheeler" selected>Bajaji ya Umeme (Three-Wheeler)</option>
                                 <option value="two_wheeler">Pikipiki / Boda Boda ya Umeme</option>
                                 <option value="passenger_car">Gari ya Abiria / Taxi ya Umeme</option>
@@ -135,14 +135,14 @@
                             <label for="vehicle_make" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Kampuni & Model ya Chombo
                             </label>
-                            <input type="text" id="vehicle_make" name="vehicle_make" value="{{ old('vehicle_make') }}" placeholder="e.g. Taifa, Wuling, TVS, BYD" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" id="vehicle_make" name="vehicle_make" value="{{ old('vehicle_make') }}" placeholder="e.g. Taifa, Wuling, TVS, BYD" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm">
                         </div>
 
                         <div>
                             <label for="vehicle_registration" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Namba ya Usajili wa Chombo (Plates)
                             </label>
-                            <input type="text" id="vehicle_registration" name="vehicle_registration" value="{{ old('vehicle_registration') }}" placeholder="e.g. T 123 ABC" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" id="vehicle_registration" name="vehicle_registration" value="{{ old('vehicle_registration') }}" placeholder="e.g. T 123 ABC" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition shadow-sm">
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                                 Picha ya Pasipoti (Passport) <span class="text-rose-500">*</span>
                             </label>
                             
-                            <div class="w-24 h-28 mx-auto rounded-xl border-2 border-dashed border-slate-300 bg-white overflow-hidden flex items-center justify-center relative shadow-xs">
+                            <div class="w-24 h-28 mx-auto rounded-xl border-2 border-dashed border-slate-300 bg-white overflow-hidden flex items-center justify-center relative shadow-sm">
                                 <template x-if="passportPreview">
                                     <img :src="passportPreview" class="w-full h-full object-cover">
                                 </template>

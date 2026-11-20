@@ -169,7 +169,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|string|max:20|unique:users,phone',
             'gender' => 'required|in:male,female,other',
-            'date_of_birth' => 'nullable|date|before:today',
+            'date_of_birth' => 'required|date|before:today',
             'region_id' => 'required|exists:regions,id',
             'district_id' => 'nullable|exists:districts,id',
             'ward_name' => 'required|string|max:100',

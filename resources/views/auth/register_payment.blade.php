@@ -9,7 +9,7 @@
     <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-xs">
+        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-sm">
             <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span>Hatua ya 2 ya 3 • Malipo ya Ada ya Usajili & Cheti</span>
         </div>
@@ -138,7 +138,7 @@
                         <button type="button" 
                                 @click="activeTab = 'push'" 
                                 class="px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2 whitespace-nowrap"
-                                :class="activeTab === 'push' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
+                                :class="activeTab === 'push' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                             <span>1. Lipa kwa Simu (Push STK)</span>
                         </button>
@@ -146,7 +146,7 @@
                         <button type="button" 
                                 @click="activeTab = 'ussd'" 
                                 class="px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2 whitespace-nowrap"
-                                :class="activeTab === 'ussd' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
+                                :class="activeTab === 'ussd' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                             <span>2. Menyu ya USSD</span>
                         </button>
@@ -154,7 +154,7 @@
                         <button type="button" 
                                 @click="activeTab = 'manual'" 
                                 class="px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2 whitespace-nowrap"
-                                :class="activeTab === 'manual' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
+                                :class="activeTab === 'manual' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-100'">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span>3. Weka Muamala (Ref)</span>
                         </button>
@@ -170,30 +170,30 @@
                         <!-- Provider selection cards -->
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                             <label class="p-3 rounded-2xl border-2 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5"
-                                   :class="selectedProvider === 'mpesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-xs' : 'border-slate-200 hover:border-slate-300'">
+                                   :class="selectedProvider === 'mpesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-sm' : 'border-slate-200 hover:border-slate-300'">
                                 <input type="radio" name="provider" value="mpesa" x-model="selectedProvider" class="hidden">
-                                <span class="w-8 h-8 rounded-full bg-rose-600 text-white font-black text-[11px] flex items-center justify-center shadow-xs">M</span>
+                                <span class="w-8 h-8 rounded-full bg-rose-600 text-white font-black text-[11px] flex items-center justify-center shadow-sm">M</span>
                                 <span class="text-xs font-bold text-slate-800">M-Pesa</span>
                             </label>
 
                             <label class="p-3 rounded-2xl border-2 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5"
-                                   :class="selectedProvider === 'tigopesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-xs' : 'border-slate-200 hover:border-slate-300'">
+                                   :class="selectedProvider === 'tigopesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-sm' : 'border-slate-200 hover:border-slate-300'">
                                 <input type="radio" name="provider" value="tigopesa" x-model="selectedProvider" class="hidden">
-                                <span class="w-8 h-8 rounded-full bg-blue-600 text-white font-black text-[11px] flex items-center justify-center shadow-xs">T</span>
+                                <span class="w-8 h-8 rounded-full bg-blue-600 text-white font-black text-[11px] flex items-center justify-center shadow-sm">T</span>
                                 <span class="text-xs font-bold text-slate-800">Tigo Pesa</span>
                             </label>
 
                             <label class="p-3 rounded-2xl border-2 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5"
-                                   :class="selectedProvider === 'airtel' ? 'border-emerald-600 bg-emerald-50/70 shadow-xs' : 'border-slate-200 hover:border-slate-300'">
+                                   :class="selectedProvider === 'airtel' ? 'border-emerald-600 bg-emerald-50/70 shadow-sm' : 'border-slate-200 hover:border-slate-300'">
                                 <input type="radio" name="provider" value="airtel" x-model="selectedProvider" class="hidden">
-                                <span class="w-8 h-8 rounded-full bg-red-600 text-white font-black text-[11px] flex items-center justify-center shadow-xs">A</span>
+                                <span class="w-8 h-8 rounded-full bg-red-600 text-white font-black text-[11px] flex items-center justify-center shadow-sm">A</span>
                                 <span class="text-xs font-bold text-slate-800">Airtel Money</span>
                             </label>
 
                             <label class="p-3 rounded-2xl border-2 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5"
-                                   :class="selectedProvider === 'halopesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-xs' : 'border-slate-200 hover:border-slate-300'">
+                                   :class="selectedProvider === 'halopesa' ? 'border-emerald-600 bg-emerald-50/70 shadow-sm' : 'border-slate-200 hover:border-slate-300'">
                                 <input type="radio" name="provider" value="halopesa" x-model="selectedProvider" class="hidden">
-                                <span class="w-8 h-8 rounded-full bg-amber-500 text-white font-black text-[11px] flex items-center justify-center shadow-xs">H</span>
+                                <span class="w-8 h-8 rounded-full bg-amber-500 text-white font-black text-[11px] flex items-center justify-center shadow-sm">H</span>
                                 <span class="text-xs font-bold text-slate-800">Halopesa</span>
                             </label>
                         </div>
@@ -203,7 +203,7 @@
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Namba ya Simu ya Kulipia (M-Pesa / Tigo / Airtel) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" x-model="phoneNumber" placeholder="e.g. 0757 700 401" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono focus:bg-white focus:border-emerald-500 outline-none">
+                            <input type="text" x-model="phoneNumber" placeholder="e.g. 0757 700 401" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                             <span class="text-[11px] text-slate-400 block mt-1">Ujumbe wa kuweka PIN utatumwa kwenye namba hii.</span>
                         </div>
 
@@ -217,7 +217,7 @@
                     </div>
 
                     <!-- TAB 2: USSD Manual Instructions -->
-                    <div x-show="activeTab === 'ussd'" class="space-y-4" style="display: none;">
+                    <div x-show="activeTab === 'ussd'" x-cloak class="space-y-4">
                         <div>
                             <h3 class="text-sm font-black text-slate-900 font-heading">Maelekezo ya Kulipa kwa Simu Yako (Menyu ya USSD)</h3>
                             <p class="text-xs text-slate-500">Tumia Control Number: <strong class="text-emerald-700 font-mono">{{ $invoice->control_number }}</strong> kulipia TZS 15,000 kupitia mtandao wako:</p>
@@ -241,14 +241,14 @@
                         </div>
 
                         <div class="pt-2">
-                            <button type="button" @click="activeTab = 'manual'" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                            <button type="button" @click="activeTab = 'manual'" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
                                 <span>Umeshamaliza kulipa? Bonyeza hapa kuweka namba ya muamala &rarr;</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- TAB 3: Manual Reference Entry -->
-                    <div x-show="activeTab === 'manual'" class="space-y-5" style="display: none;">
+                    <div x-show="activeTab === 'manual'" x-cloak class="space-y-5">
                         <div>
                             <h3 class="text-sm font-black text-slate-900 font-heading">Thibitisha Malipo kwa Namba ya Muamala</h3>
                             <p class="text-xs text-slate-500">Ikiwa umelipa tayari kwa Control Number kupitia M-Pesa, Tigo Pesa, au Benki, weka namba ya muamala uliyopokea kwenye SMS hapa chini.</p>
@@ -263,10 +263,10 @@
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                     Namba ya Muamala (SMS Transaction Reference) <span class="text-rose-500">*</span>
                                 </label>
-                                <input type="text" name="transaction_reference" required placeholder="Mfano: MP2026112001 au QW987XYZ" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono uppercase focus:bg-white focus:border-emerald-500 outline-none">
+                                <input type="text" name="transaction_reference" required placeholder="Mfano: MP2026112001 au QW987XYZ" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono uppercase focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition">
                             </div>
 
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2 cursor-pointer">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                                 <span>Thibitisha Namba ya Muamala &rarr;</span>
                             </button>
@@ -282,8 +282,8 @@
 
     <!-- Live Push STK Interactive Modal Simulation -->
     <div x-show="isProcessing" 
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
-         style="display: none;">
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-5">
             
             <!-- Step 1: Sending request -->
@@ -302,7 +302,7 @@
 
             <!-- Step 2: Prompt waiting for PIN -->
             <div x-show="processingStep === 2" class="space-y-4">
-                <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-xs">
+                <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-sm">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                 </div>
                 <div>
