@@ -46,11 +46,16 @@
         <div class="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-2xl relative" x-data="{
             selectedCategory: '{{ old('category_id', $selectedCategory->id ?? 1) }}',
             selectedCategorySlug: '{{ $selectedCategory->slug ?? 'full-member' }}',
-            selectedRegion: '{{ old('region_id', $regions->first()?->id ?? '') }}',
+            selectedRegion: '{{ old('region_id', '') }}',
+            selectedDistrict: '{{ old('district_id', '') }}',
             regionsData: {{ Js::from($regions) }},
             get currentDistricts() {
+                if (!this.selectedRegion) return [];
                 const reg = this.regionsData.find(r => r.id == this.selectedRegion);
                 return reg ? (reg.districts || []) : [];
+            },
+            onRegionChange() {
+                this.selectedDistrict = '';
             }
         }">
 
@@ -107,7 +112,8 @@
                             <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 FULL LEGAL NAME (JINA KAMILI) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="name" name="name" required value="{{ old('name') }}" autocomplete="off" placeholder="Mfano: Juma Ally Rashidi (Kama ilivyo kwenye NIDA / Leseni)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="name" name="name" required value="{{ old('name') }}" autocomplete="off" placeholder="Andika jina lako kamili" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Mfano: Juma Ally Rashidi (Kama ilivyo kwenye NIDA / Leseni)</p>
                             @error('name') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -116,8 +122,8 @@
                             <label for="phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 MOBILE PHONE NUMBER (NAMBARI YA SIMU) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="tel" id="phone" name="phone" required value="{{ old('phone') }}" autocomplete="off" placeholder="Mfano: 0757 700 401 au 06..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition font-mono">
-                            <p class="text-[10px] text-slate-400 mt-1">Used to track application status & receive payment SMS</p>
+                            <input type="tel" id="phone" name="phone" required value="{{ old('phone') }}" autocomplete="off" placeholder="0757 700 401 au 06..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition font-mono">
+                            <p class="text-[11px] text-slate-400 mt-1">Hutumika kupokea SMS ya nambari ya malipo na akaunti</p>
                             @error('phone') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -126,19 +132,21 @@
                             <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 EMAIL ADDRESS (BARUA PEPE) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="email" id="email" name="email" required value="{{ old('email') }}" autocomplete="new-password" placeholder="Mfano: dereva@mfano.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="email" id="email" name="email" required value="{{ old('email') }}" autocomplete="new-password" placeholder="dereva@mfano.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Mfano: juma@gmail.com</p>
                             @error('email') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- GENDER -->
                         <div>
                             <label for="gender" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                GENDER <span class="text-rose-500">*</span>
+                                GENDER (JINSIA) <span class="text-rose-500">*</span>
                             </label>
                             <select id="gender" name="gender" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
-                                <option value="male" {{ old('gender', 'male') === 'male' ? 'selected' : '' }}>Male</option>
-                                <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
-                                <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Other</option>
+                                <option value="" disabled {{ old('gender') ? '' : 'selected' }}>-- Chagua Jinsia / Select Gender --</option>
+                                <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male (Mwanaume)</option>
+                                <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female (Mwanamke)</option>
+                                <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Other (Nyingine)</option>
                             </select>
                             @error('gender') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
@@ -146,9 +154,10 @@
                         <!-- DATE OF BIRTH -->
                         <div>
                             <label for="date_of_birth" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                DATE OF BIRTH <span class="text-rose-500">*</span>
+                                DATE OF BIRTH (TAREHE YA KUZALIWA) <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" id="date_of_birth" name="date_of_birth" required value="{{ old('date_of_birth') }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Bonyeza alama ya kalenda kuchagua tarehe (Siku / Mwezi / Mwaka)</p>
                             @error('date_of_birth') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -157,7 +166,7 @@
                             <label for="region_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 REGION (MKOA) <span class="text-rose-500">*</span>
                             </label>
-                            <select id="region_id" name="region_id" x-model="selectedRegion" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <select id="region_id" name="region_id" x-model="selectedRegion" @change="onRegionChange()" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                                 <option value="">-- Chagua Mkoa / Region --</option>
                                 @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -171,12 +180,13 @@
                             <label for="district_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 DISTRICT (WILAYA) <span class="text-rose-500">*</span>
                             </label>
-                            <select id="district_id" name="district_id" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <select id="district_id" name="district_id" x-model="selectedDistrict" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                                 <option value="">-- Chagua Wilaya / District --</option>
                                 <template x-for="dist in currentDistricts" :key="dist.id">
-                                    <option :value="dist.id" x-text="dist.name" :selected="dist.id == {{ old('district_id', 0) }}"></option>
+                                    <option :value="dist.id" x-text="dist.name" :selected="dist.id == selectedDistrict"></option>
                                 </template>
                             </select>
+                            <p class="text-[11px] text-slate-400 mt-1" x-show="!selectedRegion">Chagua mkoa kwanza ili kuona wilaya zake</p>
                             @error('district_id') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -185,7 +195,8 @@
                             <label for="ward_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 WARD (KATA) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="ward_name" name="ward_name" required value="{{ old('ward_name') }}" autocomplete="off" placeholder="Mfano: Sinza, Kimara, Mwenge, Kariakoo, Sekei" list="common_wards" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="ward_name" name="ward_name" required value="{{ old('ward_name') }}" autocomplete="off" placeholder="Andika jina la kata yako..." list="common_wards" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Mfano: Sinza, Kimara, Mwenge, Kariakoo, Sekei</p>
                             <datalist id="common_wards">
                                 <option value="Sinza">
                                 <option value="Kijitonyama">
@@ -220,9 +231,10 @@
                         <!-- PHYSICAL ADDRESS / STATION HUB -->
                         <div class="sm:col-span-2">
                             <label for="physical_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                PHYSICAL ADDRESS / STATION HUB <span class="text-rose-500">*</span>
+                                PHYSICAL ADDRESS / STATION HUB (MAHALI / KITUO) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" autocomplete="off" placeholder="Mfano: Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaj" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" autocomplete="off" placeholder="Mtaa, nambari ya nyumba au jina la kituo cha gari/bajaji..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Mfano: Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaji na Magari ya Umeme</p>
                             @error('physical_address') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
@@ -236,7 +248,8 @@
                             <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Nenosiri (Password) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Weka nenosiri lako (angalau herufi 6)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Andika nenosiri lako..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Angalau herufi au tarakimu 6</p>
                             @error('password') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -244,7 +257,8 @@
                             <label for="password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Rudia Nenosiri (Confirm Password) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" placeholder="Rudia nenosiri lilelile hapa" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" placeholder="Rudia tena nenosiri lilelile..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <p class="text-[11px] text-slate-400 mt-1">Hakikisha linafanana sawasawa na nenosiri la kwanza</p>
                         </div>
                     </div>
                 </div>

@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
-/* High-contrast crisp placeholder text across all inputs and browsers */
+/* Crisp, distinct ghost placeholder text across all inputs and browsers */
 input::placeholder,
 textarea::placeholder,
 select::placeholder {
-    color: #64748b !important; /* slate-500 crisp and readable */
-    opacity: 0.95 !important;
+    color: #94a3b8 !important; /* slate-400 clearly distinct from typed user text */
+    opacity: 1 !important;
 }
 
 /* Prevent browser autofill ugly yellow background from tinting fields */
