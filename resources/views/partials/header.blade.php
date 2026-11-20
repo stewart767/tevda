@@ -128,103 +128,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Initiatives & Programmes Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 {{ request()->routeIs('programmes*') || request()->routeIs('projects*') || request()->routeIs('opportunities*') ? 'text-emerald-700 bg-emerald-50/90 shadow-xs' : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50' }}">
-                        <span>{{ __('Programmes & Projects') }}</span>
-                        <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180 text-emerald-600': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="open" 
-                         x-transition:enter="transition ease-out duration-200" 
-                         x-transition:enter-start="opacity-0 translate-y-2 scale-95" 
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100" 
-                         x-transition:leave="transition ease-in duration-150" 
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100" 
-                         x-transition:leave-end="opacity-0 translate-y-2 scale-95" 
-                         class="absolute left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 mt-1 z-50 ring-1 ring-black/5"
-                         style="display: none;">
-                        <div class="px-3 py-1.5 mb-1 border-b border-slate-100">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{{ __('Driver Initiatives') }}</span>
-                        </div>
-                        <a href="{{ route('programmes') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-emerald-800">{{ __('Driver Programmes') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('EV skills training & safety certification') }}</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('projects') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-teal-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 group-hover:bg-teal-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-teal-800">{{ __('EV Projects Showcase') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('Fleet electrification & charging hubs') }}</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('opportunities') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-amber-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-amber-800">{{ __('Opportunities Directory') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('Driver jobs, fleet tenders & grants') }}</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 3. Media & Resources Dropdown -->
-                <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                    <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 {{ request()->routeIs('news*') || request()->routeIs('resources*') || request()->routeIs('whistleblower*') ? 'text-emerald-700 bg-emerald-50/90 shadow-xs' : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50' }}">
-                        <span>{{ __('Media & Hub') }}</span>
-                        <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180 text-emerald-600': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="open" 
-                         x-transition:enter="transition ease-out duration-200" 
-                         x-transition:enter-start="opacity-0 translate-y-2 scale-95" 
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100" 
-                         x-transition:leave="transition ease-in duration-150" 
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100" 
-                         x-transition:leave-end="opacity-0 translate-y-2 scale-95" 
-                         class="absolute left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 mt-1 z-50 ring-1 ring-black/5"
-                         style="display: none;">
-                        <div class="px-3 py-1.5 mb-1 border-b border-slate-100">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{{ __('Knowledge & News') }}</span>
-                        </div>
-                        <a href="{{ route('news') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-sky-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0 group-hover:bg-sky-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-sky-800">{{ __('News & Media Releases') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('Updates, press releases & events') }}</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('resources') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-emerald-800">{{ __('Resource Center') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('Policy briefs, guidelines & downloads') }}</div>
-                            </div>
-                        </a>
-                        <a href="{{ route('whistleblower') }}" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-rose-50/80 group transition">
-                            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 group-hover:bg-rose-600 group-hover:text-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-xs font-bold text-slate-800 group-hover:text-rose-800">{{ __('Whistleblower Portal') }}</div>
-                                <div class="text-[11px] text-slate-500 font-normal">{{ __('Confidential reporting & transparency') }}</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 4. Verification Dropdown -->
+                <!-- 2. Verification Dropdown -->
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                     <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all duration-200 {{ request()->routeIs('verify*') || request()->routeIs('track*') ? 'text-emerald-700 bg-emerald-50/90 shadow-xs' : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50' }}">
                         <span>{{ __('Verification') }}</span>
@@ -367,44 +271,6 @@
                     <a href="{{ route('partners') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
                         <span>{{ __('Strategic Partners') }}</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Programmes & Projects -->
-            <div class="border-t border-slate-100 pt-3">
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 mb-1.5">{{ __('Programmes & Projects') }}</div>
-                <div class="space-y-1">
-                    <a href="{{ route('programmes') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        <span>{{ __('Driver Training Programmes') }}</span>
-                    </a>
-                    <a href="{{ route('projects') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
-                        <span>{{ __('EV Projects Showcase') }}</span>
-                    </a>
-                    <a href="{{ route('opportunities') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                        <span>{{ __('Opportunities Directory') }}</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Media & Resources -->
-            <div class="border-t border-slate-100 pt-3">
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 mb-1.5">{{ __('Media & Resources') }}</div>
-                <div class="space-y-1">
-                    <a href="{{ route('news') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-                        <span>{{ __('News & Media Releases') }}</span>
-                    </a>
-                    <a href="{{ route('resources') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        <span>{{ __('Resource Center & Downloads') }}</span>
-                    </a>
-                    <a href="{{ route('whistleblower') }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-rose-700 bg-rose-50/60 border border-rose-100">
-                        <svg class="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        <span>{{ __('Whistleblower Portal') }}</span>
                     </a>
                 </div>
             </div>

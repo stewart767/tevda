@@ -43,33 +43,73 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @forelse($leaders as $leader)
-                <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3 relative">
-                    @if($leader->is_founding_leader)
-                        <span class="absolute top-4 right-4 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                            FOUNDING
-                        </span>
-                    @endif
+                <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold {{ $leader->is_active ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-200 text-slate-700' }}">
+                                <span class="w-1.5 h-1.5 rounded-full {{ $leader->is_active ? 'bg-emerald-600' : 'bg-slate-400' }}"></span>
+                                <span>{{ $leader->is_active ? 'ACTIVE' : 'INACTIVE' }}</span>
+                            </span>
 
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-700 text-white font-black text-base flex items-center justify-center shrink-0 uppercase overflow-hidden">
-                            @if($leader->photo_url)
-                                <img src="{{ $leader->photo_url }}" alt="{{ $leader->name }}" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden">{{ substr($leader->name, 0, 2) }}</span>
-                            @else
-                                {{ substr($leader->name, 0, 2) }}
-                            @endif
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[10px] font-mono font-bold text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded">
+                                    #{{ $leader->order_number ?? '-' }}
+                                </span>
+                                @if($leader->is_founding_leader)
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                        FOUNDING
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-black text-slate-900 text-sm">{{ $leader->name }}</h3>
-                            <p class="text-xs font-bold text-emerald-700">{{ $leader->position }}</p>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-700 text-white font-black text-base flex items-center justify-center shrink-0 uppercase overflow-hidden border border-emerald-600/30">
+                                @if($leader->photo_url)
+                                    <img src="{{ $leader->photo_url }}" alt="{{ $leader->name }}" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                    <span class="hidden">{{ substr($leader->name, 0, 2) }}</span>
+                                @else
+                                    {{ substr($leader->name, 0, 2) }}
+                                @endif
+                            </div>
+                            <div class="min-w-0">
+                                <h3 class="font-black text-slate-900 text-sm truncate" title="{{ $leader->name }}">{{ $leader->name }}</h3>
+                                <p class="text-xs font-bold text-emerald-700 leading-tight">{{ $leader->position }}</p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-500 line-clamp-2 mt-2.5">{{ $leader->biography ?? 'Official executive leadership representative.' }}</p>
+
+                        <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-200 flex items-center justify-between mt-3">
+                            <span class="truncate">{{ $leader->governanceBody->name ?? 'Executive Council' }}</span>
+                            <span>{{ $leader->official_office_contact ?? 'info@tevda.or.tz' }}</span>
                         </div>
                     </div>
 
-                    <p class="text-xs text-slate-500 line-clamp-2">{{ $leader->biography ?? 'Official executive leadership representative.' }}</p>
+                    <!-- Management Actions -->
+                    <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between gap-2">
+                        <form method="POST" action="{{ route('admin.governance.leaders.toggle-status', $leader->id) }}" class="inline">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="text-[11px] font-bold px-2 py-1 rounded-lg transition {{ $leader->is_active ? 'text-amber-700 bg-amber-50 hover:bg-amber-100' : 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100' }}">
+                                {{ $leader->is_active ? 'Deactivate' : 'Activate' }}
+                            </button>
+                        </form>
 
-                    <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-200 flex items-center justify-between">
-                        <span>{{ $leader->governanceBody->name ?? 'Executive Council' }}</span>
-                        <span>{{ $leader->official_office_contact ?? 'info@tevda.or.tz' }}</span>
+                        <div class="flex items-center gap-1.5">
+                            <a href="{{ route('admin.governance.leaders.edit', $leader->id) }}" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                                <span>Edit</span>
+                            </a>
+
+                            <form method="POST" action="{{ route('admin.governance.leaders.destroy', $leader->id) }}" onsubmit="return confirm('Delete this leader profile permanently?')" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition" title="Delete Profile">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             @empty

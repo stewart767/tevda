@@ -66,7 +66,7 @@
         <div class="p-1 space-y-1">
             @foreach($locales as $code => $item)
                 @php $isSelected = ($current === $code); @endphp
-                <a href="{{ route('locale.switch', $code) }}" 
+                <a href="{{ route('locale.switch', ['locale' => $code, 'return_url' => request()->fullUrl()]) }}" 
                    onclick="window.tevdaSetLanguage && window.tevdaSetLanguage('{{ $code }}')"
                    class="flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs transition-all duration-150 group {{ $isSelected ? 'bg-emerald-50 text-emerald-950 font-extrabold shadow-xs' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-semibold' }}">
                     <div class="flex items-center gap-2.5">
@@ -83,6 +83,17 @@
                     @endif
                 </a>
             @endforeach
+
+            <!-- Trigger Language Popout Modal -->
+            <button type="button" 
+                    @click="langDropdownOpen = false; window.tevdaOpenLangModal ? window.tevdaOpenLangModal() : window.dispatchEvent(new CustomEvent('open-language-modal'))"
+                    onclick="window.tevdaOpenLangModal && window.tevdaOpenLangModal()"
+                    class="flex items-center justify-center gap-1.5 w-full mt-1 pt-2 pb-1.5 px-3 rounded-xl text-[11px] font-bold text-slate-500 hover:text-emerald-700 hover:bg-emerald-50/70 border-t border-slate-100 transition cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+                <span>{{ __('Language Settings / Popout') }}</span>
+            </button>
         </div>
     </div>
 </div>

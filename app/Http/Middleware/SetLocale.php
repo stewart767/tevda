@@ -24,17 +24,21 @@ class SetLocale
         $locale = null;
 
         // 1. Check if user provided ?lang= or ?locale= query string
-        if ($request->has('lang')) {
-            $langParam = strtolower(trim($request->query('lang')));
+        if ($request->has('lang') || $request->has('locale')) {
+            $langParam = strtolower(trim($request->query('lang', $request->query('locale'))));
             if (in_array($langParam, ['zh-cn', 'zh_cn', 'chinese', 'cn'])) {
                 $langParam = 'zh';
             } elseif (in_array($langParam, ['swahili', 'tz'])) {
                 $langParam = 'sw';
+            } elseif (in_array($langParam, ['en', 'english', 'gb', 'us', 'en-us', 'en_us'])) {
+                $langParam = 'en';
             }
             if (in_array($langParam, $supported)) {
                 $locale = $langParam;
                 Session::put('locale', $locale);
+                Session::put('locale_chosen', '1');
                 Cookie::queue('tevda_locale', $locale, 60 * 24 * 365 * 5);
+                Cookie::queue('tevda_locale_chosen', '1', 60 * 24 * 365 * 5);
             }
         }
 
@@ -62,10 +66,17 @@ class SetLocale
 
         App::setLocale($locale);
 
+        // Determine if user has already made an explicit language choice
+        $hasChosenLocale = $request->hasCookie('tevda_locale_chosen')
+            || Session::has('locale_chosen')
+            || ($request->hasCookie('tevda_locale') && !empty($request->cookie('tevda_locale')));
+
         // Share locale variables across all views
         View::share('activeLocale', $locale);
         View::share('activeLocaleInfo', LocaleController::$supportedLocales[$locale] ?? LocaleController::$supportedLocales['sw']);
         View::share('allLocales', LocaleController::$supportedLocales);
+        View::share('hasChosenLocale', $hasChosenLocale);
+        View::share('showLanguageModalOnOpen', !$hasChosenLocale);
 
         return $next($request);
     }

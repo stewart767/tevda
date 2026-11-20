@@ -96,6 +96,7 @@
         <p>&copy; {{ date('Y') }} {{ __('Tanzania Electric Vehicle Drivers Association (TEVDA)') }}. {{ __('SMART DRIVERS SMART MOBILITY') }}.</p>
     </footer>
 
+    @include('partials.language_modal')
     @include('partials.translator_script')
 
     @stack('scripts')

@@ -35,11 +35,17 @@
             <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
             <span>{{ __('Language') }} / Lugha / 语言</span>
         </span>
+        <button type="button" 
+                onclick="window.tevdaOpenLangModal && window.tevdaOpenLangModal()"
+                @click="window.dispatchEvent(new CustomEvent('open-language-modal'))"
+                class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition cursor-pointer">
+            {{ __('Change') }} &bull; Badili
+        </button>
     </div>
     <div class="grid grid-cols-3 gap-1.5 px-1">
         @foreach($locales as $code => $item)
             @php $isSelected = ($current === $code); @endphp
-            <a href="{{ route('locale.switch', $code) }}" 
+            <a href="{{ route('locale.switch', ['locale' => $code, 'return_url' => request()->fullUrl()]) }}" 
                onclick="window.tevdaSetLanguage && window.tevdaSetLanguage('{{ $code }}')"
                class="flex flex-col items-center justify-center p-2 rounded-xl border text-center transition-all duration-150 {{ $isSelected ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm font-extrabold' : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80 font-medium' }}">
                 <span class="text-xl mb-0.5">{{ $item['flag'] }}</span>

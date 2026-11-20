@@ -54,7 +54,12 @@
                 <textarea name="biography" rows="3" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Background, qualifications, leadership vision...">{{ old('biography') }}</textarea>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Key Responsibilities / Portfolio Mandate</label>
+                <textarea name="responsibilities" rows="2" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Key responsibilities and institutional portfolio duties...">{{ old('responsibilities') }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Sector Experience</label>
                     <input type="text" name="sector_experience" value="{{ old('sector_experience') }}" placeholder="e.g. Transportation Policy & Clean Energy" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
@@ -63,6 +68,11 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Term Period</label>
                     <input type="text" name="term_period" value="{{ old('term_period', '2024 - Present') }}" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Display Order Ranking</label>
+                    <input type="number" name="order_number" value="{{ old('order_number', 1) }}" min="1" max="99" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
             </div>
 

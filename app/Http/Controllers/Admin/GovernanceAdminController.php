@@ -75,6 +75,70 @@ class GovernanceAdminController extends Controller
         return redirect()->route('admin.governance.index')->with('success', 'Leadership profile added successfully.');
     }
 
+    public function editLeader($id)
+    {
+        $leader = Leader::findOrFail($id);
+        $bodies = GovernanceBody::all();
+        return view('admin.governance.leader_edit', compact('leader', 'bodies'));
+    }
+
+    public function updateLeader(Request $request, $id)
+    {
+        $leader = Leader::findOrFail($id);
+
+        $validated = $request->validate([
+            'governance_body_id' => 'nullable|exists:governance_bodies,id',
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'biography' => 'nullable|string',
+            'qualifications' => 'nullable|string',
+            'sector_experience' => 'nullable|string',
+            'responsibilities' => 'nullable|string',
+            'official_office_contact' => 'nullable|string|max:255',
+            'term_period' => 'nullable|string|max:100',
+            'is_founding_leader' => 'nullable|boolean',
+            'founding_position' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'order_number' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $validated['photo_path'] = DocumentService::storePublic($request->file('photo'), 'leaders');
+        }
+
+        $validated['is_founding_leader'] = $request->boolean('is_founding_leader');
+        $validated['is_active'] = $request->boolean('is_active', true);
+
+        $leader->update($validated);
+        AuditLog::log('updated_leader', 'governance', (string)$leader->id, null, ['name' => $leader->name, 'position' => $leader->position]);
+
+        return redirect()->route('admin.governance.index')->with('success', "Taarifa za kiongozi '{$leader->name}' zimesasishwa kikamilifu.");
+    }
+
+    public function destroyLeader($id)
+    {
+        $leader = Leader::findOrFail($id);
+        $name = $leader->name;
+        $leader->delete();
+
+        AuditLog::log('deleted_leader', 'governance', (string)$id, null, ['name' => $name]);
+
+        return redirect()->route('admin.governance.index')->with('success', "Kiongozi '{$name}' ameondolewa kikamilifu.");
+    }
+
+    public function toggleLeaderStatus($id)
+    {
+        $leader = Leader::findOrFail($id);
+        $leader->is_active = !$leader->is_active;
+        $leader->save();
+
+        AuditLog::log('toggled_leader_status', 'governance', (string)$leader->id, null, ['name' => $leader->name, 'is_active' => $leader->is_active]);
+
+        $statusText = $leader->is_active ? 'Amewezeshwa (Active)' : 'Amesitishwa (Inactive)';
+        return back()->with('success', "Hali ya kiongozi '{$leader->name}' imebadilishwa kuwa {$statusText}.");
+    }
+
     public function storeBranch(Request $request)
     {
         $validated = $request->validate([

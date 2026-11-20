@@ -71,24 +71,53 @@ class LocaleController extends Controller
 
         // Save in session and permanent cookies
         Session::put('locale', $locale);
+        Session::put('locale_chosen', '1');
         App::setLocale($locale);
 
-        $googTransValue = match($locale) {
-            'zh' => '/en/zh-CN',
-            'en' => '/en/en',
-            default => '/en/sw',
-        };
-
         $cookieTevda = Cookie::make('tevda_locale', $locale, 60 * 24 * 365 * 5, '/', null, false, false);
-        $cookieGoogle = Cookie::make('googtrans', $googTransValue, 60 * 24 * 365 * 5, '/', null, false, false);
+        $cookieChosen = Cookie::make('tevda_locale_chosen', '1', 60 * 24 * 365 * 5, '/', null, false, false);
+        $cookieGoogleForget = Cookie::forget('googtrans', '/', null);
 
         // Redirect back immediately to current page
         $returnUrl = $request->input('return_url');
         if (!empty($returnUrl) && filter_var($returnUrl, FILTER_VALIDATE_URL)) {
-            return redirect()->to($returnUrl)->withCookie($cookieTevda)->withCookie($cookieGoogle);
+            return redirect()->to($returnUrl)
+                ->withCookie($cookieTevda)
+                ->withCookie($cookieChosen)
+                ->withCookie($cookieGoogleForget);
         }
 
-        return redirect()->back(fallback: route('home'))->withCookie($cookieTevda)->withCookie($cookieGoogle);
+        return redirect()->back(fallback: route('home'))
+            ->withCookie($cookieTevda)
+            ->withCookie($cookieChosen)
+            ->withCookie($cookieGoogleForget);
+    }
+
+    /**
+     * Acknowledge and confirm the active language without changing it.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function confirm(Request $request)
+    {
+        $locale = Session::get('locale', $request->cookie('tevda_locale', config('app.locale', 'sw')));
+        if (!array_key_exists($locale, self::$supportedLocales)) {
+            $locale = 'sw';
+        }
+
+        Session::put('locale', $locale);
+        Session::put('locale_chosen', '1');
+
+        $cookieTevda = Cookie::make('tevda_locale', $locale, 60 * 24 * 365 * 5, '/', null, false, false);
+        $cookieChosen = Cookie::make('tevda_locale_chosen', '1', 60 * 24 * 365 * 5, '/', null, false, false);
+
+        $returnUrl = $request->input('return_url');
+        if (!empty($returnUrl) && filter_var($returnUrl, FILTER_VALIDATE_URL)) {
+            return redirect()->to($returnUrl)->withCookie($cookieTevda)->withCookie($cookieChosen);
+        }
+
+        return redirect()->back(fallback: route('home'))->withCookie($cookieTevda)->withCookie($cookieChosen);
     }
 
     /**

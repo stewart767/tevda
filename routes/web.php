@@ -27,6 +27,7 @@ use App\Http\Controllers\DocumentDownloadController;
 | 1. PUBLIC WEBSITE ROUTES & LOCALIZATION
 |--------------------------------------------------------------------------
 */
+Route::get('/lang/confirm/acknowledge', [LocaleController::class, 'confirm'])->name('locale.confirm');
 Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
@@ -277,6 +278,10 @@ Route::middleware(['auth', 'staff'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/governance', [GovernanceAdminController::class, 'index'])->name('governance.index');
     Route::get('/governance/leaders/create', [GovernanceAdminController::class, 'createLeader'])->name('governance.leaders.create');
     Route::post('/governance/leaders', [GovernanceAdminController::class, 'storeLeader'])->name('governance.leaders.store');
+    Route::get('/governance/leaders/{id}/edit', [GovernanceAdminController::class, 'editLeader'])->name('governance.leaders.edit');
+    Route::put('/governance/leaders/{id}', [GovernanceAdminController::class, 'updateLeader'])->name('governance.leaders.update');
+    Route::delete('/governance/leaders/{id}', [GovernanceAdminController::class, 'destroyLeader'])->name('governance.leaders.destroy');
+    Route::patch('/governance/leaders/{id}/toggle-status', [GovernanceAdminController::class, 'toggleLeaderStatus'])->name('governance.leaders.toggle-status');
     Route::post('/governance/branches', [GovernanceAdminController::class, 'storeBranch'])->name('governance.branches.store');
     Route::post('/governance/partners', [GovernanceAdminController::class, 'storePartner'])->name('governance.partners.store');
 

@@ -1,118 +1,97 @@
-@php
-    $currentLocale = app()->getLocale();
-@endphp
-
-<!-- Google Translate Silent Element (Hidden) -->
-<div id="google_translate_element" style="display:none;position:absolute;top:-9999px;left:-9999px;"></div>
-
 <style>
-    /* Completely hide Google Translate default banners and tooltips */
+    /* Completely hide and eliminate any Google Translate banner, bar, tooltip, or iframe */
     .goog-te-banner-frame.skiptranslate, 
     .goog-te-banner-frame, 
-    iframe.goog-te-banner-frame, 
+    iframe.goog-te-banner-frame,
+    iframe[id*=":1.container"],
+    iframe[id*="google"],
+    iframe[class*="goog"],
     .goog-te-menu-frame,
+    .VIpgJd-ZVi9od-ORHb-OEVmcd,
+    .VIpgJd-ZVi9od-ORHb,
+    .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+    .VIpgJd-ZVi9od-l4eHX-hSRLGd,
     #goog-gt-tt, 
     .goog-te-balloon-frame,
     .goog-tooltip, 
-    .goog-tooltip:hover { 
+    .goog-tooltip:hover,
+    .goog-te-gadget,
+    #google_translate_element { 
         display: none !important; 
         visibility: hidden !important; 
+        height: 0 !important;
+        width: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
     }
-    body { 
+    html, body { 
         top: 0px !important; 
         position: static !important; 
-    }
-    .goog-te-gadget { 
-        display: none !important; 
     }
     .goog-text-highlight { 
         background-color: transparent !important; 
         border: none !important; 
         box-shadow: none !important; 
     }
-    font[style] {
-        background-color: transparent !important;
-        box-shadow: none !important;
-    }
-    .notranslate {
-        translate: no;
-    }
 </style>
 
 <script>
 /**
- * TEVDA Comprehensive Dual-Engine Multilingual System
- * Server-Side Locale + Real-Time Live DOM Translation
+ * TEVDA Native Localization Controller
+ * Removes third-party Google Translate top bar and manages clean language preferences
  */
 (function() {
-    const currentLocale = '{{ $currentLocale }}';
-    
-    // Cookie Helper
-    function setCookie(name, value, days) {
-        let expires = "";
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        const hostname = window.location.hostname;
-        document.cookie = name + "=" + (value || "")  + expires + "; path=/;";
-        if (hostname && hostname !== 'localhost' && !hostname.includes('127.0.0.1')) {
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/; domain=" + hostname;
-        }
-    }
+    // Delete any residual googtrans cookie
+    function purgeGoogleCookies() {
+        var cookies = ['googtrans', 'googtrans_cache'];
+        var domains = [window.location.hostname, '.' + window.location.hostname, ''];
+        var paths = ['/', '/tevda', '/tevda/'];
 
-    function getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i].trim();
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
+        cookies.forEach(function(cookieName) {
+            domains.forEach(function(domain) {
+                paths.forEach(function(path) {
+                    var str = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + path;
+                    if (domain) str += '; domain=' + domain;
+                    document.cookie = str;
+                });
+            });
+        });
 
-    // Language mapper for Google Translate
-    window.tevdaSetLanguage = function(langCode) {
-        let gtVal = '/en/en';
-        if (langCode === 'sw') {
-            gtVal = '/en/sw';
-        } else if (langCode === 'zh' || langCode === 'zh-cn' || langCode === 'zh_CN') {
-            gtVal = '/en/zh-CN';
-        }
-        
-        setCookie('tevda_locale', langCode, 365);
-        setCookie('googtrans', gtVal, 365);
-    };
-
-    // Auto-sync cookie with current server locale if out of sync
-    const expectedGtVal = currentLocale === 'sw' ? '/en/sw' : (currentLocale === 'zh' ? '/en/zh-CN' : '/en/en');
-    const existingGtCookie = getCookie('googtrans');
-    if (existingGtCookie !== expectedGtVal) {
-        setCookie('googtrans', expectedGtVal, 365);
-    }
-
-    // Google Translate Initialization Handler
-    window.tevdaGoogleTranslateInit = function() {
+        // Remove any injected Google iframes/banners from the DOM
         try {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,sw,zh-CN',
-                autoDisplay: false,
-                multilanguagePage: true
-            }, 'google_translate_element');
-        } catch (e) {
-            console.warn('TEVDA Translate Engine Init Notice:', e);
-        }
+            var googleFrames = document.querySelectorAll('.goog-te-banner-frame, iframe[name*="google"], iframe[class*="goog"], .VIpgJd-ZVi9od-ORHb-OEVmcd, #goog-gt-tt');
+            googleFrames.forEach(function(frame) {
+                if (frame && frame.parentNode) {
+                    frame.parentNode.removeChild(frame);
+                }
+            });
+            document.body.style.top = '0px';
+        } catch(e) {}
+    }
+
+    purgeGoogleCookies();
+    window.addEventListener('DOMContentLoaded', purgeGoogleCookies);
+    window.addEventListener('load', purgeGoogleCookies);
+
+    // Global Language setter helper
+    window.tevdaSetLanguage = function(langCode) {
+        purgeGoogleCookies();
+        try {
+            localStorage.setItem('tevda_locale', langCode);
+            localStorage.setItem('tevda_locale_chosen', '1');
+            sessionStorage.setItem('tevda_lang_prompt_seen', '1');
+        } catch(e) {}
     };
 
-    // Load Google Translate Script if translation needed or active
-    if (!window.google || !window.google.translate) {
-        const gtScript = document.createElement('script');
-        gtScript.type = 'text/javascript';
-        gtScript.async = true;
-        gtScript.src = '//translate.google.com/translate_a/element.js?cb=tevdaGoogleTranslateInit';
-        document.head.appendChild(gtScript);
-    }
+    // Helper to open the language selection modal
+    window.tevdaOpenLanguageModal = window.tevdaOpenLangModal = function() {
+        if (typeof window.tevdaOpenLangModal === 'function') {
+            // Already handled
+        }
+        window.dispatchEvent(new CustomEvent('open-language-modal'));
+    };
 })();
 </script>

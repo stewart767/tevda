@@ -14,12 +14,12 @@
 <div class="py-16 bg-white subtle-grid-pattern">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        <!-- Founding Leadership Section -->
+        <!-- Founding & Board Leadership Section -->
         <div>
             <div class="text-center max-w-3xl mx-auto mb-12">
-                <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200/60">Executive Directorate</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading mt-3">Founding & Executive Leadership</h2>
-                <p class="text-slate-600 text-xs sm:text-sm mt-1">The executive officers who established and guide the institutional framework of TEVDA.</p>
+                <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200/60">National Board & Founders</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading mt-3">Baraza la Taifa na Uongozi Mwanzilishi</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1">Viongozi wakuu wa Baraza la Taifa na waasisi walioanzisha na kusimamia dira na sera za TEVDA.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -63,32 +63,71 @@
             </div>
         </div>
 
-        <!-- National Council Leaders (if any) -->
+        <!-- National Executive Secretariat & Directorate Section -->
         @if (isset($nationalLeaders) && $nationalLeaders->count() > 0)
             <div>
-                <div class="text-center max-w-3xl mx-auto mb-10">
-                    <span class="text-xs font-extrabold uppercase tracking-widest text-cyan-700 bg-cyan-50 px-3.5 py-1.5 rounded-xl border border-cyan-200/60">National Council</span>
-                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 font-heading mt-2">National Standing Committee Leaders</h2>
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200/60">Executive Directorate</span>
+                    <h2 class="text-2xl sm:text-4xl font-black text-slate-900 font-heading mt-2">Wakurugenzi na Watendaji Wakuu</h2>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-1">Sekretarieti Kuu ya Utendaji inayoongozwa na Mkurugenzi Mtendaji pamoja na Wakurugenzi wa Idara za TEVDA.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($nationalLeaders as $leader)
-                        <div class="glass-card p-6 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
-                            <div class="flex items-center gap-3.5 mb-3">
-                                <div class="w-12 h-12 rounded-xl bg-cyan-700 text-white flex items-center justify-center font-black text-sm shrink-0 overflow-hidden">
-                                    @if ($leader->photo_url)
-                                        <img src="{{ $leader->photo_url }}" alt="{{ $leader->name }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                        <span class="hidden font-bold">{{ substr($leader->name, 0, 2) }}</span>
-                                    @else
-                                        <span>{{ substr($leader->name, 0, 2) }}</span>
-                                    @endif
+                        @php
+                            $isCEO = str_contains(strtolower($leader->position), 'mtendaji') || str_contains(strtolower($leader->position), 'executive director');
+                            $isPending = str_contains(strtolower($leader->name), 'wazi') || str_contains(strtolower($leader->name), 'pending');
+                        @endphp
+                        <div class="glass-card p-6 rounded-3xl border {{ $isCEO ? 'border-emerald-500/50 bg-gradient-to-br from-emerald-50/50 to-white shadow-md shadow-emerald-500/10' : 'border-slate-200/80 shadow-xs' }} flex flex-col justify-between hover:border-emerald-300 transition-all duration-200 group">
+                            <div>
+                                <div class="flex items-center gap-3.5 mb-4">
+                                    <div class="w-14 h-14 rounded-2xl {{ $isCEO ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white border-2 border-emerald-500/40' : ($isPending ? 'bg-slate-100 text-slate-400 border border-slate-200' : 'bg-emerald-700 text-white') }} flex items-center justify-center font-black text-base shrink-0 overflow-hidden shadow-xs">
+                                        @if ($leader->photo_url)
+                                            <img src="{{ $leader->photo_url }}" alt="{{ $leader->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                            <span class="hidden font-bold">{{ substr($leader->name, 0, 2) }}</span>
+                                        @else
+                                            <span>{{ $isPending ? 'TEV' : strtoupper(substr($leader->name, 0, 2)) }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="min-w-0">
+                                        @if($isCEO)
+                                            <span class="inline-block text-[9.5px] uppercase font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full mb-1">
+                                                Uongozi wa Utendaji Mkuu
+                                            </span>
+                                        @elseif($isPending)
+                                            <span class="inline-block text-[9.5px] uppercase font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full mb-1">
+                                                Nafasi ya Idara
+                                            </span>
+                                        @else
+                                            <span class="inline-block text-[9.5px] uppercase font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full mb-1">
+                                                Mkurugenzi wa Idara
+                                            </span>
+                                        @endif
+                                        <h4 class="font-extrabold text-base text-slate-900 font-heading leading-tight truncate" title="{{ $leader->name }}">
+                                            {{ $leader->name }}
+                                        </h4>
+                                        <p class="text-xs {{ $isCEO ? 'text-emerald-700 font-extrabold' : 'text-slate-600 font-semibold' }} mt-0.5">
+                                            {{ $leader->position }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 class="font-bold text-sm text-slate-900 font-heading">{{ $leader->name }}</h4>
-                                    <p class="text-xs text-cyan-700 font-medium">{{ $leader->position }}</p>
-                                </div>
+
+                                <p class="text-xs text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                                    {{ $leader->biography }}
+                                </p>
+
+                                @if ($leader->responsibilities)
+                                    <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 text-[11px] text-slate-600 mb-4">
+                                        <strong class="text-slate-800 block mb-0.5 font-bold">Majukumu Makuu:</strong>
+                                        <p class="line-clamp-2">{{ $leader->responsibilities }}</p>
+                                    </div>
+                                @endif
                             </div>
-                            <p class="text-xs text-slate-600 line-clamp-3">{{ $leader->biography }}</p>
+
+                            <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-[11px] text-slate-400">
+                                <span>Mawasiliano:</span>
+                                <span class="font-semibold text-slate-700 truncate max-w-[170px]">{{ $leader->official_office_contact ?? 'info@tevda.or.tz' }}</span>
+                            </div>
                         </div>
                     @endforeach
                 </div>

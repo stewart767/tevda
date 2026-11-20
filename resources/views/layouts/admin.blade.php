@@ -193,6 +193,7 @@
             </main>
         </div>
     </div>
+    @include('partials.language_modal')
     @include('partials.translator_script')
     @stack('scripts')
 </body>
