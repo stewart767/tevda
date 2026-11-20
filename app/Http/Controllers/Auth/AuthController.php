@@ -69,10 +69,16 @@ class AuthController extends Controller
             return $this->authenticatedRedirect(Auth::user());
         }
 
-        $categories = \App\Models\MembershipCategory::where('is_active', true)->orderBy('order_number')->get();
-        $regions = \App\Models\Region::with('districts')->where('is_active', true)->orderBy('name')->get();
+        $categories = \Illuminate\Support\Facades\Cache::remember('reg_active_categories', 3600, function () {
+            return \App\Models\MembershipCategory::where('is_active', true)->orderBy('order_number')->get();
+        });
+
+        $regions = \Illuminate\Support\Facades\Cache::remember('reg_active_regions_with_districts', 3600, function () {
+            return \App\Models\Region::with('districts')->where('is_active', true)->orderBy('name')->get();
+        });
+
         $selectedCategorySlug = $request->query('category', 'full-member');
-        $selectedCategory = \App\Models\MembershipCategory::where('slug', $selectedCategorySlug)->first() ?? $categories->first();
+        $selectedCategory = $categories->firstWhere('slug', $selectedCategorySlug) ?? $categories->first();
 
         return view('auth.register', compact('categories', 'regions', 'selectedCategory'));
     }

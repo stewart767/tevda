@@ -26,19 +26,20 @@ use App\Models\Setting;
 use App\Models\Fee;
 use App\Services\DocumentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::active()->ordered()->get();
-        $categories = MembershipCategory::where('is_active', true)->orderBy('order_number')->get();
-        $programmes = TrainingProgramme::where('is_active', true)->orderBy('order_number')->take(4)->get();
-        $projects = Project::where('is_featured', true)->take(3)->get();
-        $opportunities = Opportunity::where('status', 'published')->orderBy('deadline', 'asc')->take(4)->get();
-        $news = News::where('is_published', true)->orderBy('publication_date', 'desc')->take(3)->get();
-        $partners = Partner::where('is_featured', true)->orderBy('order_number')->get();
-        $upcomingSessions = TrainingSession::with('course.programme')->where('status', 'upcoming')->orderBy('start_date')->take(3)->get();
+        $sliders = Cache::remember('home_sliders', 600, fn() => Slider::active()->ordered()->get());
+        $categories = Cache::remember('home_categories', 600, fn() => MembershipCategory::where('is_active', true)->orderBy('order_number')->get());
+        $programmes = Cache::remember('home_programmes', 600, fn() => TrainingProgramme::where('is_active', true)->orderBy('order_number')->take(4)->get());
+        $projects = Cache::remember('home_projects', 600, fn() => Project::where('is_featured', true)->take(3)->get());
+        $opportunities = Cache::remember('home_opportunities', 600, fn() => Opportunity::where('status', 'published')->orderBy('deadline', 'asc')->take(4)->get());
+        $news = Cache::remember('home_news', 600, fn() => News::where('is_published', true)->orderBy('publication_date', 'desc')->take(3)->get());
+        $partners = Cache::remember('home_partners', 600, fn() => Partner::where('is_featured', true)->orderBy('order_number')->get());
+        $upcomingSessions = Cache::remember('home_upcoming_sessions', 600, fn() => TrainingSession::with('course.programme')->where('status', 'upcoming')->orderBy('start_date')->take(3)->get());
 
         return view('public.home', compact(
             'sliders',

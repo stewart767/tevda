@@ -8,6 +8,11 @@
     <title>@yield('title', __('Tanzania Electric Vehicle Drivers Association (TEVDA) — SMART DRIVERS SMART MOBILITY'))</title>
     <meta name="description" content="@yield('meta_description', __('Official portal of Tanzania Electric Vehicle Drivers Association (TEVDA). Connecting drivers and operators of commercially used electric vehicles with training, employment, finance, and green mobility partnerships.'))">
     
+    <!-- Preconnect & Asynchronous Google Fonts for instant non-blocking rendering -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Alpine.js for lightweight UI interactivity -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 

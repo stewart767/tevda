@@ -54,7 +54,7 @@
             }
         }">
 
-            <form action="{{ route('register.submit') }}" method="POST" class="space-y-8">
+            <form action="{{ route('register.submit') }}" method="POST" class="space-y-8" autocomplete="off">
                 @csrf
 
                 <!-- Section 1: Membership Category Selection -->
@@ -105,18 +105,18 @@
                         <!-- FULL LEGAL NAME -->
                         <div>
                             <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                FULL LEGAL NAME <span class="text-rose-500">*</span>
+                                FULL LEGAL NAME (JINA KAMILI) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="name" name="name" required value="{{ old('name') }}" placeholder="As per NIDA / Driving Licence" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="name" name="name" required value="{{ old('name') }}" autocomplete="off" placeholder="Mfano: Juma Ally Rashidi (Kama ilivyo kwenye NIDA / Leseni)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             @error('name') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- MOBILE PHONE NUMBER -->
                         <div>
                             <label for="phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                MOBILE PHONE NUMBER <span class="text-rose-500">*</span>
+                                MOBILE PHONE NUMBER (NAMBARI YA SIMU) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="phone" name="phone" required value="{{ old('phone') }}" placeholder="0757 700 401 or +255..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition font-mono">
+                            <input type="tel" id="phone" name="phone" required value="{{ old('phone') }}" autocomplete="off" placeholder="Mfano: 0757 700 401 au 06..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition font-mono">
                             <p class="text-[10px] text-slate-400 mt-1">Used to track application status & receive payment SMS</p>
                             @error('phone') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
@@ -124,9 +124,9 @@
                         <!-- EMAIL ADDRESS -->
                         <div>
                             <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                EMAIL ADDRESS <span class="text-rose-500">*</span>
+                                EMAIL ADDRESS (BARUA PEPE) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="email" id="email" name="email" required value="{{ old('email') }}" placeholder="driver@example.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="email" id="email" name="email" required value="{{ old('email') }}" autocomplete="new-password" placeholder="Mfano: dereva@mfano.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             @error('email') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -185,7 +185,7 @@
                             <label for="ward_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 WARD (KATA) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="ward_name" name="ward_name" required value="{{ old('ward_name') }}" placeholder="Mfano: Sinza, Mwenge, Kariakoo, Sekei" list="common_wards" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="ward_name" name="ward_name" required value="{{ old('ward_name') }}" autocomplete="off" placeholder="Mfano: Sinza, Kimara, Mwenge, Kariakoo, Sekei" list="common_wards" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             <datalist id="common_wards">
                                 <option value="Sinza">
                                 <option value="Kijitonyama">
@@ -222,7 +222,7 @@
                             <label for="physical_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 PHYSICAL ADDRESS / STATION HUB <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" placeholder="e.g. Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaj" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" autocomplete="off" placeholder="Mfano: Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaj" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             @error('physical_address') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
@@ -236,7 +236,7 @@
                             <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Nenosiri (Password) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="password" id="password" name="password" required placeholder="Angalau herufi 6" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Weka nenosiri lako (angalau herufi 6)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             @error('password') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -244,7 +244,7 @@
                             <label for="password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 Rudia Nenosiri (Confirm Password) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="Rudia nenosiri" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" placeholder="Rudia nenosiri lilelile hapa" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-500 placeholder:opacity-100 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                         </div>
                     </div>
                 </div>

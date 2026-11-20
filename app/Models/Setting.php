@@ -23,15 +23,48 @@ class Setting extends Model
         'is_public' => 'boolean',
     ];
 
+    protected static ?array $cachedSettings = null;
+
+    /**
+     * Get all settings as key => value array with memory and store caching.
+     */
+    public static function getAllSettings(): array
+    {
+        if (self::$cachedSettings !== null) {
+            return self::$cachedSettings;
+        }
+
+        try {
+            self::$cachedSettings = \Illuminate\Support\Facades\Cache::remember('app_settings_key_value', 3600, function () {
+                return self::pluck('value', 'key')->toArray();
+            });
+        } catch (\Throwable $e) {
+            return [];
+        }
+
+        return self::$cachedSettings ?? [];
+    }
+
+    /**
+     * Clear cached settings.
+     */
+    public static function flushSettingsCache(): void
+    {
+        self::$cachedSettings = null;
+        try {
+            \Illuminate\Support\Facades\Cache::forget('app_settings_key_value');
+        } catch (\Throwable $e) {}
+    }
+
     public static function get(string $key, $default = null)
     {
-        $setting = self::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        $all = self::getAllSettings();
+        return array_key_exists($key, $all) ? $all[$key] : $default;
     }
 
     public static function set(string $key, $value, string $group = 'general', string $type = 'text', ?string $description = null)
     {
-        return self::updateOrCreate(
+        $result = self::updateOrCreate(
             ['key' => $key],
             [
                 'value' => $value,
@@ -40,6 +73,8 @@ class Setting extends Model
                 'description' => $description,
             ]
         );
+        self::flushSettingsCache();
+        return $result;
     }
 
     /**
