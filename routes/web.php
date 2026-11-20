@@ -75,12 +75,21 @@ Route::get('/download/card/{number}', [VerificationController::class, 'downloadP
 Route::get('/verify/certificate/{number}/download', [VerificationController::class, 'downloadPublicCertificatePdf'])->name('public.certificate.download_alias');
 Route::get('/verify/membership/{number}/download', [VerificationController::class, 'downloadPublicCardPdf'])->name('public.card.download_alias');
 
-// Direct public storage fallback route for robust image serving across environments
+// Direct public storage fallback route for robust image serving across environments (Hardened against Path Traversal)
 Route::get('/storage/{path}', function ($path) {
-    $fullPath = storage_path('app/public/' . $path);
-    if (!file_exists($fullPath)) {
+    // 1. Block explicit traversal markers
+    if (str_contains($path, '..') || str_contains($path, '\\') || str_contains($path, "\0")) {
         abort(404);
     }
+
+    $basePath = realpath(storage_path('app/public'));
+    $fullPath = realpath(storage_path('app/public/' . $path));
+
+    // 2. Ensure target exists, is a regular file, and is strictly within storage/app/public
+    if (!$fullPath || !$basePath || !str_starts_with($fullPath, $basePath) || !is_file($fullPath)) {
+        abort(404);
+    }
+
     return response()->file($fullPath);
 })->where('path', '.*');
 
@@ -92,8 +101,12 @@ Route::any('/public/{any}', function ($any = '') {
     return redirect('/' . $any, 301);
 })->where('any', '.*');
 
-// System Setup & Migration Runner (Protected by key)
+// System Setup & Migration Runner (Restricted to local development & authorized super admin only)
 Route::get('/system/setup-database', function (\Illuminate\Http\Request $request) {
+    if (!app()->environment('local')) {
+        abort(403, 'Database setup via web route is disabled outside local environment. Use artisan CLI commands instead.');
+    }
+
     if ($request->get('key') !== 'tevda2026') {
         return response("<div style='font-family:sans-serif;padding:30px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;'><h2>Unauthorized</h2><p>Access key is missing or invalid. Use <code>?key=tevda2026</code> to run.</p></div>", 403);
     }
@@ -143,6 +156,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
 // Registration Payment & Profile Completion Gateway

@@ -272,9 +272,13 @@ class VerificationController extends Controller
         $member = Member::with(['category', 'region', 'district', 'primaryVehicle', 'documents', 'invoices.payments', 'membershipCertificate', 'card'])
             ->where(function ($q) use ($query, $cleanDigits) {
                 $q->where('membership_number', $query)
-                  ->orWhere('driving_licence_number', $query)
-                  ->orWhere('driving_licence_number', 'like', "%{$query}%")
-                  ->orWhere('nida_number', $query)
+                  ->orWhere('driving_licence_number', $query);
+
+                if (strlen($query) >= 4) {
+                    $q->orWhere('driving_licence_number', 'like', "%{$query}%");
+                }
+
+                $q->orWhere('nida_number', $query)
                   ->orWhere('phone', $query);
 
                 if (!empty($cleanDigits) && strlen($cleanDigits) >= 6) {

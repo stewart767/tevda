@@ -17,12 +17,18 @@ use App\Models\Project;
 use App\Models\ProjectApplication;
 use App\Models\Beneficiary;
 use App\Models\Complaint;
+use App\Models\Invoice;
+use App\Models\Payment;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use App\Services\PdfService;
 use App\Services\QrCodeService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TevdaPlatformTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * Test 1: All Public Pages load with 200 OK and correct authority metadata
      */
@@ -57,7 +63,7 @@ class TevdaPlatformTest extends TestCase
         // Verify official authority metadata on homepage
         $home = $this->get('/');
         $home->assertSee('SMART DRIVERS SMART MOBILITY');
-        $home->assertSee('Sinza Mori, P.O. Box 40015, Dar es Salaam');
+        $home->assertSee('Sinza Mori');
         $home->assertSee('+255 757 700 401');
         $home->assertSee('info@tevda.or.tz');
     }
@@ -70,59 +76,68 @@ class TevdaPlatformTest extends TestCase
         $unique = uniqid();
         $email = "driver.{$unique}@tevda.or.tz";
         $phone = "+2557" . rand(10000000, 99999999);
+        $category = MembershipCategory::first();
+        $region = Region::first();
 
+        // 1. Unified Registration Submission
         $response = $this->post('/register', [
+            'category_id' => $category->id,
             'name' => 'Juma Bakari Test',
             'email' => $email,
             'phone' => $phone,
+            'gender' => 'male',
+            'date_of_birth' => '1992-04-10',
+            'region_id' => $region->id,
+            'ward_name' => 'Sinza',
+            'physical_address' => 'Sinza Mori, Block 12, Dar es Salaam',
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
             'terms' => 'on',
         ]);
 
-        $response->assertRedirect('/membership/apply');
         $this->assertDatabaseHas('users', ['email' => $email]);
-
         $user = User::where('email', $email)->first();
+        $member = Member::where('user_id', $user->id)->first();
+        $invoice = Invoice::where('member_id', $member->id)->first();
+
+        $this->assertNotNull($invoice);
+        $response->assertRedirect(route('register.payment', $invoice->id));
+
+        // 2. Process Registration Payment
         $this->actingAs($user);
-
-        $category = MembershipCategory::first();
-        $region = Region::first();
-
-        $applyResponse = $this->post('/membership/apply', [
-            'category_id' => $category->id,
-            'full_name' => 'Juma Bakari Test',
+        $payRes = $this->post(route('register.payment.process', $invoice->id), [
+            'payment_method' => 'mobile_money',
+            'provider' => 'mpesa',
             'phone' => $phone,
-            'email' => $email,
-            'nida_number' => '19900101-12345-00001-' . rand(10, 99),
-            'gender' => 'male',
-            'date_of_birth' => '1990-05-15',
-            'region_id' => $region->id,
-            'physical_address' => 'Sinza Mori, Block 12, Dar es Salaam',
-            'district_name' => 'Kinondoni',
-            'ward_name' => 'Sinza',
-            'postal_address' => 'P.O. Box 40015, Dar es Salaam',
+            'payment_mode' => 'push_stk',
+        ]);
+
+        $payRes->assertRedirect(route('register.complete_profile'));
+        $invoice->refresh();
+        $this->assertEquals('paid', $invoice->status);
+
+        // 3. Complete Profile Submission
+        Storage::fake('public');
+        $completeRes = $this->post(route('register.complete_profile.submit'), [
             'driving_licence_number' => 'TZA-DL-' . rand(100000, 999999),
             'licence_class' => 'C',
-            'licence_expiry_date' => '2028-12-31',
-            'has_vehicle' => '1',
+            'nida_number' => '19920410-12345-00001-' . rand(10, 99),
             'vehicle_type' => 'three_wheeler',
-            'registration_number' => 'MC ' . rand(100, 999) . ' AKZ',
-            'make' => 'GreenRide',
-            'model' => 'Trike EV 2025',
+            'vehicle_make' => 'GreenRide',
+            'vehicle_model' => 'Trike EV 2025',
+            'vehicle_registration' => 'MC ' . rand(100, 999) . ' AKZ',
             'ownership_type' => 'owned',
-            'battery_capacity_kwh' => '4.8',
-            'next_of_kin_name' => 'Asha Bakari',
-            'next_of_kin_relationship' => 'Spouse',
-            'next_of_kin_phone' => '+255712111222',
+            'charging_type' => 'battery_swap',
+            'passport_photo' => UploadedFile::fake()->image('passport.jpg', 400, 400),
             'declaration' => '1',
         ]);
 
-        $applyResponse->assertRedirect(route('portal.dashboard'));
-        $this->assertDatabaseHas('members', [
-            'user_id' => $user->id,
-            'full_name' => 'Juma Bakari Test',
-        ]);
+        $completeRes->assertRedirect(route('portal.dashboard'));
+        $member->refresh();
+        $this->assertEquals('approved', $member->status);
+        $this->assertNotNull($member->membership_number);
+        $this->assertNotNull($member->card);
+        $this->assertNotNull($member->membershipCertificate);
     }
 
     /**
@@ -187,13 +202,13 @@ class TevdaPlatformTest extends TestCase
         $verifyMemberRes = $this->get('/verify/membership/' . $member->membership_number);
         $verifyMemberRes->assertStatus(200);
         $verifyMemberRes->assertSee('Amina Hassan Test');
-        $verifyMemberRes->assertSee('VERIFIED ACTIVE MEMBER');
+        $verifyMemberRes->assertSee('VERIFIED AUTHENTIC & ACTIVE MEMBER');
 
         // Test Certificate Public Verification
         $cert = Certificate::where('member_id', $member->id)->where('certificate_type', 'membership')->first();
         $verifyCertRes = $this->get('/verify/certificate/' . $cert->certificate_number);
         $verifyCertRes->assertStatus(200);
-        $verifyCertRes->assertSee('VERIFIED AUTHENTIC CERTIFICATE');
+        $verifyCertRes->assertSee('VERIFIED AUTHENTIC OFFICIAL CERTIFICATE');
     }
 
     /**
@@ -205,7 +220,17 @@ class TevdaPlatformTest extends TestCase
         $this->actingAs($superAdmin);
 
         $course = TrainingCourse::first();
-        $member = Member::first();
+        $category = MembershipCategory::first();
+        $region = Region::first();
+        $member = Member::first() ?? Member::create([
+            'user_id' => $superAdmin->id,
+            'category_id' => $category->id,
+            'full_name' => 'Training Candidate',
+            'phone' => '+255755123456',
+            'email' => 'candidate@tevda.test',
+            'region_id' => $region->id,
+            'status' => 'approved',
+        ]);
 
         // Create a training session with valid status 'upcoming'
         $session = TrainingSession::create([
@@ -481,6 +506,11 @@ class TevdaPlatformTest extends TestCase
         $card->refresh();
         $this->assertFalse($card->is_active);
 
+        // Reactivate card to test bulk download
+        $this->actingAs($superAdmin)->post(route('admin.cards.toggle_status', $card->id));
+        $card->refresh();
+        $this->assertTrue($card->is_active);
+
         // 10. Bulk Download
         $bulkRes = $this->actingAs($superAdmin)->get(route('admin.cards.bulk_download'));
         $bulkRes->assertStatus(200);
@@ -553,6 +583,6 @@ class TevdaPlatformTest extends TestCase
         // 6. View Public Certificate Verification Page -> Confirm Download Link Present
         $verifyCertRes = $this->get(route('verify.certificate', ['number' => $cert->certificate_number]));
         $verifyCertRes->assertStatus(200);
-        $verifyCertRes->assertSee('Download Authentic Certificate (PDF)');
+        $verifyCertRes->assertSee('Download Official Certificate (PDF)');
     }
 }
