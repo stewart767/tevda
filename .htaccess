@@ -15,8 +15,12 @@
         </IfModule>
     </FilesMatch>
 
-    # Block direct access to sensitive system folders
-    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/.*)?$ - [F,L,NC]
+    # Allow direct access to public storage files
+    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
+
+    # Block direct access to sensitive system folders (except public storage)
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor)(/.*)?$ - [F,L,NC]
+    RewriteRule ^storage/(app|framework|logs)(/.*)?$ - [F,L,NC]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

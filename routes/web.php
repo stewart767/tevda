@@ -75,6 +75,15 @@ Route::get('/download/card/{number}', [VerificationController::class, 'downloadP
 Route::get('/verify/certificate/{number}/download', [VerificationController::class, 'downloadPublicCertificatePdf'])->name('public.certificate.download_alias');
 Route::get('/verify/membership/{number}/download', [VerificationController::class, 'downloadPublicCardPdf'])->name('public.card.download_alias');
 
+// Direct public storage fallback route for robust image serving across environments
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
+
 // Fallback Redirects for Direct /public URLs
 Route::any('/public', function () {
     return redirect('/', 301);
