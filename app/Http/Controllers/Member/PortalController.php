@@ -125,6 +125,7 @@ class PortalController extends Controller
         $member->update([
             'phone' => $validated['phone'],
             'physical_address' => $validated['physical_address'],
+            'ward_name' => $request->ward_name ?? $member->ward_name,
             'occupation' => $validated['occupation'] ?? $member->occupation,
             'ev_sector' => $validated['ev_sector'] ?? $member->ev_sector,
             'employer' => $validated['employer'] ?? $member->employer,

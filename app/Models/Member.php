@@ -16,6 +16,7 @@ class Member extends Model
         'region_id',
         'district_id',
         'ward_id',
+        'ward_name',
         'branch_id',
         'membership_number',
         'full_name',

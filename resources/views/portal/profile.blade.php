@@ -48,6 +48,21 @@
                         <input type="email" disabled value="{{ $member->email }}" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-600 cursor-not-allowed">
                     </div>
 
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Operating Region (Mkoa)</label>
+                        <input type="text" disabled value="{{ $member->region?->name ?? 'Tanzania' }}" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-600 cursor-not-allowed">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">District (Wilaya)</label>
+                        <input type="text" disabled value="{{ $member->district?->name ?? '-' }}" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-600 cursor-not-allowed">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Ward (Kata)</label>
+                        <input type="text" name="ward_name" value="{{ old('ward_name', $member->ward_name ?? $member->ward?->name) }}" placeholder="e.g. Sinza, Mwenge, Kariakoo" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none">
+                    </div>
+
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-bold text-slate-700 mb-1">Physical Address / Operating Hub <span class="text-rose-500">*</span></label>
                         <input type="text" name="physical_address" required value="{{ old('physical_address', $member->physical_address) }}" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none">

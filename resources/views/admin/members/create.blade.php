@@ -171,6 +171,11 @@
                         </div>
 
                         <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Ward (Kata)</label>
+                            <input type="text" name="ward_name" value="{{ old('ward_name') }}" placeholder="e.g. Sinza, Mwenge, Kariakoo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none">
+                        </div>
+
+                        <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Physical Address / Hub <span class="text-rose-500">*</span></label>
                             <input type="text" name="physical_address" required value="{{ old('physical_address') }}" placeholder="e.g. Sinza Kijiweni / Kariakoo Hub" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none">
                         </div>

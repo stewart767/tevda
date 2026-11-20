@@ -215,8 +215,8 @@
                         <span class="font-bold text-slate-800">{{ $member->phone }} • {{ $member->email ?? 'No email' }}</span>
                     </div>
                     <div class="p-3 bg-slate-50 rounded-xl">
-                        <span class="text-slate-400 block mb-1">Administrative Location</span>
-                        <span class="font-bold text-slate-800">{{ $member->region->name ?? 'Tanzania' }}, {{ $member->district_name ?? $member->district?->name ?? 'District N/A' }}</span>
+                        <span class="text-slate-400 block mb-1">Administrative Location (Region, District, Ward)</span>
+                        <span class="font-bold text-slate-800">{{ $member->region->name ?? 'Tanzania' }}, {{ $member->district?->name ?? 'District N/A' }} • Kata ya {{ $member->ward_name ?? $member->ward?->name ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>

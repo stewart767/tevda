@@ -152,12 +152,13 @@
                             @error('date_of_birth') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
-                        <!-- OPERATING REGION -->
+                        <!-- REGION -->
                         <div>
                             <label for="region_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                OPERATING REGION <span class="text-rose-500">*</span>
+                                REGION (MKOA) <span class="text-rose-500">*</span>
                             </label>
                             <select id="region_id" name="region_id" x-model="selectedRegion" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                                <option value="">-- Chagua Mkoa / Region --</option>
                                 @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
                                 @endforeach
@@ -168,22 +169,60 @@
                         <!-- DISTRICT -->
                         <div>
                             <label for="district_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                DISTRICT
+                                DISTRICT (WILAYA) <span class="text-rose-500">*</span>
                             </label>
-                            <select id="district_id" name="district_id" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
-                                <option value="">Select District</option>
+                            <select id="district_id" name="district_id" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                                <option value="">-- Chagua Wilaya / District --</option>
                                 <template x-for="dist in currentDistricts" :key="dist.id">
                                     <option :value="dist.id" x-text="dist.name" :selected="dist.id == {{ old('district_id', 0) }}"></option>
                                 </template>
                             </select>
+                            @error('district_id') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <!-- WARD (KATA) -->
+                        <div>
+                            <label for="ward_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                WARD (KATA) <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="ward_name" name="ward_name" required value="{{ old('ward_name') }}" placeholder="Mfano: Sinza, Mwenge, Kariakoo, Sekei" list="common_wards" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <datalist id="common_wards">
+                                <option value="Sinza">
+                                <option value="Kijitonyama">
+                                <option value="Mwenge">
+                                <option value="Ubungo">
+                                <option value="Kimara">
+                                <option value="Kariakoo">
+                                <option value="Upanga">
+                                <option value="Ilala">
+                                <option value="Buguruni">
+                                <option value="Magomeni">
+                                <option value="Mikocheni">
+                                <option value="Msasani">
+                                <option value="Kawe">
+                                <option value="Mbezi">
+                                <option value="Kigamboni">
+                                <option value="Temeke">
+                                <option value="Mbagala">
+                                <option value="Sekei">
+                                <option value="Themi">
+                                <option value="Kaloleni">
+                                <option value="Ngarenaro">
+                                <option value="Tambukareli">
+                                <option value="Kizota">
+                                <option value="Makole">
+                                <option value="Nyamagana">
+                                <option value="Mabatini">
+                            </datalist>
+                            @error('ward_name') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- PHYSICAL ADDRESS / STATION HUB -->
-                        <div>
+                        <div class="sm:col-span-2">
                             <label for="physical_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                                 PHYSICAL ADDRESS / STATION HUB <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" placeholder="e.g. Sinza Mori, Kinondoni" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
+                            <input type="text" id="physical_address" name="physical_address" required value="{{ old('physical_address') }}" placeholder="e.g. Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaj" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:bg-white transition">
                             @error('physical_address') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
