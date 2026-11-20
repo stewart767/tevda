@@ -145,6 +145,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 });
 
+// Registration Payment & Profile Completion Gateway
+Route::get('/register/payment/{invoice}', [AuthController::class, 'showRegisterPayment'])->name('register.payment');
+Route::post('/register/payment/{invoice}/process', [AuthController::class, 'processRegisterPayment'])->name('register.payment.process');
+Route::get('/register/complete-profile', [AuthController::class, 'showCompleteProfile'])->name('register.complete_profile')->middleware('auth');
+Route::post('/register/complete-profile', [AuthController::class, 'completeProfile'])->name('register.complete_profile.submit')->middleware('auth');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 /*
