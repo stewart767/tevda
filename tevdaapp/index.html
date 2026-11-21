@@ -60,17 +60,11 @@
         <!-- App Header with Official TEVDA Brand Logo -->
         <div class="home-header">
           <div class="brand-badge-container">
-            <!-- Inline SVG TEVDA Logo -->
-            <svg class="brand-logo" viewBox="0 0 210 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Leaf & E-Mobility Swoosh -->
-              <path d="M12 40C16 18 36 12 44 26C34 32 22 42 12 40Z" fill="#047857"/>
-              <path d="M8 32C22 24 38 28 46 20" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-              <circle cx="28" cy="18" r="4" fill="#10B981"/>
-              <!-- TEVDA Wordmark -->
-              <text x="52" y="28" font-family="-apple-system, sans-serif" font-weight="900" font-size="24" fill="#064E3B" letter-spacing="-0.5">TEVDA</text>
-              <text x="52" y="38" font-family="-apple-system, sans-serif" font-weight="700" font-size="7" fill="#047857" letter-spacing="0.4">Tanzania Electric Vehicle</text>
-              <text x="52" y="46" font-family="-apple-system, sans-serif" font-weight="700" font-size="7" fill="#047857" letter-spacing="0.4">Drivers Association</text>
-            </svg>
+            <img src="assets/tevda-logo.png" alt="TEVDA Logo" class="brand-logo-img">
+            <div>
+              <div class="brand-title">TEVDA</div>
+              <div class="brand-subtitle">Tanzania Electric Vehicle Drivers Association</div>
+            </div>
           </div>
 
           <!-- Notification Bell with unread counter (2) -->
@@ -88,8 +82,9 @@
           SMART DRIVERS • SMART MOBILITY
         </div>
 
-        <!-- Greeting & Member Status -->
+        <!-- Greeting & Member Status with Skyline Silhouette -->
         <div class="greeting-section">
+          <img src="assets/city-skyline.png" alt="" class="skyline-watermark">
           <div class="greeting-row">
             <h1 class="greeting-title" id="home-greeting">Habari, Amani</h1>
             <span class="active-member-pill">
@@ -106,25 +101,8 @@
         <div class="id-preview-card" id="home-id-card-preview" title="Bonyeza kutazama kitambulisho kamili">
           <div class="card-content">
             <div class="driver-info">
-              <!-- Driver Portrait Avatar -->
-              <svg class="driver-avatar" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ecfdf5"/>
-                    <stop offset="100%" stop-color="#a7f3d0"/>
-                  </linearGradient>
-                </defs>
-                <rect width="100" height="100" fill="url(#bgGrad)"/>
-                <!-- Head & Shoulders Silhouette / Graphic Portrait -->
-                <circle cx="50" cy="40" r="22" fill="#78350f"/>
-                <path d="M50 18 C38 18 36 28 36 34 C40 32 60 32 64 34 C64 28 62 18 50 18 Z" fill="#18181b"/>
-                <circle cx="43" cy="39" r="2.5" fill="#ffffff"/>
-                <circle cx="57" cy="39" r="2.5" fill="#ffffff"/>
-                <path d="M44 48 Q50 54 56 48" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <!-- Shirt -->
-                <path d="M18 96 C20 74 36 68 50 68 C64 68 80 74 82 96 Z" fill="#047857"/>
-                <polygon points="50,68 44,82 56,82" fill="#f8fafc"/>
-              </svg>
+              <!-- Real Driver Portrait Avatar -->
+              <img src="assets/driver-amani.jpg" alt="Amani Juma" class="driver-avatar-real" onerror="this.onerror=null; this.src='assets/driver-avatar.jpg';">
               <div class="driver-text">
                 <div class="name" id="home-driver-name">Amani Juma</div>
                 <div class="details" id="home-driver-vehicle">Electric Bajaji • T 482 EVM</div>
@@ -218,6 +196,27 @@
               </svg>
             </div>
             <div class="tile-label">Report an Issue</div>
+          </div>
+        </div>
+
+        <!-- Join TEVDA / Register New Vehicle Luxury Banner -->
+        <div class="join-banner-container" onclick="window.app.navigateTo('register_step1')">
+          <div class="join-banner-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </div>
+          <div class="join-banner-text">
+            <div class="join-title">Join TEVDA / Sajili Chombo Kipya</div>
+            <div class="join-subtitle">Jiunge au sajili bajaji / boda mpya ya umeme</div>
+          </div>
+          <div class="join-banner-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </div>
         </div>
 
@@ -457,10 +456,7 @@
             <!-- Card Top Header -->
             <div class="card-top-bar">
               <div class="flex items-center gap-1.5" style="display:flex; align-items:center; gap:6px;">
-                <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
-                  <circle cx="50" cy="50" r="45" fill="#10B981"/>
-                  <path d="M30 65 C40 30 70 30 80 50 C60 60 40 70 30 65" fill="#ffffff"/>
-                </svg>
+                <img src="assets/tevda-logo.png" alt="TEVDA" style="height:26px;width:auto;object-fit:contain;">
                 <span class="logo-title">TEVDA</span>
               </div>
               <span class="gold-member-tag">TEVDA MEMBER</span>
@@ -470,16 +466,7 @@
             <div class="smart-id-body">
               <!-- Driver Portrait Frame -->
               <div class="smart-id-photo-frame">
-                <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="100" height="120" fill="#a7f3d0"/>
-                  <circle cx="50" cy="46" r="26" fill="#78350f"/>
-                  <path d="M50 20 C36 20 34 32 34 40 C38 36 62 36 66 40 C66 32 64 20 50 20 Z" fill="#18181b"/>
-                  <circle cx="42" cy="45" r="3" fill="#ffffff"/>
-                  <circle cx="58" cy="45" r="3" fill="#ffffff"/>
-                  <path d="M43 56 Q50 63 57 56" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                  <path d="M12 115 C16 88 34 82 50 82 C66 82 84 88 88 115 Z" fill="#047857"/>
-                  <polygon points="50,82 44,98 56,98" fill="#ffffff"/>
-                </svg>
+                <img src="assets/driver-amani.jpg" alt="Amani Juma" class="smart-id-photo-real" onerror="this.onerror=null; this.src='assets/driver-avatar.jpg';">
               </div>
 
               <!-- Driver Credentials Meta -->
@@ -589,19 +576,7 @@
           
           <!-- Card 1: EV Battery Safety -->
           <div class="service-card">
-            <!-- Battery SVG Artwork Thumbnail -->
-            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-              <rect width="200" height="120" fill="#18181b"/>
-              <rect x="25" y="30" width="150" height="65" rx="8" fill="#27272a" stroke="#059669" stroke-width="2"/>
-              <line x1="60" y1="30" x2="60" y2="95" stroke="#3f3f46" stroke-width="2"/>
-              <line x1="100" y1="30" x2="100" y2="95" stroke="#3f3f46" stroke-width="2"/>
-              <line x1="140" y1="30" x2="140" y2="95" stroke="#3f3f46" stroke-width="2"/>
-              <rect x="40" y="45" width="12" height="8" rx="2" fill="#10b981"/>
-              <rect x="80" y="45" width="12" height="8" rx="2" fill="#10b981"/>
-              <rect x="120" y="45" width="12" height="8" rx="2" fill="#10b981"/>
-              <circle cx="160" cy="49" r="4" fill="#f59e0b"/>
-              <text x="100" y="112" font-size="10" fill="#10b981" font-weight="bold" text-anchor="middle">LITHIUM-ION PACK</text>
-            </svg>
+            <img src="assets/service-battery.png" alt="EV Battery Safety" class="service-banner-img">
             <div class="body">
               <div class="title">EV Battery Safety</div>
               <div class="desc">Learn safe battery handling and care.</div>
@@ -611,15 +586,7 @@
 
           <!-- Card 2: High-Voltage Maintenance -->
           <div class="service-card">
-            <!-- Mechanic & Inverter SVG Thumbnail -->
-            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-              <rect width="200" height="120" fill="#064e3b"/>
-              <rect x="30" y="25" width="140" height="70" rx="8" fill="#047857" stroke="#34d399" stroke-width="2"/>
-              <path d="M100 35 L85 62 L98 62 L92 85 L115 55 L102 55 Z" fill="#f59e0b"/>
-              <circle cx="50" cy="60" r="12" fill="#065f46" stroke="#6ee7b7" stroke-width="2"/>
-              <circle cx="150" cy="60" r="12" fill="#065f46" stroke="#6ee7b7" stroke-width="2"/>
-              <text x="100" y="112" font-size="10" fill="#a7f3d0" font-weight="bold" text-anchor="middle">HIGH-VOLTAGE CERT</text>
-            </svg>
+            <img src="assets/service-maintenance.png" alt="High-Voltage Maintenance" class="service-banner-img">
             <div class="body">
               <div class="title">High-Voltage Maintenance</div>
               <div class="desc">Get certified in EV maintenance.</div>
@@ -629,15 +596,7 @@
 
           <!-- Card 3: Green Mobility Jobs -->
           <div class="service-card">
-            <!-- Handshake / Job Agreement SVG Thumbnail -->
-            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-              <rect width="200" height="120" fill="#1e293b"/>
-              <!-- Handshake illustration -->
-              <path d="M40 70 L70 50 L95 65 L85 85 Z" fill="#0284c7"/>
-              <path d="M160 70 L130 50 L105 65 L115 85 Z" fill="#059669"/>
-              <rect x="85" y="55" width="30" height="20" rx="4" fill="#f59e0b"/>
-              <text x="100" y="112" font-size="10" fill="#38bdf8" font-weight="bold" text-anchor="middle">18 ACTIVE FLEET JOBS</text>
-            </svg>
+            <img src="assets/service-jobs.png" alt="Green Mobility Jobs" class="service-banner-img">
             <div class="body">
               <div class="title">Green Mobility Jobs</div>
               <div class="desc">Find EV related job opportunities.</div>
@@ -647,17 +606,7 @@
 
           <!-- Card 4: Vehicle Financing -->
           <div class="service-card">
-            <!-- Electric Car Financing SVG Thumbnail -->
-            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-              <rect width="200" height="120" fill="#f1f5f9"/>
-              <!-- EV Car Graphic -->
-              <path d="M45 70 Q55 45 80 42 L130 42 Q150 45 160 70 Z" fill="#ffffff" stroke="#047857" stroke-width="2.5"/>
-              <circle cx="65" cy="74" r="14" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
-              <circle cx="140" cy="74" r="14" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
-              <rect x="75" y="48" width="22" height="14" rx="2" fill="#38bdf8"/>
-              <rect x="105" y="48" width="25" height="14" rx="2" fill="#38bdf8"/>
-              <text x="100" y="112" font-size="10" fill="#047857" font-weight="bold" text-anchor="middle">CRDB / NMB EV FUND</text>
-            </svg>
+            <img src="assets/service-financing.png" alt="Vehicle Financing" class="service-banner-img">
             <div class="body">
               <div class="title">Vehicle Financing</div>
               <div class="desc">Get affordable financing options.</div>
