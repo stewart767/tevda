@@ -1,0 +1,12 @@
+{
+  "appId": "org.tevda.app",
+  "appName": "TEVDA Mobile",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

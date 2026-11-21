@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TEVDA Mobile — Tanzania Electric Vehicle Drivers Association</title>
+  <meta name="description" content="Programu rasmi ya madereva na wamiliki wa vyombo vya usafiri vya umeme (EV) nchini Tanzania.">
+  <meta name="theme-color" content="#064e3b">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23047857'/><path d='M30 65 C40 30 70 30 80 50 C60 60 40 70 30 65' fill='%2310b981'/><path d='M25 55 C45 45 65 50 75 40' stroke='%23f59e0b' stroke-width='6' stroke-linecap='round' fill='none'/></svg>">
+</head>
+<body>
+
+  <!-- Floating Desktop Presentation Controls -->
+  <aside class="desktop-controls" aria-label="Desktop Controls">
+    <button class="pill-btn" id="btn-toggle-frame" title="Badili muonekano">
+      <span>🖥️ Fullscreen</span>
+    </button>
+  </aside>
+
+  <!-- Mobile Device Phone Frame Mockup Container -->
+  <main class="device-container" role="main">
+
+    <!-- Top Dynamic Island (iPhone style) -->
+    <div class="dynamic-island" aria-hidden="true"></div>
+
+    <!-- Native Mobile Status Bar -->
+    <header class="status-bar light-theme">
+      <span class="time">9:41</span>
+      <div class="icons" aria-hidden="true">
+        <!-- Cellular Signal -->
+        <svg width="15" height="11" viewBox="0 0 17 11" fill="currentColor">
+          <rect x="0" y="8" width="3" height="3" rx="0.5"/>
+          <rect x="4.5" y="5.5" width="3" height="5.5" rx="0.5"/>
+          <rect x="9.5" y="3" width="3" height="8" rx="0.5"/>
+          <rect x="14" y="0" width="3" height="11" rx="0.5"/>
+        </svg>
+        <!-- Wi-Fi -->
+        <svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor">
+          <path d="M8 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm-4.24-2.83a6 6 0 018.48 0 .75.75 0 001.06-1.06 7.5 7.5 0 00-10.6 0 .75.75 0 001.06 1.06zm-2.83-2.83a10 10 0 0114.14 0 .75.75 0 001.06-1.06 11.5 11.5 0 00-16.26 0 .75.75 0 001.06 1.06z"/>
+        </svg>
+        <!-- Battery -->
+        <svg width="22" height="11" viewBox="0 0 25 12" fill="currentColor">
+          <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor"/>
+          <rect x="2" y="2" width="16" height="8" rx="1.5"/>
+          <path d="M23 4v4a1.5 1.5 0 001.5-1.5v-1A1.5 1.5 0 0023 4z"/>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Main Scrollable App Viewport -->
+    <div class="app-viewport">
+
+      <!-- ====================================================================
+           SCREEN 1: HOME DASHBOARD
+           ==================================================================== -->
+      <section id="screen-home" class="app-screen active" aria-label="Home Dashboard">
+        
+        <!-- App Header with Official TEVDA Brand Logo -->
+        <div class="home-header">
+          <div class="brand-badge-container">
+            <!-- Inline SVG TEVDA Logo -->
+            <svg class="brand-logo" viewBox="0 0 210 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Leaf & E-Mobility Swoosh -->
+              <path d="M12 40C16 18 36 12 44 26C34 32 22 42 12 40Z" fill="#047857"/>
+              <path d="M8 32C22 24 38 28 46 20" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="28" cy="18" r="4" fill="#10B981"/>
+              <!-- TEVDA Wordmark -->
+              <text x="52" y="28" font-family="-apple-system, sans-serif" font-weight="900" font-size="24" fill="#064E3B" letter-spacing="-0.5">TEVDA</text>
+              <text x="52" y="38" font-family="-apple-system, sans-serif" font-weight="700" font-size="7" fill="#047857" letter-spacing="0.4">Tanzania Electric Vehicle</text>
+              <text x="52" y="46" font-family="-apple-system, sans-serif" font-weight="700" font-size="7" fill="#047857" letter-spacing="0.4">Drivers Association</text>
+            </svg>
+          </div>
+
+          <!-- Notification Bell with unread counter (2) -->
+          <button class="notif-btn" onclick="window.app.showToast('🔔 Una taarifa 2 mpya: Uthibitisho wa kitambulisho na ratiba ya mafunzo.')" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge">2</span>
+          </button>
+        </div>
+
+        <!-- Green Sub-Motto Bar: SMART DRIVERS • SMART MOBILITY -->
+        <div class="sub-motto-bar">
+          SMART DRIVERS • SMART MOBILITY
+        </div>
+
+        <!-- Greeting & Member Status -->
+        <div class="greeting-section">
+          <div class="greeting-row">
+            <h1 class="greeting-title" id="home-greeting">Habari, Amani</h1>
+            <span class="active-member-pill">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>ACTIVE MEMBER</span>
+            </span>
+          </div>
+          <div class="member-no-text" id="home-member-no">Member No. TEVDA-2026-000128</div>
+        </div>
+
+        <!-- Digital ID Mini Preview Card (Interactive) -->
+        <div class="id-preview-card" id="home-id-card-preview" title="Bonyeza kutazama kitambulisho kamili">
+          <div class="card-content">
+            <div class="driver-info">
+              <!-- Driver Portrait Avatar -->
+              <svg class="driver-avatar" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ecfdf5"/>
+                    <stop offset="100%" stop-color="#a7f3d0"/>
+                  </linearGradient>
+                </defs>
+                <rect width="100" height="100" fill="url(#bgGrad)"/>
+                <!-- Head & Shoulders Silhouette / Graphic Portrait -->
+                <circle cx="50" cy="40" r="22" fill="#78350f"/>
+                <path d="M50 18 C38 18 36 28 36 34 C40 32 60 32 64 34 C64 28 62 18 50 18 Z" fill="#18181b"/>
+                <circle cx="43" cy="39" r="2.5" fill="#ffffff"/>
+                <circle cx="57" cy="39" r="2.5" fill="#ffffff"/>
+                <path d="M44 48 Q50 54 56 48" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <!-- Shirt -->
+                <path d="M18 96 C20 74 36 68 50 68 C64 68 80 74 82 96 Z" fill="#047857"/>
+                <polygon points="50,68 44,82 56,82" fill="#f8fafc"/>
+              </svg>
+              <div class="driver-text">
+                <div class="name" id="home-driver-name">Amani Juma</div>
+                <div class="details" id="home-driver-vehicle">Electric Bajaji • T 482 EVM</div>
+              </div>
+            </div>
+
+            <!-- Authentic QR Code SVG -->
+            <div class="qr-box">
+              <svg viewBox="0 0 100 100" fill="currentColor">
+                <!-- Outer Corners -->
+                <rect x="5" y="5" width="30" height="30" rx="3" fill="#064e3b"/>
+                <rect x="11" y="11" width="18" height="18" fill="#ffffff"/>
+                <rect x="15" y="15" width="10" height="10" fill="#064e3b"/>
+
+                <rect x="65" y="5" width="30" height="30" rx="3" fill="#064e3b"/>
+                <rect x="71" y="11" width="18" height="18" fill="#ffffff"/>
+                <rect x="75" y="15" width="10" height="10" fill="#064e3b"/>
+
+                <rect x="5" y="65" width="30" height="30" rx="3" fill="#064e3b"/>
+                <rect x="11" y="71" width="18" height="18" fill="#ffffff"/>
+                <rect x="15" y="75" width="10" height="10" fill="#064e3b"/>
+
+                <!-- QR Data Matrix Dots -->
+                <rect x="42" y="8" width="6" height="6" fill="#064e3b"/>
+                <rect x="52" y="8" width="6" height="6" fill="#064e3b"/>
+                <rect x="42" y="20" width="6" height="6" fill="#064e3b"/>
+                <rect x="50" y="28" width="6" height="6" fill="#064e3b"/>
+                <rect x="8" y="44" width="6" height="6" fill="#064e3b"/>
+                <rect x="22" y="44" width="6" height="6" fill="#064e3b"/>
+                <rect x="42" y="44" width="16" height="16" rx="2" fill="#10b981"/>
+                <rect x="68" y="44" width="6" height="6" fill="#064e3b"/>
+                <rect x="82" y="44" width="6" height="6" fill="#064e3b"/>
+                <rect x="42" y="68" width="6" height="6" fill="#064e3b"/>
+                <rect x="52" y="76" width="6" height="6" fill="#064e3b"/>
+                <rect x="68" y="68" width="8" height="8" fill="#064e3b"/>
+                <rect x="82" y="76" width="10" height="6" fill="#064e3b"/>
+                <rect x="68" y="86" width="22" height="6" fill="#064e3b"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Bottom Green Gradient Accent -->
+          <div class="card-bottom-swoop"></div>
+        </div>
+
+        <!-- 2x2 Quick Actions Grid -->
+        <div class="actions-grid">
+          <!-- 1. My ID -->
+          <div class="action-tile green" id="action-my-id">
+            <div class="icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+                <circle cx="9" cy="10" r="2"></circle>
+                <line x1="15" y1="8" x2="17" y2="8"></line>
+                <line x1="15" y1="12" x2="17" y2="12"></line>
+                <line x1="7" y1="16" x2="17" y2="16"></line>
+              </svg>
+            </div>
+            <div class="tile-label">My ID</div>
+          </div>
+
+          <!-- 2. Payments -->
+          <div class="action-tile green" id="action-payments">
+            <div class="icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                <circle cx="12" cy="12" r="2"></circle>
+                <path d="M6 12h.01M18 12h.01"></path>
+              </svg>
+            </div>
+            <div class="tile-label">Payments</div>
+          </div>
+
+          <!-- 3. Training -->
+          <div class="action-tile green" id="action-training">
+            <div class="icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            </div>
+            <div class="tile-label">Training</div>
+          </div>
+
+          <!-- 4. Report an Issue -->
+          <div class="action-tile orange" id="action-report">
+            <div class="icon-wrap">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="tile-label">Report an Issue</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 2: JOIN TEVDA (REGISTRATION STEP 1: PERSONAL DETAILS)
+           ==================================================================== -->
+      <section id="screen-register_step1" class="app-screen" aria-label="Join TEVDA Registration">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Join TEVDA</div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- 3-Step Stepper Progress Bar -->
+        <div class="stepper-row">
+          <div class="step-node active">
+            <div class="step-circle">1</div>
+            <span class="step-label">Personal<br>Details</span>
+          </div>
+          <div class="stepper-line"></div>
+          <div class="step-node">
+            <div class="step-circle">2</div>
+            <span class="step-label">Payment</span>
+          </div>
+          <div class="stepper-line"></div>
+          <div class="step-node">
+            <div class="step-circle">3</div>
+            <span class="step-label">Vehicle<br>Details</span>
+          </div>
+        </div>
+
+        <!-- Form Fields matching exact design -->
+        <div class="form-body">
+          <!-- 1. Full Name -->
+          <div class="input-group">
+            <span class="input-icon-lead">👤</span>
+            <input type="text" id="reg-name" class="input-box" placeholder="Enter your full name" value="Amani Juma">
+          </div>
+
+          <!-- 2. Phone Number -->
+          <div class="input-group">
+            <span class="input-icon-lead">📞</span>
+            <input type="tel" id="reg-phone" class="input-box" placeholder="e.g. 0712345678" value="0712345678">
+          </div>
+
+          <!-- 3. Region (Mkoa) -->
+          <div class="input-group">
+            <span class="input-icon-lead">📍</span>
+            <select id="reg-region" class="input-box">
+              <option value="">Select Region</option>
+            </select>
+            <span class="input-chevron">▼</span>
+          </div>
+
+          <!-- 4. District (Wilaya) -->
+          <div class="input-group">
+            <span class="input-icon-lead">🏛️</span>
+            <select id="reg-district" class="input-box">
+              <option value="">Select District</option>
+            </select>
+            <span class="input-chevron">▼</span>
+          </div>
+
+          <!-- 5. Ward (Kata) -->
+          <div class="input-group">
+            <span class="input-icon-lead">📌</span>
+            <select id="reg-ward" class="input-box">
+              <option value="">Select Ward</option>
+            </select>
+            <span class="input-chevron">▼</span>
+          </div>
+
+          <!-- 6. Operating Stage -->
+          <div class="input-group">
+            <span class="input-icon-lead">🛺</span>
+            <input type="text" id="reg-stage" class="input-box" placeholder="Enter stage/location" value="Sinza Mori / Kituo cha Shekilango">
+          </div>
+
+          <!-- 7. Category -->
+          <div class="input-group">
+            <span class="input-icon-lead">🚗</span>
+            <select id="reg-category" class="input-box">
+              <option value="full">Commercial EV Driver (Dereva wa Bajaji/Boda/Gari)</option>
+              <option value="associate">Associate Technician (Fundi / Mtaalamu)</option>
+              <option value="fleet">Fleet Owner / Investor</option>
+            </select>
+            <span class="input-chevron">▼</span>
+          </div>
+
+          <!-- Continue Button -->
+          <button type="button" class="btn-primary-mobile" id="btn-continue-step1">
+            <span>Continue</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 3: MEMBERSHIP PAYMENT
+           ==================================================================== -->
+      <section id="screen-register_step2" class="app-screen" aria-label="Membership Payment">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="register_step1" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Membership Payment</div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- Membership Fee Card -->
+        <div class="fee-card">
+          <div class="title">Membership Fee</div>
+          <div class="amount">TZS 15,000</div>
+          <div class="desc">Registration + Membership</div>
+        </div>
+
+        <!-- Payment Control Number Card with Copy Button -->
+        <div class="control-number-card">
+          <div class="label">Payment Control Number</div>
+          <div class="code-row">
+            <span class="code" id="control-number-code">482173056194</span>
+            <button class="copy-btn" id="btn-copy-control" title="Nakili namba">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Gateways Grid -->
+        <div class="payment-gateways-section">
+          <div class="header-text">Pay via any of the following:</div>
+          
+          <div class="gateways-grid">
+            <!-- M-Pesa -->
+            <div class="gateway-item">
+              <svg class="gateway-logo" viewBox="0 0 80 40" fill="none">
+                <rect width="80" height="40" rx="8" fill="#e11d48"/>
+                <text x="40" y="24" font-family="-apple-system, sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle">M-PESA</text>
+              </svg>
+              <span class="gateway-name">M-Pesa</span>
+            </div>
+
+            <!-- Tigo Pesa -->
+            <div class="gateway-item">
+              <svg class="gateway-logo" viewBox="0 0 80 40" fill="none">
+                <rect width="80" height="40" rx="8" fill="#2563eb"/>
+                <text x="40" y="24" font-family="-apple-system, sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle">TIGO</text>
+              </svg>
+              <span class="gateway-name">Tigo Pesa</span>
+            </div>
+
+            <!-- Airtel Money -->
+            <div class="gateway-item">
+              <svg class="gateway-logo" viewBox="0 0 80 40" fill="none">
+                <rect width="80" height="40" rx="8" fill="#dc2626"/>
+                <text x="40" y="24" font-family="-apple-system, sans-serif" font-weight="900" font-size="11" fill="#ffffff" text-anchor="middle">AIRTEL</text>
+              </svg>
+              <span class="gateway-name">Airtel Money</span>
+            </div>
+
+            <!-- HaloPesa -->
+            <div class="gateway-item">
+              <svg class="gateway-logo" viewBox="0 0 80 40" fill="none">
+                <rect width="80" height="40" rx="8" fill="#f59e0b"/>
+                <text x="40" y="24" font-family="-apple-system, sans-serif" font-weight="900" font-size="11" fill="#ffffff" text-anchor="middle">HALOPESA</text>
+              </svg>
+              <span class="gateway-name">HaloPesa</span>
+            </div>
+
+            <!-- Banks -->
+            <div class="gateway-item">
+              <svg class="gateway-logo" viewBox="0 0 80 40" fill="none">
+                <rect width="80" height="40" rx="8" fill="#0f766e"/>
+                <!-- Bank pillars icon -->
+                <path d="M40 10 L28 16 L52 16 Z M30 18 H50 M32 20 V28 M38 20 V28 M44 20 V28 M28 30 H52" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span class="gateway-name">Banks</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Card: Awaiting Payment -->
+        <div class="awaiting-status-card">
+          <div class="clock-icon">🕒</div>
+          <div>
+            <div class="status-title">Status: Awaiting payment</div>
+            <div class="status-desc">After payment, click the button below.</div>
+          </div>
+        </div>
+
+        <!-- I Have Paid Button -->
+        <div style="padding: 0 16px;">
+          <button type="button" class="btn-primary-mobile" id="btn-confirm-payment">
+            <span>✓</span>
+            <span>I Have Paid</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 4: DIGITAL SMART ID (FULL VIEW)
+           ==================================================================== -->
+      <section id="screen-smart_id" class="app-screen" aria-label="Digital Smart ID">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Digital Smart ID</div>
+          <div class="spacer"></div>
+        </div>
+
+        <div class="smart-id-full-container">
+          
+          <!-- Full Smart ID Card with Authentic Architecture -->
+          <div class="smart-id-card-full">
+            
+            <!-- Card Top Header -->
+            <div class="card-top-bar">
+              <div class="flex items-center gap-1.5" style="display:flex; align-items:center; gap:6px;">
+                <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="50" r="45" fill="#10B981"/>
+                  <path d="M30 65 C40 30 70 30 80 50 C60 60 40 70 30 65" fill="#ffffff"/>
+                </svg>
+                <span class="logo-title">TEVDA</span>
+              </div>
+              <span class="gold-member-tag">TEVDA MEMBER</span>
+            </div>
+
+            <!-- Card Body with Driver Portrait, Details, and QR Code -->
+            <div class="smart-id-body">
+              <!-- Driver Portrait Frame -->
+              <div class="smart-id-photo-frame">
+                <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="100" height="120" fill="#a7f3d0"/>
+                  <circle cx="50" cy="46" r="26" fill="#78350f"/>
+                  <path d="M50 20 C36 20 34 32 34 40 C38 36 62 36 66 40 C66 32 64 20 50 20 Z" fill="#18181b"/>
+                  <circle cx="42" cy="45" r="3" fill="#ffffff"/>
+                  <circle cx="58" cy="45" r="3" fill="#ffffff"/>
+                  <path d="M43 56 Q50 63 57 56" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                  <path d="M12 115 C16 88 34 82 50 82 C66 82 84 88 88 115 Z" fill="#047857"/>
+                  <polygon points="50,82 44,98 56,98" fill="#ffffff"/>
+                </svg>
+              </div>
+
+              <!-- Driver Credentials Meta -->
+              <div class="smart-id-meta">
+                <div class="label">Member No.</div>
+                <div class="val-member-no" id="id-card-member-no">TEVDA-2026-000128</div>
+
+                <div class="label">Name</div>
+                <div class="val-name" id="id-card-name">AMANI JUMA</div>
+
+                <div class="label">Vehicle Type</div>
+                <div class="val-vehicle" id="id-card-vehicle">ELECTRIC BAJAJI</div>
+
+                <div class="val-validity" id="id-card-validity">VALID THROUGH 2027</div>
+              </div>
+
+              <!-- Scannable High-Density QR Code -->
+              <div class="smart-id-qr-box">
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                  <rect x="5" y="5" width="28" height="28" rx="3" fill="#064e3b"/>
+                  <rect x="11" y="11" width="16" height="16" fill="#ffffff"/>
+                  <rect x="15" y="15" width="8" height="8" fill="#064e3b"/>
+
+                  <rect x="67" y="5" width="28" height="28" rx="3" fill="#064e3b"/>
+                  <rect x="73" y="11" width="16" height="16" fill="#ffffff"/>
+                  <rect x="77" y="15" width="8" height="8" fill="#064e3b"/>
+
+                  <rect x="5" y="67" width="28" height="28" rx="3" fill="#064e3b"/>
+                  <rect x="11" y="73" width="16" height="16" fill="#ffffff"/>
+                  <rect x="15" y="77" width="8" height="8" fill="#064e3b"/>
+
+                  <!-- Data Matrix dots -->
+                  <rect x="42" y="8" width="8" height="8" fill="#064e3b"/>
+                  <rect x="54" y="8" width="6" height="8" fill="#064e3b"/>
+                  <rect x="42" y="24" width="6" height="6" fill="#064e3b"/>
+                  <rect x="52" y="24" width="8" height="8" fill="#064e3b"/>
+                  <rect x="10" y="44" width="8" height="6" fill="#064e3b"/>
+                  <rect x="24" y="44" width="6" height="8" fill="#064e3b"/>
+                  <rect x="40" y="42" width="18" height="18" rx="3" fill="#10b981"/>
+                  <rect x="68" y="44" width="8" height="6" fill="#064e3b"/>
+                  <rect x="82" y="44" width="8" height="8" fill="#064e3b"/>
+                  <rect x="42" y="68" width="6" height="8" fill="#064e3b"/>
+                  <rect x="54" y="74" width="8" height="6" fill="#064e3b"/>
+                  <rect x="42" y="86" width="18" height="6" fill="#064e3b"/>
+                  <rect x="68" y="68" width="10" height="8" fill="#064e3b"/>
+                  <rect x="82" y="74" width="10" height="8" fill="#064e3b"/>
+                  <rect x="68" y="86" width="24" height="6" fill="#064e3b"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Skyline Silhouette Footer Illustration -->
+            <div class="smart-id-skyline-footer">
+              <svg class="skyline-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
+                <path d="M0,40 L0,30 L20,30 L20,18 L30,18 L30,30 L55,30 L55,10 L70,10 L70,30 L110,30 L110,22 L125,22 L125,30 L160,30 L160,5 L175,0 L190,5 L190,30 L220,30 L220,15 L240,15 L240,30 L270,30 L270,8 L290,8 L290,30 L340,30 L340,20 L355,20 L355,30 L400,30 L400,40 Z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Download Certificate Action Button -->
+          <button type="button" class="btn-primary-mobile" id="btn-download-cert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download Certificate</span>
+          </button>
+
+          <!-- Verified Active Status Card -->
+          <div class="verified-status-card">
+            <div class="shield-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="text">Your TEVDA membership is verified and active.</div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 5: GROW WITH TEVDA (SERVICES & TRAINING)
+           ==================================================================== -->
+      <section id="screen-services" class="app-screen" aria-label="Grow with TEVDA">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Grow with TEVDA</div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- Subtitle Hero Banner -->
+        <div class="grow-hero">
+          <div class="subtitle">Build skills. Access opportunities. Drive a greener Tanzania.</div>
+        </div>
+
+        <!-- 2x2 Services Grid matching exact mockup layout -->
+        <div class="services-grid">
+          
+          <!-- Card 1: EV Battery Safety -->
+          <div class="service-card">
+            <!-- Battery SVG Artwork Thumbnail -->
+            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="120" fill="#18181b"/>
+              <rect x="25" y="30" width="150" height="65" rx="8" fill="#27272a" stroke="#059669" stroke-width="2"/>
+              <line x1="60" y1="30" x2="60" y2="95" stroke="#3f3f46" stroke-width="2"/>
+              <line x1="100" y1="30" x2="100" y2="95" stroke="#3f3f46" stroke-width="2"/>
+              <line x1="140" y1="30" x2="140" y2="95" stroke="#3f3f46" stroke-width="2"/>
+              <rect x="40" y="45" width="12" height="8" rx="2" fill="#10b981"/>
+              <rect x="80" y="45" width="12" height="8" rx="2" fill="#10b981"/>
+              <rect x="120" y="45" width="12" height="8" rx="2" fill="#10b981"/>
+              <circle cx="160" cy="49" r="4" fill="#f59e0b"/>
+              <text x="100" y="112" font-size="10" fill="#10b981" font-weight="bold" text-anchor="middle">LITHIUM-ION PACK</text>
+            </svg>
+            <div class="body">
+              <div class="title">EV Battery Safety</div>
+              <div class="desc">Learn safe battery handling and care.</div>
+              <button class="btn-link" onclick="window.app.showToast('🔋 Umefungua kozi ya Usalama wa Betri za EV (4 Hours).')">Start Course →</button>
+            </div>
+          </div>
+
+          <!-- Card 2: High-Voltage Maintenance -->
+          <div class="service-card">
+            <!-- Mechanic & Inverter SVG Thumbnail -->
+            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="120" fill="#064e3b"/>
+              <rect x="30" y="25" width="140" height="70" rx="8" fill="#047857" stroke="#34d399" stroke-width="2"/>
+              <path d="M100 35 L85 62 L98 62 L92 85 L115 55 L102 55 Z" fill="#f59e0b"/>
+              <circle cx="50" cy="60" r="12" fill="#065f46" stroke="#6ee7b7" stroke-width="2"/>
+              <circle cx="150" cy="60" r="12" fill="#065f46" stroke="#6ee7b7" stroke-width="2"/>
+              <text x="100" y="112" font-size="10" fill="#a7f3d0" font-weight="bold" text-anchor="middle">HIGH-VOLTAGE CERT</text>
+            </svg>
+            <div class="body">
+              <div class="title">High-Voltage Maintenance</div>
+              <div class="desc">Get certified in EV maintenance.</div>
+              <button class="btn-link" onclick="window.app.showToast('⚡ Maelezo ya mafunzo ya High-Voltage (2 Weeks Cohort).')">Learn More →</button>
+            </div>
+          </div>
+
+          <!-- Card 3: Green Mobility Jobs -->
+          <div class="service-card">
+            <!-- Handshake / Job Agreement SVG Thumbnail -->
+            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="120" fill="#1e293b"/>
+              <!-- Handshake illustration -->
+              <path d="M40 70 L70 50 L95 65 L85 85 Z" fill="#0284c7"/>
+              <path d="M160 70 L130 50 L105 65 L115 85 Z" fill="#059669"/>
+              <rect x="85" y="55" width="30" height="20" rx="4" fill="#f59e0b"/>
+              <text x="100" y="112" font-size="10" fill="#38bdf8" font-weight="bold" text-anchor="middle">18 ACTIVE FLEET JOBS</text>
+            </svg>
+            <div class="body">
+              <div class="title">Green Mobility Jobs</div>
+              <div class="desc">Find EV related job opportunities.</div>
+              <button class="btn-link" onclick="window.app.showToast('💼 Fursa 18 za ajira ya udereva wa EV Dar es Salaam!')">Browse Jobs →</button>
+            </div>
+          </div>
+
+          <!-- Card 4: Vehicle Financing -->
+          <div class="service-card">
+            <!-- Electric Car Financing SVG Thumbnail -->
+            <svg class="img-thumb" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="120" fill="#f1f5f9"/>
+              <!-- EV Car Graphic -->
+              <path d="M45 70 Q55 45 80 42 L130 42 Q150 45 160 70 Z" fill="#ffffff" stroke="#047857" stroke-width="2.5"/>
+              <circle cx="65" cy="74" r="14" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
+              <circle cx="140" cy="74" r="14" fill="#0f172a" stroke="#10b981" stroke-width="3"/>
+              <rect x="75" y="48" width="22" height="14" rx="2" fill="#38bdf8"/>
+              <rect x="105" y="48" width="25" height="14" rx="2" fill="#38bdf8"/>
+              <text x="100" y="112" font-size="10" fill="#047857" font-weight="bold" text-anchor="middle">CRDB / NMB EV FUND</text>
+            </svg>
+            <div class="body">
+              <div class="title">Vehicle Financing</div>
+              <div class="desc">Get affordable financing options.</div>
+              <button class="btn-link" onclick="window.app.showToast('🚗 Fomu ya mkopo wa chombo cha EV imefunguka.')">Apply Now →</button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 6: REPORT AN ISSUE (WHISTLEBLOWER & GRIEVANCE)
+           ==================================================================== -->
+      <section id="screen-report_issue" class="app-screen" aria-label="Report an Issue">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Report an Issue</div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- Confidentiality Assurance Banner -->
+        <div class="confidential-card">
+          <div class="lock-icon">🛡️</div>
+          <div>
+            <div class="title">Your report is confidential</div>
+            <div class="desc">We value your safety and protect your identity.</div>
+          </div>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="categories-section">
+          <div class="heading">Select Category</div>
+          
+          <div class="issue-categories-grid">
+            <!-- 1. Extortion -->
+            <div class="issue-category-tile selected" data-category="extortion">
+              <span class="icon">🥷</span>
+              <span class="label">Extortion</span>
+            </div>
+
+            <!-- 2. Police Harassment -->
+            <div class="issue-category-tile" data-category="police_harassment">
+              <span class="icon">👮</span>
+              <span class="label">Police Harassment</span>
+            </div>
+
+            <!-- 3. Battery Theft -->
+            <div class="issue-category-tile" data-category="battery_theft">
+              <span class="icon">🔋</span>
+              <span class="label">Battery Theft</span>
+            </div>
+
+            <!-- 4. Unsafe Charging -->
+            <div class="issue-category-tile" data-category="unsafe_charging">
+              <span class="icon">🔌</span>
+              <span class="label">Unsafe Charging</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description Input -->
+        <div class="report-textarea-container">
+          <textarea id="issue-desc" class="report-textarea" placeholder="Describe what happened... (e.g. Tarehe, kituo/eneo, kiasi kilichodaiwa, au namba ya chombo kilichohusika)"></textarea>
+        </div>
+
+        <!-- Anonymous Toggle Switch -->
+        <div class="anonymous-toggle-row">
+          <span class="label">Report Anonymously</span>
+          <label class="switch">
+            <input type="checkbox" id="anonymous-toggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Submit Securely Button -->
+        <div style="padding: 0 16px;">
+          <button type="button" class="btn-primary-mobile" id="btn-submit-issue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span>Submit Securely</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           SCREEN 7: PROFILE & SETTINGS
+           ==================================================================== -->
+      <section id="screen-profile" class="app-screen" aria-label="Profile">
+        
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Driver Profile</div>
+          <div class="spacer"></div>
+        </div>
+
+        <div style="padding: 20px 16px; display: flex; flex-direction: column; gap: 14px;">
+          <!-- Driver Profile Card -->
+          <div style="background: #ffffff; border-radius: 18px; padding: 18px; border: 1px solid #e2e8f0; text-align: center;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: #ecfdf5; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 32px; border: 3px solid #10b981;">
+              👤
+            </div>
+            <h2 style="font-size: 17px; font-weight: 900; color: #0f172a;">Amani Juma</h2>
+            <p style="font-size: 12px; font-weight: 700; color: #047857; margin-top: 2px;">TEVDA-2026-000128</p>
+            <span class="active-member-pill" style="margin-top: 8px;">✓ VERIFIED DRIVER</span>
+          </div>
+
+          <!-- Profile Info Items -->
+          <div style="background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; overflow: hidden; divide-y: 1px solid #f1f5f9;">
+            <div style="padding: 12px 16px; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid #f1f5f9;">
+              <span style="color: #64748b; font-weight: 700;">Simu</span>
+              <span style="font-weight: 800; color: #0f172a;">+255 712 345 678</span>
+            </div>
+            <div style="padding: 12px 16px; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid #f1f5f9;">
+              <span style="color: #64748b; font-weight: 700;">Leseni</span>
+              <span style="font-weight: 800; color: #0f172a;">TZA-DL-749102 (Class C3)</span>
+            </div>
+            <div style="padding: 12px 16px; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid #f1f5f9;">
+              <span style="color: #64748b; font-weight: 700;">Chombo</span>
+              <span style="font-weight: 800; color: #0f172a;">Bajaji ya Umeme (T 482 EVM)</span>
+            </div>
+            <div style="padding: 12px 16px; display: flex; justify-content: space-between; font-size: 12px;">
+              <span style="color: #64748b; font-weight: 700;">Kituo Rasmi</span>
+              <span style="font-weight: 800; color: #0f172a;">Sinza Mori, Dar es Salaam</span>
+            </div>
+          </div>
+
+          <!-- Shortcuts -->
+          <button type="button" class="btn-primary-mobile" onclick="window.app.switchScreen('register_step1')" style="background: #0284c7;">
+            <span>➕ Sajili Mwanachama / Chombo Kipya</span>
+          </button>
+
+          <button type="button" class="btn-primary-mobile" onclick="window.app.showToast('ℹ️ Mfumo umehifadhiwa kikamilifu!')" style="background: #f1f5f9; color: #0f172a; box-shadow: none;">
+            <span>🌐 Tovuti Rasmi: tevda.or.tz</span>
+          </button>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Bottom Navigation Bar (4 Native Tabs matching mockup) -->
+    <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
+      <!-- 1. Home -->
+      <a href="#home" class="nav-tab active" id="tab-home">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label">Home</span>
+      </a>
+
+      <!-- 2. ID -->
+      <a href="#id" class="nav-tab" id="tab-id">
+        <span class="tab-icon">🪪</span>
+        <span class="tab-label">ID</span>
+      </a>
+
+      <!-- 3. Services -->
+      <a href="#services" class="nav-tab" id="tab-services">
+        <span class="tab-icon">🎛️</span>
+        <span class="tab-label">Services</span>
+      </a>
+
+      <!-- 4. Profile -->
+      <a href="#profile" class="nav-tab" id="tab-profile">
+        <span class="tab-icon">👤</span>
+        <span class="tab-label">Profile</span>
+      </a>
+    </nav>
+
+    <!-- Floating Interactive Toast -->
+    <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
+
+  </main>
+
+  <!-- JavaScript Modules -->
+  <script src="./js/data.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

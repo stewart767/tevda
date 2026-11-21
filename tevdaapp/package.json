@@ -1,0 +1,21 @@
+{
+  "name": "tevda-mobile-app",
+  "version": "1.0.0",
+  "description": "TEVDA Official Mobile Application for Commercial Electric Vehicle Drivers in Tanzania",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "tevda",
+    "electric-vehicles",
+    "drivers",
+    "tanzania",
+    "mobile-app",
+    "pwa"
+  ],
+  "author": "TEVDA Engineering Team",
+  "license": "MIT"
+}
