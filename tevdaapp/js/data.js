@@ -231,5 +231,61 @@ window.TEVDA_DATA = {
       desc: "Faulty infrastructure, overvoltage or hazards",
       icon: "plug"
     }
+  ],
+
+  // System & Official Notifications
+  notifications: [
+    {
+      id: "notif-1",
+      title: "Uthibitisho wa Kitambulisho cha Kidijitali",
+      summary: "Kitambulisho chako cha kidijitali (TEVDA-2026-000128) kimeidhinishwa rasmi na kiko tayari kutumika.",
+      body: "Habari Ndugu Amani Juma,\n\nTunapenda kukutaarifu kuwa uhakiki wa taarifa zako na usajili wa chombo chako cha moto (Electric Bajaji, Namba T 482 EVM) umekamilika rasmi na Ofisi Kuu ya TEVDA.\n\nKitambulisho chako cha Kidijitali (Digital Smart ID) sasa ni hai (Active) kikiwa na QR Code inayotambulika kisheria na Mamlaka ya Udhibiti Usafiri Ardhini (LATRA) pamoja na Jeshi la Polisi Kitengo cha Usalama Barabarani.\n\nUnaweza kuonyesha kitambulisho hiki moja kwa moja kwenye simu yako au kupakua cheti rasmi cha uanachama kupitia sehemu ya 'Digital Smart ID'.",
+      category: "Kitambulisho",
+      time: "Dakika 10 zilizopita",
+      icon: "🪪",
+      isImportant: true,
+      isRead: false,
+      actionLabel: "Tazama Kitambulisho Changu →",
+      targetScreen: "smart_id"
+    },
+    {
+      id: "notif-2",
+      title: "Ratiba ya Mafunzo ya Usalama wa Betri",
+      summary: "Kikao cha mafunzo ya vitendo ya usalama wa betri za EV kimepangwa kufanyika 28 Nov 2026 saa 3:00 asubuhi.",
+      body: "Ndugu Dereva,\n\nTEVDA kwa kushirikiana na wadau wa nishati safi inakualika kwenye mafunzo maalum ya vitendo ya 'EV Battery Safety & High-Voltage Maintenance'.\n\n📅 Tarehe: 28 Novemba 2026\n⏰ Muda: Saa 3:00 Asubuhi - 6:00 Mchana\n📍 Eneo: Kituo cha TEVDA, Sinza Mori, Dar es Salaam\n\nMada Kuu zitakazofundishwa:\n1. Mbinu sahihi za kuchaji betri wakati wa mvua au unyevu mwingi.\n2. Kuzuia na kugundua mapema dalili za joto kali (Thermal Runaway).\n3. Hatua salama za kuchukua wakati wa dharura ya hitilafu ya umeme barabarani.\n\nWashiriki wote watapata cheti cha usalama (Safety Certificate).",
+      category: "Mafunzo",
+      time: "Saa 2 zilizopita",
+      icon: "🎓",
+      isImportant: true,
+      isRead: false,
+      actionLabel: "Fungua Moduli za Mafunzo →",
+      targetScreen: "services"
+    },
+    {
+      id: "notif-3",
+      title: "Risiti ya Malipo ya Ada ya Uanachama",
+      summary: "Malipo yako ya TZS 15,000 kupitia Control Number 482173056194 yamethibitishwa.",
+      body: "Ndugu Mwanachama,\n\nMalipo yako ya Ada ya Usajili na Uanachama ya TZS 15,000/= kupitia namba ya malipo (Control Number) 482173056194 yamethibitishwa na kuingizwa kwenye mfumo mkuu wa TEVDA.\n\n• Kumbukumbu ya Muamala: TXN-EV-9402816\n• Kiasi: TZS 15,000\n• Njia ya Malipo: M-Pesa / Tigo Pesa Gateway\n• Hali: IMELIPWA KIKAMILIFU (PAID)\n\nAsante kwa kuchangia ukuaji wa umoja wa madereva wa vyombo vya umeme Tanzania!",
+      category: "Malipo",
+      time: "Jana, 14:45",
+      icon: "💳",
+      isImportant: false,
+      isRead: true,
+      actionLabel: "Tazama Sehemu ya Malipo →",
+      targetScreen: "register_payment"
+    },
+    {
+      id: "notif-4",
+      title: "Ilani ya Usalama: Vituo vya Kuchaji Umeme",
+      summary: "Ukaguzi wa vituo vya kuchaji unaendelea Kinondoni na Ilala. Ripoti changamoto yoyote.",
+      body: "TAARIFA KWA MADEREVA WOTE:\n\nKamati ya Ulinzi na Usalama ya TEVDA inaendelea na zoezi la ukaguzi wa vituo vya kuchajia vyombo vya moto katika Wilaya za Kinondoni na Ilala.\n\nIwapo unakutana na:\n• Vituo vinavyotoza viwango holela vilivyo kinyume na makubaliano.\n• Waya zilizo wazi au plugs zenye cheche wakati wa kuchaji.\n• Unyanyasaji au vituo visivyo na vifaa vya kuzimia moto.\n\nTafadhali tumia sehemu ya 'Report an Issue' ndani ya mfumo huu kuripoti mara moja ili jopo la uokoaji lichukue hatua za haraka.",
+      category: "Tahadhari",
+      time: "Siku 2 zilizopita",
+      icon: "⚠️",
+      isImportant: false,
+      isRead: true,
+      actionLabel: "Toa Ripoti ya Kituo →",
+      targetScreen: "report_issue"
+    }
   ]
 };

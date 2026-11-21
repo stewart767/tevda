@@ -35,6 +35,141 @@ class TevdaColors {
   static const Color slate50 = Color(0xFFF8FAFC);
 }
 
+// ============================================================================
+// NOTIFICATION MODEL & CONTROLLER (REACTIVE REAL-TIME STATE)
+// ============================================================================
+class NotificationItem {
+  final String id;
+  final String title;
+  final String summary;
+  final String body;
+  final String category;
+  final String time;
+  final IconData icon;
+  final Color iconColor;
+  final Color iconBg;
+  final bool isImportant;
+  bool isRead;
+  final String? actionLabel;
+  final int? targetTabIndex;
+  final String? targetRouteName;
+
+  NotificationItem({
+    required this.id,
+    required this.title,
+    required this.summary,
+    required this.body,
+    required this.category,
+    required this.time,
+    required this.icon,
+    required this.iconColor,
+    required this.iconBg,
+    this.isImportant = false,
+    this.isRead = false,
+    this.actionLabel,
+    this.targetTabIndex,
+    this.targetRouteName,
+  });
+}
+
+class NotificationController extends ChangeNotifier {
+  static final NotificationController instance = NotificationController();
+
+  final List<NotificationItem> _items = [
+    NotificationItem(
+      id: 'notif-1',
+      title: 'Uthibitisho wa Kitambulisho cha Kidijitali',
+      summary: 'Kitambulisho chako cha kidijitali (TEVDA-2026-000128) kimeidhinishwa rasmi na kiko tayari kutumika.',
+      body: 'Habari Ndugu Amani Juma,\n\nTunapenda kukutaarifu kuwa uhakiki wa taarifa zako na usajili wa chombo chako cha moto (Electric Bajaji, Namba T 482 EVM) umekamilika rasmi na Ofisi Kuu ya TEVDA.\n\nKitambulisho chako cha Kidijitali (Digital Smart ID) sasa ni hai (Active) kikiwa na QR Code inayotambulika kisheria na Mamlaka ya Udhibiti Usafiri Ardhini (LATRA) pamoja na Jeshi la Polisi Kitengo cha Usalama Barabarani.\n\nUnaweza kuonyesha kitambulisho hiki moja kwa moja kwenye simu yako au kupakua cheti rasmi cha uanachama kupitia sehemu ya "Digital Smart ID".',
+      category: 'Kitambulisho',
+      time: 'Dakika 10 zilizopita',
+      icon: Icons.badge_rounded,
+      iconColor: TevdaColors.primary,
+      iconBg: const Color(0xFFECFDF5),
+      isImportant: true,
+      isRead: false,
+      actionLabel: 'Tazama Kitambulisho Changu →',
+      targetTabIndex: 1,
+    ),
+    NotificationItem(
+      id: 'notif-2',
+      title: 'Ratiba ya Mafunzo ya Usalama wa Betri',
+      summary: 'Kikao cha mafunzo ya vitendo ya usalama wa betri za EV kimepangwa kufanyika 28 Nov 2026 saa 3:00 asubuhi.',
+      body: 'Ndugu Dereva,\n\nTEVDA kwa kushirikiana na wadau wa nishati safi inakualika kwenye mafunzo maalum ya vitendo ya "EV Battery Safety & High-Voltage Maintenance".\n\n📅 Tarehe: 28 Novemba 2026\n⏰ Muda: Saa 3:00 Asubuhi - 6:00 Mchana\n📍 Eneo: Kituo cha TEVDA, Sinza Mori, Dar es Salaam\n\nMada Kuu zitakazofundishwa:\n1. Mbinu sahihi za kuchaji betri wakati wa mvua au unyevu mwingi.\n2. Kuzuia na kugundua mapema dalili za joto kali (Thermal Runaway).\n3. Hatua salama za kuchukua wakati wa dharura ya hitilafu ya umeme barabarani.\n\nWashiriki wote watapata cheti cha usalama (Safety Certificate).',
+      category: 'Mafunzo',
+      time: 'Saa 2 zilizopita',
+      icon: Icons.school_rounded,
+      iconColor: const Color(0xFF2563EB),
+      iconBg: const Color(0xFFEFF6FF),
+      isImportant: true,
+      isRead: false,
+      actionLabel: 'Fungua Moduli za Mafunzo →',
+      targetTabIndex: 2,
+    ),
+    NotificationItem(
+      id: 'notif-3',
+      title: 'Risiti ya Malipo ya Ada ya Uanachama',
+      summary: 'Malipo yako ya TZS 15,000 kupitia Control Number 482173056194 yamethibitishwa.',
+      body: 'Ndugu Mwanachama,\n\nMalipo yako ya Ada ya Usajili na Uanachama ya TZS 15,000/= kupitia namba ya malipo (Control Number) 482173056194 yamethibitishwa na kuingizwa kwenye mfumo mkuu wa TEVDA.\n\n• Kumbukumbu ya Muamala: TXN-EV-9402816\n• Kiasi: TZS 15,000\n• Njia ya Malipo: M-Pesa / Tigo Pesa Gateway\n• Hali: IMELIPWA KIKAMILIFU (PAID)\n\nAsante kwa kuchangia ukuaji wa umoja wa madereva wa vyombo vya umeme Tanzania!',
+      category: 'Malipo',
+      time: 'Jana, 14:45',
+      icon: Icons.receipt_long_rounded,
+      iconColor: const Color(0xFF059669),
+      iconBg: const Color(0xFFECFDF5),
+      isImportant: false,
+      isRead: true,
+      actionLabel: 'Tazama Sehemu ya Malipo →',
+      targetRouteName: 'payment',
+    ),
+    NotificationItem(
+      id: 'notif-4',
+      title: 'Ilani ya Usalama: Vituo vya Kuchaji Umeme',
+      summary: 'Ukaguzi wa vituo vya kuchaji unaendelea Kinondoni na Ilala. Ripoti changamoto yoyote.',
+      body: 'TAARIFA KWA MADEREVA WOTE:\n\nKamati ya Ulinzi na Usalama ya TEVDA inaendelea na zoezi la ukaguzi wa vituo vya kuchajia vyombo vya moto katika Wilaya za Kinondoni na Ilala.\n\nIwapo unakutana na:\n• Vituo vinavyotoza viwango holela vilivyo kinyume na makubaliano.\n• Waya zilizo wazi au plugs zenye cheche wakati wa kuchaji.\n• Unyanyasaji au vituo visivyo na vifaa vya kuzimia moto.\n\nTafadhali tumia sehemu ya "Report an Issue" ndani ya mfumo huu kuripoti mara moja ili jopo la uokoaji lichukue hatua za haraka.',
+      category: 'Tahadhari',
+      time: 'Siku 2 zilizopita',
+      icon: Icons.warning_amber_rounded,
+      iconColor: const Color(0xFFD97706),
+      iconBg: const Color(0xFFFEF3C7),
+      isImportant: false,
+      isRead: true,
+      actionLabel: 'Toa Ripoti ya Kituo →',
+      targetRouteName: 'report',
+    ),
+  ];
+
+  List<NotificationItem> get items => List.unmodifiable(_items);
+
+  int get unreadCount => _items.where((item) => !item.isRead).length;
+
+  void markAsRead(String id) {
+    final index = _items.indexWhere((item) => item.id == id);
+    if (index != -1 && !_items[index].isRead) {
+      _items[index].isRead = true;
+      notifyListeners();
+    }
+  }
+
+  void markAllAsRead() {
+    bool changed = false;
+    for (var item in _items) {
+      if (!item.isRead) {
+        item.isRead = true;
+        changed = true;
+      }
+    }
+    if (changed) notifyListeners();
+  }
+
+  void toggleRead(String id) {
+    final index = _items.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      _items[index].isRead = !_items[index].isRead;
+      notifyListeners();
+    }
+  }
+}
+
 class TevdaApp extends StatelessWidget {
   const TevdaApp({super.key});
 
@@ -255,61 +390,70 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // Notification Bell with Badge 2
-                  Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: TevdaColors.slate200),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
+                  // Notification Bell with Interactive Badge Counter (ListenableBuilder)
+                  ListenableBuilder(
+                    listenable: NotificationController.instance,
+                    builder: (context, _) {
+                      final unreadCount = NotificationController.instance.unreadCount;
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: TevdaColors.slate200),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.04),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('🔔 Una taarifa 2 mpya: Uthibitisho wa kitambulisho na ratiba ya mafunzo.'),
-                                backgroundColor: TevdaColors.primaryDark,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.notifications_none_rounded, color: TevdaColors.slate800, size: 22),
-                          padding: const EdgeInsets.all(8),
-                          constraints: const BoxConstraints(),
-                        ),
-                      ),
-                      Positioned(
-                        right: 2,
-                        top: 2,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEF4444),
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFFEF4444).withOpacity(0.4),
-                                blurRadius: 4,
-                              ),
-                            ],
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => NotificationsScreen(onNavigateTab: onNavigate),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.notifications_none_rounded, color: TevdaColors.slate800, size: 22),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
+                              tooltip: 'Fungua Taarifa',
+                            ),
                           ),
-                          constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                          child: const Text(
-                            '2',
-                            style: TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w900),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
+                          if (unreadCount > 0)
+                            Positioned(
+                              right: -2,
+                              top: -2,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFEF4444),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 2),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFEF4444).withOpacity(0.5),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                                child: Text(
+                                  '$unreadCount',
+                                  style: const TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w900),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -801,6 +945,477 @@ class HomeScreen extends StatelessWidget {
                 color: isGreen ? TevdaColors.primary : const Color(0xFFB45309),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// NOTIFICATIONS SCREEN (FULL INTERACTIVE CENTER & DETAIL MODAL)
+// ============================================================================
+class NotificationsScreen extends StatefulWidget {
+  final Function(int)? onNavigateTab;
+
+  const NotificationsScreen({super.key, this.onNavigateTab});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  String _activeFilter = 'Zote';
+
+  void _showNotificationDetail(BuildContext context, NotificationItem item) {
+    // Automatically mark as read when opened
+    NotificationController.instance.markAsRead(item.id);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top drag pill
+              Center(
+                child: Container(
+                  width: 48,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: TevdaColors.slate200,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // Header: Category & Time
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: item.iconBg,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: item.iconColor.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      item.category.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w900,
+                        color: item.iconColor,
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    item.time,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: TevdaColors.slate500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+
+              // Notification Title
+              Text(
+                item.title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  color: TevdaColors.slate900,
+                  letterSpacing: -0.3,
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Verified Sender Badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: TevdaColors.slate50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: TevdaColors.slate200),
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.verified_rounded, size: 16, color: TevdaColors.primary),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Ofisi Kuu ya TEVDA • Ujumbe Rasmi',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: TevdaColors.slate700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 14),
+
+              // Full Message Body
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(ctx).size.height * 0.4,
+                ),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Text(
+                    item.body,
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      color: TevdaColors.slate700,
+                      height: 1.55,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 22),
+
+              // Direct Action Button (e.g. View ID, View Training, View Payment)
+              if (item.actionLabel != null)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(ctx); // Close sheet
+                    Navigator.pop(context); // Close notification screen
+
+                    if (item.targetTabIndex != null && widget.onNavigateTab != null) {
+                      widget.onNavigateTab!(item.targetTabIndex!);
+                    } else if (item.targetRouteName == 'payment') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const PaymentScreen()),
+                      );
+                    } else if (item.targetRouteName == 'report') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ReportIssueScreen()),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TevdaColors.primaryDark,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(item.actionLabel!, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w900)),
+                    ],
+                  ),
+                ),
+
+              const SizedBox(height: 8),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text(
+                    'Funga',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                      color: TevdaColors.slate500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: AppBar(
+        title: const Text('Taarifa (Notifications)'),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              NotificationController.instance.markAllAsRead();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('✓ Taarifa zote zimewekwa kama zimesomwa.'),
+                  backgroundColor: TevdaColors.primaryDark,
+                ),
+              );
+            },
+            icon: const Icon(Icons.done_all_rounded, color: Colors.white, size: 18),
+            label: const Text(
+              'Soma Zote',
+              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800),
+            ),
+          ),
+          const SizedBox(width: 6),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Filter Tabs Row
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              color: Colors.white,
+              child: Row(
+                children: [
+                  _buildFilterTab('Zote'),
+                  const SizedBox(width: 8),
+                  _buildFilterTab('Hazijasomwa'),
+                  const SizedBox(width: 8),
+                  _buildFilterTab('Muhimu'),
+                ],
+              ),
+            ),
+            const Divider(height: 1, color: TevdaColors.slate200),
+
+            // Notifications List View (Listenable)
+            Expanded(
+              child: ListenableBuilder(
+                listenable: NotificationController.instance,
+                builder: (context, _) {
+                  final allItems = NotificationController.instance.items;
+                  List<NotificationItem> filteredItems = [];
+
+                  if (_activeFilter == 'Hazijasomwa') {
+                    filteredItems = allItems.where((i) => !i.isRead).toList();
+                  } else if (_activeFilter == 'Muhimu') {
+                    filteredItems = allItems.where((i) => i.isImportant).toList();
+                  } else {
+                    filteredItems = allItems;
+                  }
+
+                  if (filteredItems.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.notifications_off_outlined, size: 64, color: TevdaColors.slate400),
+                          SizedBox(height: 12),
+                          Text(
+                            'Hakuna Taarifa Mpya',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: TevdaColors.slate800),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Taarifa mpya zikifika zitaonekana hapa.',
+                            style: TextStyle(fontSize: 12, color: TevdaColors.slate500),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    itemCount: filteredItems.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
+                      return _buildNotificationCard(context, item);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterTab(String label) {
+    final bool isSelected = _activeFilter == label;
+    int count = 0;
+    final all = NotificationController.instance.items;
+    if (label == 'Zote') {
+      count = all.length;
+    } else if (label == 'Hazijasomwa') {
+      count = all.where((i) => !i.isRead).length;
+    } else if (label == 'Muhimu') {
+      count = all.where((i) => i.isImportant).length;
+    }
+
+    return InkWell(
+      onTap: () => setState(() => _activeFilter = label),
+      borderRadius: BorderRadius.circular(999),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: isSelected ? TevdaColors.primaryDark : TevdaColors.slate100,
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.w900 : FontWeight.w700,
+                color: isSelected ? Colors.white : TevdaColors.slate700,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+              decoration: BoxDecoration(
+                color: isSelected ? TevdaColors.primaryLight : TevdaColors.slate200,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                '$count',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  color: isSelected ? Colors.white : TevdaColors.slate700,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationCard(BuildContext context, NotificationItem item) {
+    return InkWell(
+      onTap: () => _showNotificationDetail(context, item),
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: item.isRead ? TevdaColors.slate200 : TevdaColors.primaryLight,
+            width: item.isRead ? 1 : 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(item.isRead ? 0.02 : 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon Container
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: item.iconBg,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: item.iconColor.withOpacity(0.2)),
+              ),
+              child: Icon(item.icon, color: item.iconColor, size: 22),
+            ),
+            const SizedBox(width: 14),
+
+            // Notification Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: item.iconBg,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          item.category,
+                          style: TextStyle(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w900,
+                            color: item.iconColor,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          if (!item.isRead) ...[
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF10B981),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                          ],
+                          Text(
+                            item.time,
+                            style: const TextStyle(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w600,
+                              color: TevdaColors.slate400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+
+                  Text(
+                    item.title,
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: item.isRead ? FontWeight.w700 : FontWeight.w900,
+                      color: TevdaColors.slate900,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+
+                  Text(
+                    item.summary,
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      color: item.isRead ? TevdaColors.slate500 : TevdaColors.slate700,
+                      height: 1.35,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: TevdaColors.slate400),
           ],
         ),
       ),

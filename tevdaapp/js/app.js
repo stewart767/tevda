@@ -9,6 +9,8 @@ class TevdaApp {
     this.currentScreen = 'home';
     this.data = window.TEVDA_DATA;
     this.selectedIssueCategory = 'extortion';
+    this.activeNotifFilter = 'all';
+    this.currentModalNotifId = null;
     this.init();
   }
 
@@ -17,6 +19,8 @@ class TevdaApp {
     this.populateRegions();
     this.renderCurrentMember();
     this.updateClock();
+    this.updateNotificationBadges();
+    this.renderNotifications();
     setInterval(() => this.updateClock(), 30000);
 
     // Register service worker if available
@@ -376,6 +380,150 @@ class TevdaApp {
         ? '<span>📱 Frame Mode</span>'
         : '<span>🖥️ Fullscreen</span>';
     });
+  }
+
+  // --------------------------------------------------------------------------
+  // Notifications Center & Interactive Reader System
+  // --------------------------------------------------------------------------
+  openNotifications() {
+    this.switchScreen('notifications');
+    this.renderNotifications();
+  }
+
+  updateNotificationBadges() {
+    const list = this.data.notifications || [];
+    const unread = list.filter(n => !n.isRead).length;
+    const important = list.filter(n => n.isImportant).length;
+
+    // Bell Badge on Home
+    const bellBadge = document.getElementById('notif-badge-counter');
+    if (bellBadge) {
+      bellBadge.textContent = unread;
+      bellBadge.style.display = unread > 0 ? 'flex' : 'none';
+    }
+
+    // Filter Chips Counts
+    const countAll = document.getElementById('count-all');
+    if (countAll) countAll.textContent = list.length;
+
+    const countUnread = document.getElementById('count-unread');
+    if (countUnread) countUnread.textContent = unread;
+
+    const countImportant = document.getElementById('count-important');
+    if (countImportant) countImportant.textContent = important;
+  }
+
+  filterNotifs(filterType) {
+    this.activeNotifFilter = filterType;
+    document.querySelectorAll('.notif-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filterType);
+    });
+    this.renderNotifications();
+  }
+
+  renderNotifications() {
+    const container = document.getElementById('notif-items-container');
+    if (!container) return;
+
+    const list = this.data.notifications || [];
+    let filtered = list;
+
+    if (this.activeNotifFilter === 'unread') {
+      filtered = list.filter(n => !n.isRead);
+    } else if (this.activeNotifFilter === 'important') {
+      filtered = list.filter(n => n.isImportant);
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="notif-empty-state">
+          <div class="empty-icon">🔔</div>
+          <div class="empty-title">Hakuna Taarifa Mpya</div>
+          <div class="empty-desc">Taarifa zote zimekaguliwa. Zikifika mpya zitaonekana hapa.</div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(item => `
+      <div class="notif-card ${item.isRead ? 'read' : 'unread'}" onclick="window.app.openNotifDetail('${item.id}')">
+        <div class="notif-card-icon">${item.icon}</div>
+        <div class="notif-card-body">
+          <div class="notif-card-meta">
+            <span class="category-badge">${item.category}</span>
+            <div class="time-wrap">
+              ${!item.isRead ? '<span class="unread-dot"></span>' : ''}
+              <span class="time-text">${item.time}</span>
+            </div>
+          </div>
+          <div class="notif-card-title">${item.title}</div>
+          <div class="notif-card-summary">${item.summary}</div>
+        </div>
+        <div class="notif-chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  markAllNotifsAsRead() {
+    (this.data.notifications || []).forEach(n => { n.isRead = true; });
+    this.updateNotificationBadges();
+    this.renderNotifications();
+    this.showToast('✓ Taarifa zote zimewekwa kama zimesomwa.');
+  }
+
+  openNotifDetail(notifId) {
+    const item = (this.data.notifications || []).find(n => n.id === notifId);
+    if (!item) return;
+
+    // Mark as read
+    item.isRead = true;
+    this.currentModalNotifId = notifId;
+    this.updateNotificationBadges();
+    this.renderNotifications();
+
+    // Fill Modal
+    const modal = document.getElementById('notif-detail-modal');
+    if (!modal) return;
+
+    document.getElementById('modal-notif-category').textContent = item.category.toUpperCase();
+    document.getElementById('modal-notif-time').textContent = item.time;
+    document.getElementById('modal-notif-title').textContent = item.title;
+    document.getElementById('modal-notif-body').innerHTML = item.body.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+    const actionBtn = document.getElementById('modal-notif-action-btn');
+    const actionText = document.getElementById('modal-notif-action-text');
+    if (item.actionLabel && actionBtn && actionText) {
+      actionBtn.style.display = 'flex';
+      actionText.textContent = item.actionLabel;
+    } else if (actionBtn) {
+      actionBtn.style.display = 'none';
+    }
+
+    modal.classList.add('active');
+  }
+
+  closeNotifModal() {
+    const modal = document.getElementById('notif-detail-modal');
+    if (modal) modal.classList.remove('active');
+    this.currentModalNotifId = null;
+  }
+
+  handleModalBackdropClick(e) {
+    if (e.target.id === 'notif-detail-modal') {
+      this.closeNotifModal();
+    }
+  }
+
+  takeNotifAction() {
+    const item = (this.data.notifications || []).find(n => n.id === this.currentModalNotifId);
+    this.closeNotifModal();
+    if (item && item.targetScreen) {
+      this.switchScreen(item.targetScreen);
+    }
   }
 }
 
