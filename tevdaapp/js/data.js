@@ -1,11 +1,10 @@
 /**
  * TEVDA Mobile Application Data Store
- * Contains Tanzania geographic hierarchy, sample driver profile,
- * categories, services, courses, and payment providers.
+ * Official Data for Tanzania Electric Vehicle Drivers Association
  */
 
 window.TEVDA_DATA = {
-  // Current active driver profile (matching the UI design mockup exactly)
+  // Current active driver profile (matching the 5-star official design)
   currentMember: {
     fullName: "Amani Juma",
     greetingName: "Amani",
@@ -15,40 +14,92 @@ window.TEVDA_DATA = {
     phone: "+255 712 345 678",
     email: "amani.juma@gmail.com",
     gender: "male",
+    category: "Full Member",
     vehicleType: "ELECTRIC BAJAJI",
     vehicleReg: "T 482 EVM",
-    vehicleMake: "Taifa Electric Trike 2025",
+    vehicleMake: "Ampersand E-Trike 2025",
     drivingLicence: "TZA-DL-749102",
     licenceClass: "C3",
     nidaNumber: "19940812-14102-00001-42",
     region: "Dar es Salaam",
     district: "Kinondoni",
-    ward: "Sinza",
+    ward: "Sinza Mori",
     operatingStage: "Sinza Mori / Kituo cha Shekilango",
     validThrough: "VALID THROUGH 2027",
-    joinedDate: "15 Jan 2026",
-    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
-    qrPayload: "https://tevda.or.tz/verify/membership?query=TEVDA-2026-000128"
+    joinedDate: "01 Jan 2026",
+    photoUrl: "assets/driver-amani.jpg",
+    qrPayload: "https://www.tevda.or.tz/verify-id/TEVDA-2026-000128"
   },
 
-  // Ongoing registration state (Step 1 -> Step 2 -> Step 3)
+  // Authoritative Membership Categories matching database
+  categories: [
+    {
+      id: 1,
+      slug: "full-member",
+      name: "Full Member",
+      nameSw: "Mwanachama Kamili (Dereva wa Chombo cha Umeme)",
+      description: "Madereva na wamiliki wa vyombo vya moto vya umeme (Bajaji, Bodaboda, Magari, Mabasi).",
+      requiresLicense: true,
+      requiresVehicle: true,
+      docs: ["NIDA", "Leseni ya Udereva", "Picha ya Pasipoti", "Kadi ya Gari"]
+    },
+    {
+      id: 2,
+      slug: "associate-member",
+      name: "Associate Member",
+      nameSw: "Mwanachama Mshiriki (Fundi / Mdau wa EV)",
+      description: "Mafundi wa EV, vituo vya kuchaji, na wataalamu. Haihitaji leseni ya udereva.",
+      requiresLicense: false,
+      requiresVehicle: false,
+      docs: ["NIDA", "Picha ya Pasipoti", "Cheti cha Taaluma"]
+    },
+    {
+      id: 3,
+      slug: "honorary-member",
+      name: "Honorary Member",
+      nameSw: "Mwanachama wa Heshima",
+      description: "Viongozi na wateule waliochangia sekta ya EV nchini. Hauruhusiwi ada.",
+      requiresLicense: false,
+      requiresVehicle: false,
+      feeExempt: true
+    },
+    {
+      id: 4,
+      slug: "institutional-member",
+      name: "Institutional Member",
+      nameSw: "Mwanachama wa Kitaasisi (Fleets & Corporate)",
+      description: "Makampuni, wamiliki wa meli za EV, vituo vya kuchaji na taasisi za kifedha.",
+      requiresLicense: false,
+      requiresVehicle: false,
+      docs: ["TIN ya Kampuni", "Leseni ya Biashara", "Kitambulisho cha Mwakilishi"]
+    }
+  ],
+
+  // Official Fee Structure (Dynamic Council Disclaimer)
+  feePolicy: {
+    note: "Ada rasmi inathibitishwa na Baraza Kuu la TEVDA. Malipo yote yanadhibitiwa na GePG Control Number.",
+    currency: "TZS",
+    registrationFee: 50000.0,
+    annualFee: 30000.0
+  },
+
+  // Ongoing registration state
   registrationDraft: {
     fullName: "",
     phone: "",
-    region: "",
-    district: "",
-    ward: "",
-    operatingStage: "",
-    category: "Full Member (Dereva wa Chombo)",
-    amount: "TZS 15,000",
-    controlNumber: "482173056194",
+    region: "Dar es Salaam",
+    district: "Kinondoni",
+    ward: "Sinza",
+    categoryId: 1,
+    amount: "TZS 50,000",
+    controlNumber: "994821730561",
     paymentStatus: "awaiting_payment",
     drivingLicence: "",
-    vehicleType: "three_wheeler",
+    vehicleType: "Electric Bajaji",
     vehiclePlate: ""
   },
 
-  // Tanzania Regions with Districts & Common Wards
+  // Tanzania Regions
   regions: [
     {
       id: "dar",
@@ -89,11 +140,6 @@ window.TEVDA_DATA = {
           id: "arusha_city",
           name: "Arusha City",
           wards: ["Sekei", "Themi", "Kaloleni", "Ngarenaro", "Unga Limited", "Sombetini"]
-        },
-        {
-          id: "arumeru",
-          name: "Arumeru",
-          wards: ["Usa River", "King'ori", "Majengo", "Kikwe"]
         }
       ]
     },
@@ -116,124 +162,185 @@ window.TEVDA_DATA = {
           id: "nyamagana",
           name: "Nyamagana",
           wards: ["Nyamagana", "Mabatini", "Pamba", "Mirongo", "Igoma"]
-        },
-        {
-          id: "ilemela",
-          name: "Ilemela",
-          wards: ["Kirumba", "Nyamanoro", "Buswelu", "Kawekamo"]
-        }
-      ]
-    },
-    {
-      id: "tanga",
-      name: "Tanga",
-      districts: [
-        {
-          id: "tanga_city",
-          name: "Tanga City",
-          wards: ["Majengo", "Chumbageni", "Ngamiani", "Usagara"]
-        }
-      ]
-    },
-    {
-      id: "zanzibar",
-      name: "Zanzibar (Mjini Magharibi)",
-      districts: [
-        {
-          id: "mjini",
-          name: "Mjini",
-          wards: ["Malindi", "Shangani", "Mkunazini", "Kikwajuni"]
         }
       ]
     }
   ],
 
-  // Membership Categories
-  categories: [
-    { id: "full", name: "Full Member (Commercial EV Driver)", fee: 15000 },
-    { id: "associate", name: "Associate Member (EV Tech / Engineer)", fee: 15000 },
-    { id: "fleet", name: "Fleet Owner / Operator", fee: 50000 },
-    { id: "institutional", name: "Institutional & Partner", fee: 100000 }
+  // Official 6 Accredited Courses from Database
+  courses: [
+    {
+      id: 1,
+      title: "Core Electric Vehicle Operation & Swapping Mastery",
+      titleSw: "Uendeshaji wa EV na Ubadilishaji Betri (Battery Swapping)",
+      hours: 16,
+      passMark: 75,
+      modules: 6,
+      category: "EV Operations",
+      desc: "Kanuni za kimsingi za injini ya umeme, mifumo ya kubadilisha betri kwa usalama, na uokoaji dharura.",
+      badge: "Accredited",
+      progress: 100
+    },
+    {
+      id: 2,
+      title: "Defensive Driving & Urban EV Road Safety",
+      titleSw: "Uendeshaji wa Kujihami na Usalama Barabarani",
+      hours: 12,
+      passMark: 80,
+      modules: 5,
+      category: "Road Safety",
+      desc: "Kudhibiti breki za regen (regenerative braking), kuzuia ajali mijini, na sheria za LATRA.",
+      badge: "Safety",
+      progress: 65
+    },
+    {
+      id: 3,
+      title: "Financial Literacy & Micro-Fleet Business Planning",
+      titleSw: "Elimu ya Fedha na Usimamizi wa Mapato ya Chombo",
+      hours: 10,
+      passMark: 70,
+      modules: 4,
+      category: "Financial Planning",
+      desc: "Kupanga mapato ya kila siku, urejeshaji wa mikopo ya EV, bima ya chombo, na akiba.",
+      badge: "Finance",
+      progress: 30
+    },
+    {
+      id: 4,
+      title: "Preventive Maintenance & Mechanical Inspection",
+      titleSw: "Matengenezo Kinga na Ukaguzi wa Kila Siku",
+      hours: 8,
+      passMark: 75,
+      modules: 4,
+      category: "Maintenance",
+      desc: "Kukagua matairi, mfumo wa kupoza betri, nyaya za high voltage na taa.",
+      badge: "Technical",
+      progress: 0
+    },
+    {
+      id: 5,
+      title: "Digital Mobility Apps & Navigation Systems",
+      titleSw: "Mifumo ya Kidijitali ya Safari na Ramani",
+      hours: 6,
+      passMark: 70,
+      modules: 3,
+      category: "Digital Tools",
+      desc: "Kutumia programu za ride-hailing, kutafuta vituo vya kubadilishia betri na GPS.",
+      badge: "Digital",
+      progress: 0
+    },
+    {
+      id: 6,
+      title: "Pathway to Commercial EV Entrepreneurship",
+      titleSw: "Ujasiriamali wa Vyombo vya Umeme na Uwekezaji",
+      hours: 8,
+      passMark: 70,
+      modules: 4,
+      category: "Empowerment",
+      desc: "Kupanua umiliki kutoka dereva hadi mmiliki wa vyombo vingi kwa vijana na wanawake.",
+      badge: "Empowerment",
+      progress: 0
+    }
+  ],
+
+  // Verified Opportunities from Database
+  opportunities: [
+    {
+      id: 1,
+      title: "Commercial EV Driver Fleet Recruitment",
+      titleSw: "Nafasi za Madereva wa Bajaji za Umeme (Full-Time)",
+      category: "Employment",
+      provider: "EcoMobility Fleet Tanzania",
+      deadline: "30 Desemba 2026",
+      location: "Dar es Salaam (Kinondoni & Ilala)",
+      eligibility: "Madereva wenye leseni daraja A/A2/B, kitambulisho cha TEVDA, uzoefu zaidi ya mwaka 1.",
+      type: "Ajira Rasmi"
+    },
+    {
+      id: 2,
+      title: "Clean Energy Green Financing (Low-Interest Loan)",
+      titleSw: "Mkopo wa Nafuu wa Kununua Bajaji au Pikipiki ya Umeme",
+      category: "Vehicle Financing",
+      provider: "CRDB & Tanzania E-Mobility Fund",
+      deadline: "15 Januari 2027",
+      location: "Nchi Nzima (Tanzania)",
+      eligibility: "Mwanachama kamili wa TEVDA aliyehitimu kozi ya Financial Literacy.",
+      type: "Ufadhili wa Chombo"
+    },
+    {
+      id: 3,
+      title: "Women & Youth EV Operator Empowerment Grant",
+      titleSw: "Ruzuku ya Uwezeshaji Madereva Wanawake na Vijana",
+      category: "Grants",
+      provider: "UNDP & TEVDA National Council",
+      deadline: "20 Desemba 2026",
+      location: "Mwanza, Dodoma na Arusha",
+      eligibility: "Wanawake na vijana chini ya miaka 30 waliojiunga na mafunzo ya TEVDA.",
+      type: "Ruzuku Isiyorejeshwa"
+    },
+    {
+      id: 4,
+      title: "OEM Battery & Spare Parts Supply Partnership",
+      titleSw: "Vipuri Halisi vya EV kwa Bei ya Punguzo ya Wanachama",
+      category: "Spare Parts",
+      provider: "Ampersand & Spiro Certified Hubs",
+      deadline: "Inaendelea",
+      location: "Dar es Salaam, Morogoro",
+      eligibility: "Onyesha kadi ya kidijitali (Smart ID) ya TEVDA kupata punguzo la 15%.",
+      type: "Punguzo la Vipuri"
+    }
   ],
 
   // Payment Providers
   paymentProviders: [
-    { id: "mpesa", name: "M-Pesa", operator: "Vodacom / Safaricom", color: "#e11d48", tag: "Vodacom" },
-    { id: "tigopesa", name: "Tigo Pesa", operator: "Mixx by Yas", color: "#2563eb", tag: "Tigo" },
-    { id: "airtel", name: "Airtel Money", operator: "Airtel Tanzania", color: "#dc2626", tag: "Airtel" },
-    { id: "halopesa", name: "HaloPesa", operator: "Halotel", color: "#f59e0b", tag: "Halotel" },
-    { id: "banks", name: "Banks", operator: "CRDB, NMB, KCB, NBC", color: "#0f766e", tag: "Bank Transfer" }
+    { id: "mpesa", name: "M-Pesa Lipa Namba", operator: "Paybill: 500200", color: "#e11d48", tag: "Vodacom" },
+    { id: "tigopesa", name: "Tigo Pesa", operator: "Lipa kwa Control Number", color: "#2563eb", tag: "Mixx by Yas" },
+    { id: "airtel", name: "Airtel Money", operator: "Control Number / Lipa", color: "#dc2626", tag: "Airtel" },
+    { id: "halopesa", name: "HaloPesa", operator: "Control Number", color: "#f59e0b", tag: "Halotel" },
+    { id: "banks", name: "CRDB / NMB Bank", operator: "A/C: 0150829104000 (TEVDA HQ)", color: "#0f766e", tag: "Bank Transfer" }
   ],
 
-  // Grow with TEVDA (Services & Training)
-  services: [
-    {
-      id: "battery_safety",
-      title: "EV Battery Safety",
-      description: "Learn safe battery handling, thermal runaway prevention, and charging protocols.",
-      badge: "Accredited",
-      actionText: "Start Course →",
-      instructor: "Eng. Hamisi Bakari (EV Certified)",
-      duration: "4 Hours (Self-Paced / Workshop)",
-      cert: "TEVDA Battery Handling Certificate"
-    },
-    {
-      id: "high_voltage",
-      title: "High-Voltage Maintenance",
-      description: "Get certified in high-voltage wiring, inverter diagnostics, and motor troubleshooting.",
-      badge: "Technical",
-      actionText: "Learn More →",
-      instructor: "Eng. Frank Mrosso",
-      duration: "2 Weeks Intensive Cohort",
-      cert: "Certified EV Technical Specialist"
-    },
-    {
-      id: "green_jobs",
-      title: "Green Mobility Jobs",
-      description: "Find verified EV related job opportunities, charging hub gigs, and corporate fleets.",
-      badge: "Opportunities",
-      actionText: "Browse Jobs →",
-      openings: "18 Active Fleet Openings in Dar es Salaam"
-    },
-    {
-      id: "financing",
-      title: "Vehicle Financing",
-      description: "Access subsidized battery-as-a-service and clean asset financing with low interest.",
-      badge: "Finance",
-      actionText: "Apply Now →",
-      partners: "CRDB Bank, NMB Bank, E-Mobility Green Fund"
-    }
-  ],
-
-  // Grievance / Whistleblower Categories
+  // Whistleblower Incident Categories
   complaintCategories: [
+    { id: "extortion", title: "Extortion / Rushwa", desc: "Kudaiwa fedha haramu vituoni au barabarani", icon: "shield" },
+    { id: "police_harassment", title: "Police Harassment", desc: "Unyanyasaji au ukaguzi usio halali", icon: "police" },
+    { id: "battery_theft", title: "Battery Theft", desc: "Wizi wa betri au udanganyifu wa swap", icon: "battery" },
+    { id: "unsafe_charging", title: "Unsafe Charging", desc: "Miundombinu mibovu, shoti au hatari ya moto", icon: "plug" },
+    { id: "vehicle_defect", title: "Vehicle Defects", desc: "Hitilafu za kiwanda na warranty", icon: "tool" },
+    { id: "other", title: "Changamoto Nyingine", desc: "Mizozo au malalamiko mengine", icon: "alert" }
+  ],
+
+  // Member Registered Vehicles
+  vehicles: [
     {
-      id: "extortion",
-      title: "Extortion",
-      desc: "Illegal payment demands at stages or intersections",
-      icon: "mask"
+      id: 1,
+      type: "Electric Bajaji",
+      make: "Ampersand",
+      model: "E-Trike 2025",
+      plate: "T 482 EVM",
+      batteryKwh: 12.0,
+      charging: "Battery Swap",
+      dailyKm: 85,
+      ownership: "Driver-Operated (Lease-to-Own)",
+      status: "LATRA Verified",
+      isPrimary: true
     },
     {
-      id: "police_harassment",
-      title: "Police Harassment",
-      desc: "Unjustified impoundment or arbitrary harassment",
-      icon: "police"
-    },
-    {
-      id: "battery_theft",
-      title: "Battery Theft",
-      desc: "Stolen EV batteries, cells or swapping fraud",
-      icon: "battery"
-    },
-    {
-      id: "unsafe_charging",
-      title: "Unsafe Charging",
-      desc: "Faulty infrastructure, overvoltage or hazards",
-      icon: "plug"
+      id: 2,
+      type: "Electric Bodaboda",
+      make: "Spiro",
+      model: "Equator Max",
+      plate: "MC 918 EVT",
+      batteryKwh: 4.5,
+      charging: "Battery Swap",
+      dailyKm: 110,
+      ownership: "Owned",
+      status: "LATRA Verified",
+      isPrimary: false
     }
   ],
 
-  // System & Official Notifications
+  // System Notifications
   notifications: [
     {
       id: "notif-1",
@@ -259,26 +366,26 @@ window.TEVDA_DATA = {
       isImportant: true,
       isRead: false,
       actionLabel: "Fungua Moduli za Mafunzo →",
-      targetScreen: "services"
+      targetScreen: "academy"
     },
     {
       id: "notif-3",
-      title: "Risiti ya Malipo ya Ada ya Uanachama",
-      summary: "Malipo yako ya TZS 15,000 kupitia Control Number 482173056194 yamethibitishwa.",
-      body: "Ndugu Mwanachama,\n\nMalipo yako ya Ada ya Usajili na Uanachama ya TZS 15,000/= kupitia namba ya malipo (Control Number) 482173056194 yamethibitishwa na kuingizwa kwenye mfumo mkuu wa TEVDA.\n\n• Kumbukumbu ya Muamala: TXN-EV-9402816\n• Kiasi: TZS 15,000\n• Njia ya Malipo: M-Pesa / Tigo Pesa Gateway\n• Hali: IMELIPWA KIKAMILIFU (PAID)\n\nAsante kwa kuchangia ukuaji wa umoja wa madereva wa vyombo vya umeme Tanzania!",
+      title: "Kumbukumbu ya Namba ya Malipo (Control Number)",
+      summary: "Control Number 994821730561 inasubiri uhakiki wa ada ya uanachama.",
+      body: "Ndugu Mwanachama,\n\nMalipo yako kupitia namba ya malipo (Control Number) 994821730561 yanashughulikiwa na mfumo wa fedha.\n\nKumbuka kuwa ada rasmi ya uanachama inathibitishwa na Baraza Kuu la TEVDA. Pindi malipo yanapothibitishwa, utapokea risiti rasmi na kitambulisho chako kitahuishwa mara moja.",
       category: "Malipo",
       time: "Jana, 14:45",
-      icon: "💳",
+      icon: "🧾",
       isImportant: false,
       isRead: true,
       actionLabel: "Tazama Sehemu ya Malipo →",
-      targetScreen: "register_payment"
+      targetScreen: "payment"
     },
     {
       id: "notif-4",
       title: "Ilani ya Usalama: Vituo vya Kuchaji Umeme",
       summary: "Ukaguzi wa vituo vya kuchaji unaendelea Kinondoni na Ilala. Ripoti changamoto yoyote.",
-      body: "TAARIFA KWA MADEREVA WOTE:\n\nKamati ya Ulinzi na Usalama ya TEVDA inaendelea na zoezi la ukaguzi wa vituo vya kuchajia vyombo vya moto katika Wilaya za Kinondoni na Ilala.\n\nIwapo unakutana na:\n• Vituo vinavyotoza viwango holela vilivyo kinyume na makubaliano.\n• Waya zilizo wazi au plugs zenye cheche wakati wa kuchaji.\n• Unyanyasaji au vituo visivyo na vifaa vya kuzimia moto.\n\nTafadhali tumia sehemu ya 'Report an Issue' ndani ya mfumo huu kuripoti mara moja ili jopo la uokoaji lichukue hatua za haraka.",
+      body: "TAARIFA KWA MADEREVA WOTE:\n\nKamati ya Ulinzi na Usalama ya TEVDA inaendelea na zoezi la ukaguzi wa vituo vya kuchajia vyombo vya moto katika Wilaya za Kinondoni na Ilala.\n\nTafadhali tumia sehemu ya 'Ripoti Tukio' kuripoti mara moja.",
       category: "Tahadhari",
       time: "Siku 2 zilizopita",
       icon: "⚠️",

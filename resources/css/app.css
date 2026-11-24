@@ -59,7 +59,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px #f8fafc inset !important;
-    -webkit-text-fill-color: #0f172a !important;
+    -webkit-text-fill-color: #002040 !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -72,32 +72,68 @@ input:-webkit-autofill:active {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Outfit', sans-serif;
     
-    --color-tevda-emerald-50: #ecfdf5;
-    --color-tevda-emerald-100: #d1fae5;
-    --color-tevda-emerald-500: #10b981;
-    --color-tevda-emerald-600: #059669;
-    --color-tevda-emerald-700: #047857;
-    --color-tevda-emerald-800: #065f46;
-    --color-tevda-emerald-900: #064e3b;
-    
-    --color-tevda-electric-50: #f0f9ff;
-    --color-tevda-electric-500: #0ea5e9;
-    --color-tevda-electric-600: #0284c7;
-    --color-tevda-electric-700: #0369a1;
-    --color-tevda-electric-900: #0c4a6e;
-    
-    --color-tevda-gold-500: #f59e0b;
-    --color-tevda-gold-600: #d97706;
+    /* Official TEVDA Brand Colors */
+    --color-tevda-navy-950: #001224;
+    --color-tevda-navy-900: #002040; /* Official Deep Navy Blue */
+    --color-tevda-navy-800: #002c59;
+    --color-tevda-navy-700: #0a3d78;
+    --color-tevda-navy-600: #145399;
+    --color-tevda-navy-500: #1f6bc2;
+    --color-tevda-navy-100: #dce7f5;
+    --color-tevda-navy-50: #f0f5fa;
+
+    --color-tevda-green-950: #042404;
+    --color-tevda-green-900: #074007;
+    --color-tevda-green-800: #0b570b;
+    --color-tevda-green-700: #0e6e0e;
+    --color-tevda-green-600: #108010; /* Official TEVDA Green */
+    --color-tevda-green-500: #149c14;
+    --color-tevda-green-400: #22c522;
+    --color-tevda-green-200: #bbf7bb;
+    --color-tevda-green-100: #dcfce7;
+    --color-tevda-green-50: #f2fbf2;
+
+    --color-tevda-gold-900: #715505;
+    --color-tevda-gold-700: #a17c0a;
+    --color-tevda-gold-600: #c79b0e;
+    --color-tevda-gold-500: #E5B51B; /* Official Electric Gold */
+    --color-tevda-gold-400: #edd04c;
+    --color-tevda-gold-200: #faefa6;
+    --color-tevda-gold-100: #fef9c3;
+    --color-tevda-gold-50: #fefde8;
+
+    /* Official System Cream Colors */
+    --color-tevda-cream: #FAF7F2;
+    --color-tevda-cream-soft: #FDFBF7;
+    --color-cream-50: #FDFBF7;
+    --color-cream-100: #FAF7F2;
+    --color-cream-200: #F3ECE0;
+
+    /* Theme background override so all light surfaces render in warm cream */
+    --color-slate-50: #FAF7F2;
+    --color-slate-100: #F3ECE0;
+
+    /* Emerald mapped to official green for existing templates */
+    --color-emerald-50: #f2fbf2;
+    --color-emerald-100: #dcfce7;
+    --color-emerald-200: #bbf7bb;
+    --color-emerald-500: #149c14;
+    --color-emerald-600: #108010; /* TEVDA Green */
+    --color-emerald-700: #0e6e0e;
+    --color-emerald-800: #0b570b;
+    --color-emerald-900: #074007;
+    --color-emerald-950: #042404;
 }
 
 html {
     scroll-behavior: smooth;
+    background-color: #FAF7F2;
 }
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    color: #0f172a;
-    background-color: #f8fafc;
+    color: #002040;
+    background-color: #FAF7F2 !important;
     overflow-x: hidden;
 }
 
@@ -112,83 +148,243 @@ svg:not([width]):not([class*="w-"]):not([class*="h-"]):not([class*="size-"]):not
     height: 1.25rem;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
-    font-family: 'Outfit', sans-serif;
-    letter-spacing: -0.02em;
+@layer base {
+    h1, h2, h3, h4, h5, h6, .font-heading {
+        font-family: 'Outfit', sans-serif;
+        letter-spacing: -0.02em;
+    }
+}
+
+/* Ensure headings on dark navy surfaces always contrast properly */
+.card-navy h1, .card-navy h2, .card-navy h3, .card-navy h4, .card-navy h5, .card-navy h6,
+.bg-tevda-navy h1, .bg-tevda-navy h2, .bg-tevda-navy h3, .bg-tevda-navy h4, .bg-tevda-navy h5, .bg-tevda-navy h6,
+[class*="bg-[#002040]"] h1, [class*="bg-[#002040]"] h2, [class*="bg-[#002040]"] h3, [class*="bg-[#002040]"] h4, [class*="bg-[#002040]"] h5, [class*="bg-[#002040]"] h6,
+[class*="bg-[#001428]"] h1, [class*="bg-[#001428]"] h2, [class*="bg-[#001428]"] h3, [class*="bg-[#001428]"] h4, [class*="bg-[#001428]"] h5, [class*="bg-[#001428]"] h6,
+[class*="bg-[#001224]"] h1, [class*="bg-[#001224]"] h2, [class*="bg-[#001224]"] h3, [class*="bg-[#001224]"] h4, [class*="bg-[#001224]"] h5, [class*="bg-[#001224]"] h6 {
+    color: #ffffff;
+}
+
+/* Official TEVDA Utility Classes */
+.bg-tevda-navy {
+    background-color: #002040;
+}
+.bg-tevda-navy-dark {
+    background-color: #001224;
+}
+.bg-tevda-green {
+    background-color: #108010;
+}
+.bg-tevda-gold {
+    background-color: #E5B51B;
+}
+.text-tevda-navy {
+    color: #002040;
+}
+.text-tevda-green {
+    color: #108010;
+}
+.text-tevda-gold {
+    color: #E5B51B;
+}
+.border-tevda-navy {
+    border-color: #002040;
+}
+.border-tevda-green {
+    border-color: #108010;
+}
+.border-tevda-gold {
+    border-color: #E5B51B;
+}
+
+/* Button Components */
+.btn-primary {
+    background-color: #108010;
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px -2px rgba(16, 128, 16, 0.35);
+}
+.btn-primary:hover {
+    background-color: #0b570b;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -2px rgba(16, 128, 16, 0.45);
+}
+
+.btn-gold {
+    background-color: #E5B51B;
+    color: #002040;
+    font-weight: 800;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px -2px rgba(229, 181, 27, 0.4);
+}
+.btn-gold:hover {
+    background-color: #c79b0e;
+    color: #001224;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -2px rgba(229, 181, 27, 0.5);
+}
+
+.btn-navy {
+    background-color: #002040;
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px -2px rgba(0, 32, 64, 0.3);
+}
+.btn-navy:hover {
+    background-color: #002c59;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -2px rgba(0, 32, 64, 0.45);
+}
+
+.btn-outline-white {
+    background-color: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    color: #FFFFFF;
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
+    font-weight: 700;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+.btn-outline-white:hover {
+    background-color: #FFFFFF;
+    color: #002040;
+    border-color: #FFFFFF;
+}
+
+.btn-outline-navy {
+    background-color: transparent;
+    color: #002040;
+    border: 1.5px solid #002040;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+.btn-outline-navy:hover {
+    background-color: #002040;
+    color: #FFFFFF;
+}
+
+/* Premium Card Layouts */
+.card-premium {
+    background-color: #FFFFFF;
+    border: 1px solid #d6d3d1;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px 0 rgba(0, 32, 64, 0.05), 0 1px 2px -1px rgba(0, 32, 64, 0.04);
+}
+.card-premium:hover {
+    transform: translateY(-3px);
+    border-color: rgba(16, 128, 16, 0.35);
+    box-shadow: 0 12px 28px -6px rgba(0, 32, 64, 0.08), 0 4px 10px -2px rgba(16, 128, 16, 0.06);
+}
+
+.card-navy {
+    background-color: #002040;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
 }
 
 /* Glassmorphism & UI Panels */
 .glass-panel {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-.glass-panel-dark {
-    background: rgba(15, 23, 42, 0.88);
+.glass-panel-navy {
+    background: rgba(0, 32, 64, 0.88);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.9);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(16, 185, 129, 0.4);
-    box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+    border-color: rgba(16, 128, 16, 0.4);
+    box-shadow: 0 16px 32px -8px rgba(0, 32, 64, 0.12), 0 4px 12px -2px rgba(16, 128, 16, 0.08);
 }
 
 /* Hero & Background Patterns */
 .hero-pattern {
-    background-color: #031511;
+    background-color: #002040;
     background-image: 
-        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.2) 0%, transparent 40%),
-        radial-gradient(circle at 85% 70%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
-        radial-gradient(rgba(16, 185, 129, 0.15) 1px, transparent 1px);
+        radial-gradient(circle at 12% 20%, rgba(16, 128, 16, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 88% 75%, rgba(229, 181, 27, 0.20) 0%, transparent 45%),
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 28px 28px;
+}
+
+.hero-tevda-pattern {
+    background-color: #002040;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(16, 128, 16, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(229, 181, 27, 0.20) 0%, transparent 40%),
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
     background-size: 100% 100%, 100% 100%, 28px 28px;
 }
 
 .subtle-grid-pattern {
-    background-image: radial-gradient(rgba(148, 163, 184, 0.2) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0, 32, 64, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
 }
 
-/* Vibrant Gradients */
-.gradient-green {
-    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #0284c7 100%);
+/* Form Styles */
+.form-input-tevda {
+    width: 100%;
+    background-color: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #002040;
+    transition: all 0.2s ease-in-out;
 }
-
-.gradient-dark {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #064e3b 100%);
-}
-
-.gradient-emerald-cyan {
-    background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-}
-
-.gradient-glow-border {
-    position: relative;
-}
-
-.gradient-glow-border::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.3), rgba(245, 158, 11, 0.2));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+.form-input-tevda:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #108010;
+    box-shadow: 0 0 0 3px rgba(16, 128, 16, 0.15);
 }
 
 /* Image Utilities & Transitions */
@@ -201,15 +397,72 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 .image-zoom-container:hover img {
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
-/* Badge Pulse */
-@keyframes pulse-subtle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(1.03); }
+/* ==========================================================================
+   MOBILE-FIRST RESPONSIVE OPTIMIZATIONS & FLUID UTILITIES
+   ========================================================================== */
+
+/* Universal Safe Viewport & Horizontal Overflow Prevention */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
-.animate-pulse-subtle {
-    animation: pulse-subtle 3s ease-in-out infinite;
+/* Fluid Typography Helpers */
+.text-fluid-hero {
+    font-size: clamp(1.75rem, 4vw + 1rem, 3.25rem);
+    line-height: 1.15;
+}
+.text-fluid-section {
+    font-size: clamp(1.35rem, 2.5vw + 0.8rem, 2.5rem);
+    line-height: 1.2;
+}
+
+/* Responsive Data Table Container */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.table-responsive-wrapper::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 4px;
+}
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+
+/* Mobile Touch Target Standards (WCAG 2.2 AA: >= 44px x 44px) */
+@media (max-width: 767px) {
+    .touch-target,
+    button:not(.btn-compact),
+    a.btn-primary,
+    a.btn-navy,
+    a.btn-gold {
+        min-height: 44px;
+    }
+}
+
+/* Prevent Long ID Strings & Codes From Breaking Card Bounds on Small Screens */
+.break-token {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* Ultra-wide Displays Sizing Constraints (1921px and above) */
+@media (min-width: 1921px) {
+    .max-w-7xl,
+    .max-w-\[1440px\] {
+        max-width: 1680px;
+    }
 }

@@ -20,7 +20,9 @@
     
     @stack('styles')
 </head>
-<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
+<body class="bg-[#FAF7F2] text-slate-900 flex flex-col min-h-screen antialiased selection:bg-[#108010] selection:text-white">
+
+    @include('partials.language_modal')
 
     @include('partials.header')
 
@@ -30,7 +32,6 @@
 
     @include('partials.footer')
 
-    @include('partials.language_modal')
     @include('partials.translator_script')
 
     @stack('scripts')

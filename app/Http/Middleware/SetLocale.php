@@ -66,10 +66,12 @@ class SetLocale
 
         App::setLocale($locale);
 
-        // Determine if user has already made an explicit language choice
-        $hasChosenLocale = $request->hasCookie('tevda_locale_chosen')
-            || Session::has('locale_chosen')
-            || ($request->hasCookie('tevda_locale') && !empty($request->cookie('tevda_locale')));
+        // Determine if user has already made an explicit, valid language choice
+        $cookieLocale = $request->cookie('tevda_locale');
+        $hasValidCookieLocale = !empty($cookieLocale) && in_array($cookieLocale, $supported);
+        $hasChosenLocale = ($request->hasCookie('tevda_locale_chosen') && $hasValidCookieLocale)
+            || (Session::has('locale_chosen') && in_array(Session::get('locale'), $supported))
+            || $hasValidCookieLocale;
 
         // Share locale variables across all views
         View::share('activeLocale', $locale);

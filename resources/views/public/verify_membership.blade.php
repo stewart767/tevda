@@ -3,10 +3,13 @@
 @section('title', $member ? 'Verified Member: ' . $member->full_name . ' (' . $member->membership_number . ') — TEVDA Official Registry' : 'Verify Membership Credentials — TEVDA Public Registry')
 
 @section('content')
-<div class="relative hero-pattern text-white py-12 lg:py-16 overflow-hidden">
+<div class="relative bg-[#002040] text-white py-12 lg:py-16 overflow-hidden">
+    <div class="absolute -right-24 -top-24 w-96 h-96 bg-[#108010]/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-24 -bottom-24 w-96 h-96 bg-[#E5B51B]/10 rounded-full blur-3xl pointer-events-none"></div>
+
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-emerald-300 bg-emerald-950/90 px-4 py-1.5 rounded-full border border-emerald-700/80 shadow-inner mb-3">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#E5B51B] bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#E5B51B]/30 shadow-inner mb-3">
+            <span class="w-2 h-2 rounded-full bg-[#E5B51B] animate-pulse"></span>
             <span>Official Public Verification Registry</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-black font-heading mt-2 mb-3 text-white tracking-tight">Membership Verification</h1>

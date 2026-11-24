@@ -4,46 +4,43 @@
 
 @section('content')
 <!-- Hero Header -->
-<div class="relative bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-950 text-white py-10 lg:py-14 overflow-hidden border-b border-emerald-900/40">
-    <div class="absolute -left-20 -top-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+<div class="relative hero-pattern text-white py-10 lg:py-14 overflow-hidden border-b border-[#002c59]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-sm">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+        <div class="inline-flex items-center gap-2 bg-[#001428]/90 border border-[#108010]/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-[#E5B51B] mb-3 shadow-xs">
+            <svg class="w-4 h-4 text-[#108010]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
             <span>Hatua ya 1 ya 3 • Usajili Rasmi wa Mwanachama TEVDA</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-black font-heading tracking-tight text-white mb-3">
             Jiunge na Umoja wa Madereva (TEVDA)
         </h1>
-        <p class="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
+        <p class="text-slate-200 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed font-normal">
             Jaza taarifa zako za awali hapa chini. Baada ya kujaza, utalipia <strong>TZS 5,000</strong> (Ada ya usajili) na <strong>TZS 10,000</strong> (Ada ya Cheti cha Uanachama) ili kukamilisha usajili na kutoa Cheti chako rasmi.
         </p>
 
         <!-- Stepper Indicator -->
-        <div class="mt-6 max-w-xl mx-auto grid grid-cols-3 gap-2 text-xs font-bold">
-            <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 flex items-center justify-center gap-2 shadow-sm">
-                <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center text-[10px] font-black">1</span>
-                <span>Taarifa za Awali</span>
+        <div class="mt-6 max-w-xl mx-auto grid grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-bold">
+            <div class="p-2 sm:p-2.5 rounded-xl bg-[#108010] text-white flex items-center justify-center gap-1.5 sm:gap-2 shadow-md">
+                <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white text-[#002040] flex items-center justify-center text-[9px] sm:text-[10px] font-black shrink-0">1</span>
+                <span class="truncate"><span class="sm:hidden">1. </span>Taarifa za Awali</span>
             </div>
-            <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center gap-2">
-                <span class="w-5 h-5 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-[10px]">2</span>
-                <span>Malipo (15,000 TZS)</span>
+            <div class="p-2 sm:p-2.5 rounded-xl bg-white/10 border border-white/20 text-slate-300 flex items-center justify-center gap-1.5 sm:gap-2">
+                <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#001428] text-slate-300 flex items-center justify-center text-[9px] sm:text-[10px] shrink-0">2</span>
+                <span class="truncate"><span class="sm:hidden">2. </span>Malipo <span class="hidden xs:inline">(15k TZS)</span></span>
             </div>
-            <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center gap-2">
-                <span class="w-5 h-5 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-[10px]">3</span>
-                <span>Leseni & Cheti</span>
+            <div class="p-2 sm:p-2.5 rounded-xl bg-white/10 border border-white/20 text-slate-300 flex items-center justify-center gap-1.5 sm:gap-2">
+                <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#001428] text-slate-300 flex items-center justify-center text-[9px] sm:text-[10px] shrink-0">3</span>
+                <span class="truncate"><span class="sm:hidden">3. </span>Leseni & Cheti</span>
             </div>
         </div>
     </div>
 </div>
 
-<div class="py-10 bg-slate-100 min-h-[80vh]">
+<div class="py-10 bg-slate-50 min-h-[80vh]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
         @include('partials.alerts')
 
-        <div class="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl relative" x-data="{
+        <div class="card-premium p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl relative bg-white" x-data="{
             selectedCategory: '{{ old('category_id', $selectedCategory->id ?? 1) }}',
             selectedRegion: '{{ old('region_id', '') }}',
             selectedDistrict: '{{ old('district_id', '') }}',
@@ -64,9 +61,9 @@
                 <!-- Section 1: Membership Category Selection -->
                 <div>
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-md">1</span>
+                        <span class="w-8 h-8 rounded-xl bg-[#002040] text-white font-black text-xs flex items-center justify-center shadow-md">1</span>
                         <div>
-                            <h2 class="text-base sm:text-lg font-black text-slate-900 font-heading">Chagua Kundi la Uanachama (Membership Category)</h2>
+                            <h2 class="text-base sm:text-lg font-black text-[#002040] font-heading">Chagua Kundi la Uanachama (Membership Category)</h2>
                             <p class="text-xs text-slate-500">Chagua daraja la uanachama kulingana na shughuli zako kwenye usafiri wa vyombo vya umeme (EV).</p>
                         </div>
                     </div>
@@ -74,19 +71,19 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3">
                         @foreach ($categories as $cat)
                             <label class="p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between" 
-                                   :class="selectedCategory == '{{ $cat->id }}' ? 'border-emerald-600 bg-emerald-50/60 shadow-md ring-2 ring-emerald-500/20' : 'border-slate-200 bg-slate-50 hover:border-slate-300'">
+                                   :class="selectedCategory == '{{ $cat->id }}' ? 'border-[#108010] bg-[#f2fbf2] shadow-md ring-2 ring-[#108010]/20' : 'border-slate-200 bg-slate-50 hover:border-slate-300'">
                                 <div class="flex items-start justify-between mb-2">
                                     <input type="radio" 
                                            name="category_id" 
                                            value="{{ $cat->id }}" 
                                            x-model="selectedCategory" 
-                                           class="text-emerald-600 focus:ring-emerald-500 mt-1 cursor-pointer">
-                                    <span class="text-[10px] uppercase font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                                           class="text-[#108010] focus:ring-[#108010] mt-1 cursor-pointer">
+                                    <span class="text-[10px] uppercase font-black text-[#108010] bg-[#dcfce7] px-2.5 py-0.5 rounded-full border border-[#108010]/30">
                                         TZS 15,000 (Usajili + Cheti)
                                     </span>
                                 </div>
                                 <div>
-                                    <h4 class="font-black text-sm text-slate-900 font-heading">{{ $cat->name }}</h4>
+                                    <h4 class="font-black text-sm text-[#002040] font-heading">{{ $cat->name }}</h4>
                                     <p class="text-[11px] text-slate-500 line-clamp-2 mt-0.5">{{ $cat->description }}</p>
                                 </div>
                             </label>
@@ -98,9 +95,9 @@
                 <!-- Section 2: Personal & Contact Details -->
                 <div class="pt-6 border-t border-slate-200">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-md">2</span>
+                        <span class="w-8 h-8 rounded-xl bg-[#002040] text-white font-black text-xs flex items-center justify-center shadow-md">2</span>
                         <div>
-                            <h2 class="text-base sm:text-lg font-black text-slate-900 font-heading">Personal & Contact Details (Taarifa za Kibinafsi & Mawasiliano)</h2>
+                            <h2 class="text-base sm:text-lg font-black text-[#002040] font-heading">Personal & Contact Details (Taarifa za Kibinafsi & Mawasiliano)</h2>
                             <p class="text-xs text-slate-500">Jaza majina yako rasmi kama yalivyo kwenye vitambulisho rasmi (NIDA / Leseni).</p>
                         </div>
                     </div>
@@ -108,7 +105,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
                         <!-- FULL LEGAL NAME -->
                         <div>
-                            <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="name" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 FULL LEGAL NAME (JINA KAMILI) <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" 
@@ -118,14 +115,14 @@
                                    value="{{ old('name') }}" 
                                    autocomplete="name" 
                                    placeholder="Andika jina lako kamili" 
-                                   class="w-full bg-slate-50 border @error('name') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border @error('name') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Mfano: Juma Ally Rashidi (Kama ilivyo kwenye NIDA / Leseni)</p>
                             @error('name') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- MOBILE PHONE NUMBER -->
                         <div>
-                            <label for="phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="phone" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 MOBILE PHONE NUMBER (NAMBARI YA SIMU) <span class="text-rose-500">*</span>
                             </label>
                             <input type="tel" 
@@ -135,14 +132,14 @@
                                    value="{{ old('phone') }}" 
                                    autocomplete="tel" 
                                    placeholder="0757 700 401 au +255..." 
-                                   class="w-full bg-slate-50 border @error('phone') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition font-mono">
+                                   class="w-full bg-slate-50 border @error('phone') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition font-mono">
                             <p class="text-[11px] text-slate-400 mt-1">Hutumika kupokea SMS ya nambari ya malipo na taarifa za akaunti</p>
                             @error('phone') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- EMAIL ADDRESS -->
                         <div>
-                            <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="email" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 EMAIL ADDRESS (BARUA PEPE) <span class="text-rose-500">*</span>
                             </label>
                             <input type="email" 
@@ -152,20 +149,20 @@
                                    value="{{ old('email') }}" 
                                    autocomplete="email" 
                                    placeholder="dereva@mfano.com" 
-                                   class="w-full bg-slate-50 border @error('email') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border @error('email') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Mfano: juma@gmail.com</p>
                             @error('email') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- GENDER -->
                         <div>
-                            <label for="gender" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="gender" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 GENDER (JINSIA) <span class="text-rose-500">*</span>
                             </label>
                             <select id="gender" 
                                     name="gender" 
                                     required 
-                                    class="w-full bg-slate-50 border @error('gender') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition cursor-pointer">
+                                    class="w-full bg-slate-50 border @error('gender') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition cursor-pointer">
                                 <option value="" disabled {{ old('gender') ? '' : 'selected' }}>-- Chagua Jinsia / Select Gender --</option>
                                 <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male (Mwanaume)</option>
                                 <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female (Mwanamke)</option>
@@ -176,7 +173,7 @@
 
                         <!-- DATE OF BIRTH -->
                         <div>
-                            <label for="date_of_birth" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="date_of_birth" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 DATE OF BIRTH (TAREHE YA KUZALIWA) <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" 
@@ -184,14 +181,14 @@
                                    name="date_of_birth" 
                                    required 
                                    value="{{ old('date_of_birth') }}" 
-                                   class="w-full bg-slate-50 border @error('date_of_birth') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition cursor-pointer">
+                                   class="w-full bg-slate-50 border @error('date_of_birth') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition cursor-pointer">
                             <p class="text-[11px] text-slate-400 mt-1">Bonyeza alama ya kalenda kuchagua tarehe (Siku / Mwezi / Mwaka)</p>
                             @error('date_of_birth') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- REGION -->
                         <div>
-                            <label for="region_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="region_id" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 REGION (MKOA) <span class="text-rose-500">*</span>
                             </label>
                             <select id="region_id" 
@@ -199,7 +196,7 @@
                                     x-model="selectedRegion" 
                                     @change="onRegionChange()" 
                                     required 
-                                    class="w-full bg-slate-50 border @error('region_id') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition cursor-pointer">
+                                    class="w-full bg-slate-50 border @error('region_id') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition cursor-pointer">
                                 <option value="">-- Chagua Mkoa / Region --</option>
                                 @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -210,14 +207,14 @@
 
                         <!-- DISTRICT -->
                         <div>
-                            <label for="district_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="district_id" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 DISTRICT (WILAYA)
                             </label>
                             <select id="district_id" 
                                     name="district_id" 
                                     x-model="selectedDistrict" 
                                     :disabled="!selectedRegion"
-                                    class="w-full bg-slate-50 border @error('district_id') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer">
+                                    class="w-full bg-slate-50 border @error('district_id') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer">
                                 <option value="" x-text="selectedRegion ? '-- Chagua Wilaya / District --' : '-- Chagua Mkoa Kwanza --'"></option>
                                 <template x-for="dist in currentDistricts" :key="dist.id">
                                     <option :value="dist.id" x-text="dist.name" :selected="dist.id == selectedDistrict"></option>
@@ -229,7 +226,7 @@
 
                         <!-- WARD (KATA) -->
                         <div>
-                            <label for="ward_name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="ward_name" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 WARD (KATA) <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" 
@@ -240,7 +237,7 @@
                                    autocomplete="off" 
                                    placeholder="Andika jina la kata yako..." 
                                    list="common_wards" 
-                                   class="w-full bg-slate-50 border @error('ward_name') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border @error('ward_name') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Mfano: Sinza, Kimara, Mwenge, Kariakoo, Sekei</p>
                             <datalist id="common_wards">
                                 <option value="Sinza">
@@ -275,7 +272,7 @@
 
                         <!-- PHYSICAL ADDRESS / STATION HUB -->
                         <div class="sm:col-span-2">
-                            <label for="physical_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="physical_address" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 PHYSICAL ADDRESS / STATION HUB (MAHALI / KITUO) <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" 
@@ -285,7 +282,7 @@
                                    value="{{ old('physical_address') }}" 
                                    autocomplete="street-address" 
                                    placeholder="Mtaa, nambari ya nyumba au jina la kituo cha gari/bajaji..." 
-                                   class="w-full bg-slate-50 border @error('physical_address') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border @error('physical_address') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Mfano: Sinza Mori, Mtaa wa Shekilango / Kituo cha Bajaji na Magari ya Umeme</p>
                             @error('physical_address') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
@@ -294,10 +291,10 @@
 
                 <!-- Account Password Section -->
                 <div class="pt-6 border-t border-slate-200">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Nenosiri la Kuingilia kwenye Mfumo (Member Portal Password)</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-[#002040] mb-3">Nenosiri la Kuingilia kwenye Mfumo (Member Portal Password)</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="password" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 Nenosiri (Password) <span class="text-rose-500">*</span>
                             </label>
                             <input type="password" 
@@ -306,13 +303,13 @@
                                    required 
                                    autocomplete="new-password" 
                                    placeholder="Andika nenosiri lako..." 
-                                   class="w-full bg-slate-50 border @error('password') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border @error('password') border-rose-400 bg-rose-50/30 @else border-slate-300 @enderror rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Angalau herufi au tarakimu 6</p>
                             @error('password') <p class="text-rose-600 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
-                            <label for="password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            <label for="password_confirmation" class="block text-xs font-bold text-[#002040] uppercase tracking-wider mb-1">
                                 Rudia Nenosiri (Confirm Password) <span class="text-rose-500">*</span>
                             </label>
                             <input type="password" 
@@ -321,50 +318,50 @@
                                    required 
                                    autocomplete="new-password" 
                                    placeholder="Rudia tena nenosiri lilelile..." 
-                                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition">
+                                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-[#002040] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#108010]/20 focus:border-[#108010] focus:bg-white transition">
                             <p class="text-[11px] text-slate-400 mt-1">Hakikisha linafanana sawasawa na nenosiri la kwanza</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Section: Mandatory Payment Breakdown Notice -->
-                <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-300/80 shadow-sm space-y-3">
-                    <div class="flex items-center gap-2.5 text-emerald-900 font-extrabold text-sm sm:text-base">
-                        <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="p-5 sm:p-6 rounded-2xl bg-[#f2fbf2] border border-[#108010]/30 shadow-xs space-y-3">
+                    <div class="flex items-center gap-2.5 text-[#002040] font-extrabold text-sm sm:text-base">
+                        <svg class="w-5 h-5 text-[#108010] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <span>Muhtasari wa Ada ya Kuendelea na Fomu ya Usajili</span>
                     </div>
 
-                    <div class="divide-y divide-emerald-200/60 text-xs sm:text-sm">
+                    <div class="divide-y divide-[#108010]/20 text-xs sm:text-sm">
                         <div class="py-2 flex justify-between items-center text-slate-700">
                             <span>1. Ada ya kuendelea na fomu ya usajili:</span>
-                            <span class="font-bold text-slate-900 font-mono">TZS 5,000</span>
+                            <span class="font-bold text-[#002040] font-mono">TZS 5,000</span>
                         </div>
                         <div class="py-2 flex justify-between items-center text-slate-700">
                             <span>2. Ada ya Cheti Rasmi cha Uanachama (Certificate):</span>
-                            <span class="font-bold text-slate-900 font-mono">TZS 10,000</span>
+                            <span class="font-bold text-[#002040] font-mono">TZS 10,000</span>
                         </div>
-                        <div class="pt-2.5 flex justify-between items-center text-emerald-950 font-black text-sm sm:text-base">
+                        <div class="pt-2.5 flex justify-between items-center text-[#002040] font-black text-sm sm:text-base">
                             <span>Jumla Inayotakiwa Kulipwa (Total Payable):</span>
-                            <span class="font-mono text-lg text-emerald-700">TZS 15,000</span>
+                            <span class="font-mono text-lg text-[#108010]">TZS 15,000</span>
                         </div>
                     </div>
 
                     <p class="text-[11px] text-slate-600 leading-relaxed pt-1">
-                        <span class="font-bold text-emerald-900">Ufafanuzi:</span> Baada ya kubonyeza kitufe hapa chini, utapelekwa kwenye mfumo wa malipo kupitia namba ya malipo (Control Number). Mara tu malipo yatakapothibitishwa, fomu ya leseni na chombo itafunguka na Cheti chako rasmi kitatolewa papo hapo.
+                        <span class="font-bold text-[#002040]">Ufafanuzi:</span> Baada ya kubonyeza kitufe hapa chini, utapelekwa kwenye mfumo wa malipo kupitia namba ya malipo (Control Number). Mara tu malipo yatakapothibitishwa, fomu ya leseni na chombo itafunguka na Cheti chako rasmi kitatolewa papo hapo.
                     </p>
                 </div>
 
                 <!-- Terms Agreement -->
                 <div class="flex items-start gap-3">
-                    <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded mt-0.5 cursor-pointer">
+                    <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-[#108010] focus:ring-[#108010] border-slate-300 rounded mt-0.5 cursor-pointer">
                     <label for="terms" class="text-xs text-slate-600 leading-snug cursor-pointer">
-                        Nathibitisha kuwa taarifa zote nilizotoa ni za kweli na sahihi, na ninakubali <a href="{{ route('terms') }}" target="_blank" class="text-emerald-700 font-bold underline hover:text-emerald-800">Sheria za Umoja wa TEVDA</a> na <a href="{{ route('code_of_conduct') }}" target="_blank" class="text-emerald-700 font-bold underline hover:text-emerald-800">Mwongozo wa Maadili ya Madereva</a>.
+                        Nathibitisha kuwa taarifa zote nilizotoa ni za kweli na sahihi, na ninakubali <a href="{{ route('terms') }}" target="_blank" class="text-[#108010] font-bold underline hover:text-[#0b570b]">Sheria za Umoja wa TEVDA</a> na <a href="{{ route('code_of_conduct') }}" target="_blank" class="text-[#108010] font-bold underline hover:text-[#0b570b]">Mwongozo wa Maadili ya Madereva</a>.
                     </label>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-2">
-                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.99] text-white font-black py-4 px-6 rounded-2xl text-sm sm:text-base transition-all duration-200 shadow-xl shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
+                    <button type="submit" class="w-full bg-[#108010] hover:bg-[#0b570b] active:scale-[0.99] text-white font-black py-4 px-6 rounded-xl text-sm sm:text-base transition-all duration-200 shadow-xl shadow-[#108010]/20 flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
                         <span>Endelea na Malipo (Lipa TZS 15,000) &rarr;</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
@@ -378,11 +375,11 @@
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
                 <div>
                     Umeshajiandikisha tayari? 
-                    <a href="{{ route('login') }}" class="font-bold text-emerald-700 hover:text-emerald-800">Ingia Kwenye Akaunti Yako &rarr;</a>
+                    <a href="{{ route('login') }}" class="font-bold text-[#108010] hover:text-[#0b570b]">Ingia Kwenye Akaunti Yako &rarr;</a>
                 </div>
                 <div>
                     Unataka kufuatilia maombi yako?
-                    <a href="{{ route('track.application') }}" class="font-bold text-cyan-700 hover:text-cyan-800">Fuatilia Hali ya Maombi &rarr;</a>
+                    <a href="{{ route('track.application') }}" class="font-bold text-[#002040] hover:underline">Fuatilia Hali ya Maombi &rarr;</a>
                 </div>
             </div>
 

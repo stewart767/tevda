@@ -21,6 +21,8 @@ class TevdaApp {
     this.updateClock();
     this.updateNotificationBadges();
     this.renderNotifications();
+    this.renderAcademyCourses();
+    this.renderOpportunities();
     setInterval(() => this.updateClock(), 30000);
 
     // Register service worker if available
@@ -65,7 +67,8 @@ class TevdaApp {
     let activeTabId = null;
     if (screenId === 'home') activeTabId = 'tab-home';
     else if (screenId === 'smart_id') activeTabId = 'tab-id';
-    else if (screenId === 'services') activeTabId = 'tab-services';
+    else if (screenId === 'academy') activeTabId = 'tab-academy';
+    else if (screenId === 'explore') activeTabId = 'tab-explore';
     else if (screenId === 'profile') activeTabId = 'tab-profile';
 
     if (activeTabId) {
@@ -209,13 +212,9 @@ class TevdaApp {
   }
 
   handlePaymentConfirm() {
-    this.showToast('⏳ Inathibitisha malipo ya TZS 15,000...');
+    this.showToast('⏳ Muamala umewasilishwa kwenye mfumo...');
     setTimeout(() => {
-      this.data.currentMember.fullName = this.data.registrationDraft.fullName || "Amani Juma";
-      this.data.currentMember.phone = this.data.registrationDraft.phone || "+255 712 345 678";
-      this.renderCurrentMember();
-      this.switchScreen('smart_id');
-      this.showToast('🎉 Malipo yamethibitishwa! Kitambulisho kiko tayari.');
+      this.showToast('📋 Muamala umepokelewa! Hali: Inasubiri Uhakiki wa Kifedha (Pending Verification).');
     }, 1200);
   }
 
@@ -295,9 +294,14 @@ class TevdaApp {
       this.switchScreen('smart_id');
     });
 
-    document.getElementById('tab-services')?.addEventListener('click', (e) => {
+    document.getElementById('tab-academy')?.addEventListener('click', (e) => {
       e.preventDefault();
-      this.switchScreen('services');
+      this.switchScreen('academy');
+    });
+
+    document.getElementById('tab-explore')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.switchScreen('explore');
     });
 
     document.getElementById('tab-profile')?.addEventListener('click', (e) => {
@@ -315,7 +319,7 @@ class TevdaApp {
     });
 
     document.getElementById('action-training')?.addEventListener('click', () => {
-      this.switchScreen('services');
+      this.switchScreen('academy');
     });
 
     document.getElementById('action-report')?.addEventListener('click', () => {
@@ -524,6 +528,91 @@ class TevdaApp {
     if (item && item.targetScreen) {
       this.switchScreen(item.targetScreen);
     }
+  }
+
+  // --------------------------------------------------------------------------
+  // TEVDA Academy Courses (6 Official DB Courses)
+  // --------------------------------------------------------------------------
+  renderAcademyCourses() {
+    const container = document.getElementById('academy-courses-list');
+    if (!container) return;
+
+    const courses = this.data.courses || [];
+    container.innerHTML = courses.map(c => `
+      <div class="service-card" style="padding: 14px; background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 6px;">
+          <span style="background:#ecfdf5; color:#047857; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px; letter-spacing:0.5px;">${c.category.toUpperCase()}</span>
+          <span style="font-size:11px; font-weight:700; color:#b45309;">Pass: ${c.passMark}%</span>
+        </div>
+        <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom: 4px;">${c.titleSw || c.title}</div>
+        <div style="font-size:12px; color:#475569; margin-bottom: 10px; line-height: 1.35;">${c.desc}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 8px; border-top: 1px solid #f1f5f9;">
+          <span style="font-size:11px; color:#64748b; font-weight:600;">⏱️ ${c.hours} Masaa • 📚 ${c.modules} Moduli</span>
+          <button style="background:#075B37; color:#fff; border:none; border-radius:8px; padding:6px 12px; font-size:11.5px; font-weight:700; cursor:pointer;"
+                  onclick="window.app.startCourseQuiz(${c.id})">
+            ${c.progress >= 100 ? 'Cheti Rasmi' : (c.progress > 0 ? c.progress + '% Endelea' : 'Anza Kozi →')}
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  startCourseQuiz(courseId) {
+    const course = (this.data.courses || []).find(c => c.id === courseId);
+    if (!course) return;
+    this.showToast(`🎓 Umefungua mtihani wa: ${course.titleSw || course.title} (Pass Mark: ${course.passMark}%).`);
+  }
+
+  // --------------------------------------------------------------------------
+  // Explore Opportunities Directory
+  // --------------------------------------------------------------------------
+  renderOpportunities(filterQuery = '') {
+    const container = document.getElementById('explore-opps-list');
+    if (!container) return;
+
+    let opps = this.data.opportunities || [];
+    if (filterQuery) {
+      const q = filterQuery.toLowerCase();
+      opps = opps.filter(o => 
+        o.title.toLowerCase().includes(q) || 
+        o.provider.toLowerCase().includes(q) || 
+        o.location.toLowerCase().includes(q)
+      );
+    }
+
+    if (opps.length === 0) {
+      container.innerHTML = '<div style="text-align:center; padding:30px; color:#64748b;">Hakuna fursa zilizopatikana.</div>';
+      return;
+    }
+
+    container.innerHTML = opps.map(o => `
+      <div style="padding: 14px; background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 6px;">
+          <span style="background:#ecfdf5; color:#047857; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px;">${o.type}</span>
+          <span style="font-size:10.5px; color:#b45309; font-weight:700;">Hadi: ${o.deadline}</span>
+        </div>
+        <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom: 3px;">${o.titleSw || o.title}</div>
+        <div style="font-size:12px; color:#047857; font-weight:700; margin-bottom: 4px;">🏢 ${o.provider}</div>
+        <div style="font-size:11.5px; color:#64748b; margin-bottom: 10px;">📍 ${o.location}</div>
+        <div style="font-size:11px; color:#475569; font-style:italic; margin-bottom: 10px; background:#f8fafc; padding:6px 10px; border-radius:8px;">
+          ${o.eligibility}
+        </div>
+        <button style="width:100%; background:#075B37; color:#fff; border:none; border-radius:10px; padding:10px; font-size:12.5px; font-weight:700; cursor:pointer;"
+                onclick="window.app.applyOpportunity(${o.id})">
+          Tuma Maombi ya Fursa Hii Sasa
+        </button>
+      </div>
+    `).join('');
+  }
+
+  filterOpportunities(val) {
+    this.renderOpportunities(val);
+  }
+
+  applyOpportunity(oppId) {
+    const opp = (this.data.opportunities || []).find(o => o.id === oppId);
+    if (!opp) return;
+    this.showToast(`✅ Maombi ya "${opp.titleSw || opp.title}" yamewasilishwa rasmi!`);
   }
 }
 

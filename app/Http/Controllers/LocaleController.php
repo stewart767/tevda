@@ -78,6 +78,17 @@ class LocaleController extends Controller
         $cookieChosen = Cookie::make('tevda_locale_chosen', '1', 60 * 24 * 365 * 5, '/', null, false, false);
         $cookieGoogleForget = Cookie::forget('googtrans', '/', null);
 
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'locale' => $locale,
+                'message' => 'Language set to ' . $locale,
+            ])
+            ->withCookie($cookieTevda)
+            ->withCookie($cookieChosen)
+            ->withCookie($cookieGoogleForget);
+        }
+
         // Redirect back immediately to current page
         $returnUrl = $request->input('return_url');
         if (!empty($returnUrl) && filter_var($returnUrl, FILTER_VALIDATE_URL)) {

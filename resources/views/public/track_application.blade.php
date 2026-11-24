@@ -4,13 +4,13 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="relative bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-950 text-white py-14 lg:py-18 overflow-hidden border-b border-emerald-900/40">
-    <div class="absolute -left-20 -top-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative bg-[#002040] text-white py-14 lg:py-18 overflow-hidden">
+    <div class="absolute -left-20 -top-20 w-96 h-96 bg-[#108010]/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-[#E5B51B]/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-emerald-300 mb-3 shadow-xs">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-[#E5B51B]/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-[#E5B51B] mb-3 shadow-xs">
+            <svg class="w-4 h-4 text-[#E5B51B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span>Live Application Tracking & Payment Portal</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-black font-heading tracking-tight text-white mb-3">
@@ -51,7 +51,7 @@
                                class="w-full bg-slate-50 border border-slate-300 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm font-medium text-slate-900 focus:outline-hidden focus:border-emerald-500 focus:bg-white transition shadow-inner">
                     </div>
 
-                    <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black px-8 py-3.5 rounded-2xl text-xs sm:text-sm transition-all duration-200 shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer shrink-0">
+                    <button type="submit" class="bg-[#108010] hover:bg-[#0c660c] text-white font-black px-8 py-3.5 rounded-2xl text-xs sm:text-sm transition-all duration-200 shadow-md shadow-[#108010]/25 flex items-center justify-center gap-2 cursor-pointer shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         <span>Track Status</span>
                     </button>

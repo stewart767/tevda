@@ -40,9 +40,14 @@
     window.tevdaSetLanguage = function(langCode) {
         purgeGoogleCookies();
         try {
+            var maxAge = 60 * 60 * 24 * 365 * 5;
             localStorage.setItem('tevda_locale', langCode);
             localStorage.setItem('tevda_locale_chosen', '1');
             sessionStorage.setItem('tevda_lang_prompt_seen', '1');
+            document.cookie = 'tevda_locale=' + langCode + '; path=/; max-age=' + maxAge + '; SameSite=Lax';
+            document.cookie = 'tevda_locale_chosen=1; path=/; max-age=' + maxAge + '; SameSite=Lax';
+            document.cookie = 'tevda_locale=' + langCode + '; path=/tevda; max-age=' + maxAge + '; SameSite=Lax';
+            document.cookie = 'tevda_locale_chosen=1; path=/tevda; max-age=' + maxAge + '; SameSite=Lax';
         } catch(e) {}
     };
 

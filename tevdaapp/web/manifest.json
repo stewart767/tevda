@@ -1,11 +1,11 @@
 {
-    "name": "tevdaapp",
-    "short_name": "tevdaapp",
+    "name": "TEVDA - Tanzania Electric Vehicle Drivers Association",
+    "short_name": "TEVDA",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#075B37",
+    "theme_color": "#075B37",
+    "description": "Official Mobile Application for Tanzania Electric Vehicle Drivers Association (TEVDA).",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

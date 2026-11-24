@@ -551,9 +551,9 @@
       </section>
 
       <!-- ====================================================================
-           SCREEN 5: GROW WITH TEVDA (SERVICES & TRAINING)
+           DESTINATION 3: TEVDA ACADEMY (6 ACCREDITED COURSES & QUIZ)
            ==================================================================== -->
-      <section id="screen-services" class="app-screen" aria-label="Grow with TEVDA">
+      <section id="screen-academy" class="app-screen" aria-label="TEVDA Academy">
         
         <!-- Screen Header -->
         <div class="screen-header-green">
@@ -562,58 +562,52 @@
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
           </button>
-          <div class="title">Grow with TEVDA</div>
+          <div class="title">TEVDA Academy</div>
           <div class="spacer"></div>
         </div>
 
-        <!-- Subtitle Hero Banner -->
+        <!-- Academy Hero Banner -->
         <div class="grow-hero">
-          <div class="subtitle">Build skills. Access opportunities. Drive a greener Tanzania.</div>
+          <div class="subtitle" style="font-weight:700;">Elimu Endelevu • Kozi 6 Zilizoidhinishwa • Vyeti Rasmi</div>
         </div>
 
-        <!-- 2x2 Services Grid matching exact mockup layout -->
-        <div class="services-grid">
-          
-          <!-- Card 1: EV Battery Safety -->
-          <div class="service-card">
-            <img src="assets/service-battery.png" alt="EV Battery Safety" class="service-banner-img">
-            <div class="body">
-              <div class="title">EV Battery Safety</div>
-              <div class="desc">Learn safe battery handling and care.</div>
-              <button class="btn-link" onclick="window.app.showToast('🔋 Umefungua kozi ya Usalama wa Betri za EV (4 Hours).')">Start Course →</button>
-            </div>
-          </div>
+        <!-- 6 Accredited Courses Container -->
+        <div class="academy-courses-container" id="academy-courses-list" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+          <!-- Rendered dynamically by app.js from TEVDA_DATA.courses -->
+        </div>
 
-          <!-- Card 2: High-Voltage Maintenance -->
-          <div class="service-card">
-            <img src="assets/service-maintenance.png" alt="High-Voltage Maintenance" class="service-banner-img">
-            <div class="body">
-              <div class="title">High-Voltage Maintenance</div>
-              <div class="desc">Get certified in EV maintenance.</div>
-              <button class="btn-link" onclick="window.app.showToast('⚡ Maelezo ya mafunzo ya High-Voltage (2 Weeks Cohort).')">Learn More →</button>
-            </div>
-          </div>
+      </section>
 
-          <!-- Card 3: Green Mobility Jobs -->
-          <div class="service-card">
-            <img src="assets/service-jobs.png" alt="Green Mobility Jobs" class="service-banner-img">
-            <div class="body">
-              <div class="title">Green Mobility Jobs</div>
-              <div class="desc">Find EV related job opportunities.</div>
-              <button class="btn-link" onclick="window.app.showToast('💼 Fursa 18 za ajira ya udereva wa EV Dar es Salaam!')">Browse Jobs →</button>
-            </div>
-          </div>
+      <!-- ====================================================================
+           DESTINATION 4: EXPLORE OPPORTUNITIES (EMPLOYMENT, GRANTS & FINANCING)
+           ==================================================================== -->
+      <section id="screen-explore" class="app-screen" aria-label="Explore Opportunities">
+        
+        <!-- Screen Header -->
+        <div class="screen-header-green">
+          <button class="back-btn" data-back="home" aria-label="Rudi nyuma">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="title">Gundua Fursa (Explore)</div>
+          <div class="spacer"></div>
+        </div>
 
-          <!-- Card 4: Vehicle Financing -->
-          <div class="service-card">
-            <img src="assets/service-financing.png" alt="Vehicle Financing" class="service-banner-img">
-            <div class="body">
-              <div class="title">Vehicle Financing</div>
-              <div class="desc">Get affordable financing options.</div>
-              <button class="btn-link" onclick="window.app.showToast('🚗 Fomu ya mkopo wa chombo cha EV imefunguka.')">Apply Now →</button>
-            </div>
-          </div>
+        <div class="grow-hero">
+          <div class="subtitle" style="font-weight:700;">Ajira • Mikopo ya Vyombo • Ruzuku • Vipuri Halisi</div>
+        </div>
 
+        <!-- Search & Filter Bar -->
+        <div style="padding: 12px 16px 0 16px;">
+          <input type="text" id="explore-search-input" placeholder="Tafuta fursa za ajira, mikopo, ruzuku..." 
+                 style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 13px; outline: none; background: #fff;"
+                 oninput="window.app.filterOpportunities(this.value)">
+        </div>
+
+        <!-- Opportunities Directory Container -->
+        <div class="opportunities-container" id="explore-opps-list" style="padding: 14px 16px 80px 16px; display: flex; flex-direction: column; gap: 12px;">
+          <!-- Rendered dynamically by app.js from TEVDA_DATA.opportunities -->
         </div>
 
       </section>
@@ -822,7 +816,7 @@
       </div>
     </div>
 
-    <!-- Bottom Navigation Bar (4 Native Tabs matching mockup) -->
+    <!-- Bottom Navigation Bar (5 Primary Destinations) -->
     <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
       <!-- 1. Home -->
       <a href="#home" class="nav-tab active" id="tab-home">
@@ -830,19 +824,25 @@
         <span class="tab-label">Home</span>
       </a>
 
-      <!-- 2. ID -->
+      <!-- 2. My ID -->
       <a href="#id" class="nav-tab" id="tab-id">
         <span class="tab-icon">🪪</span>
-        <span class="tab-label">ID</span>
+        <span class="tab-label">My ID</span>
       </a>
 
-      <!-- 3. Services -->
-      <a href="#services" class="nav-tab" id="tab-services">
-        <span class="tab-icon">🎛️</span>
-        <span class="tab-label">Services</span>
+      <!-- 3. Academy -->
+      <a href="#academy" class="nav-tab" id="tab-academy">
+        <span class="tab-icon">🎓</span>
+        <span class="tab-label">Academy</span>
       </a>
 
-      <!-- 4. Profile -->
+      <!-- 4. Explore -->
+      <a href="#explore" class="nav-tab" id="tab-explore">
+        <span class="tab-icon">🧭</span>
+        <span class="tab-label">Explore</span>
+      </a>
+
+      <!-- 5. Profile -->
       <a href="#profile" class="nav-tab" id="tab-profile">
         <span class="tab-icon">👤</span>
         <span class="tab-label">Profile</span>

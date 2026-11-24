@@ -3,11 +3,17 @@
 @section('title', 'Confidential Whistleblower & Complaints — TEVDA')
 
 @section('content')
-<div class="bg-slate-900 text-white py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="text-xs font-bold uppercase tracking-widest text-rose-400 bg-rose-950 px-3 py-1 rounded-md border border-rose-800">Confidential Integrity Channel</span>
-        <h1 class="text-3xl sm:text-5xl font-black font-heading mt-3 mb-3">Whistleblower & Incident Reporting</h1>
-        <p class="text-slate-300 text-sm max-w-2xl mx-auto">Report fraud, fake fee collections, driver misconduct, discrimination, unsafe battery handling, or misuse of the TEVDA name confidentially or anonymously.</p>
+<div class="relative bg-[#002040] text-white py-16 lg:py-20 overflow-hidden">
+    <div class="absolute -right-24 -top-24 w-96 h-96 bg-[#108010]/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-24 -bottom-24 w-96 h-96 bg-[#E5B51B]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#E5B51B] bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#E5B51B]/30 mb-3">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span>Confidential Integrity Channel</span>
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-black font-heading mt-2 mb-3 text-white tracking-tight">Whistleblower & Incident Reporting</h1>
+        <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed">Report fraud, fake fee collections, driver misconduct, discrimination, unsafe battery handling, or misuse of the TEVDA name confidentially or anonymously.</p>
     </div>
 </div>
 
